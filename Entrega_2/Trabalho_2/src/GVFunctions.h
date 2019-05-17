@@ -17,7 +17,11 @@
  * Funcao que desenha o grafo.
  *
  * @param graph Grafo a ser desenhado
+ * @param edgeColor Cor a dar as arestas
+ * @param vertexSize Tamanho dos vertices do grafo
+ *
+ * @return Pointer para o objeto GraphViewer
  */
-void displayGraph(Graph<Node> graph);
+GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize);
 
 #endif /* GVFUNCTIONS_H_ */

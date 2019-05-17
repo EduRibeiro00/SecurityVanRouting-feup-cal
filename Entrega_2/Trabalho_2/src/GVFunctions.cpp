@@ -14,53 +14,129 @@
 
 using namespace std;
 
-void displayGraph(Graph<Node> graph){
+GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 
-		int maxX = 0;
-		int maxY = 0;
+		double maxX = 0, maxY = 0, minX = 9999999999, minY = 9999999999;
 
-		for(unsigned i = 0; i < graph.getVertexSet().size(); i++){
+		for(unsigned i = 0; i < graph.getVertexSet().size(); i++) {
+
 			Node node = graph.getVertexSet().at(i)->getInfo();
-			if(node.getX() > maxX)
-				maxX = node.getX();
+			double currentX = node.getX();
+			double currentY = node.getY();
 
-			if(node.getY() > maxY)
-				maxY = node.getY();
+			if(currentX > maxX)
+				maxX = currentX;
 
+			if(currentX < minX)
+				minX = currentX;
+
+			if(currentY > maxY)
+				maxY = currentY;
+
+			if(currentY < minY)
+				minY = currentY;
 		}
 
 
-		GraphViewer *gv = new GraphViewer(maxX + 50, maxY + 50, false);
-		gv->setBackground("b84.png");
-		gv->createWindow(600, 600);
-		gv->defineVertexColor("blue");
-		gv->defineEdgeColor("black");
+		// --------
+		// CALCULO DE DIMENSOES
+		// --------
+
+		int defaultHeight = 800;
+		double gravWidth = maxX - minX;
+		double gravHeight = maxY - minY;
+
+		// uso de uma regra de tres simples para calcular o comprimento ideal para a janela
+		int width = max(defaultHeight, (int) (defaultHeight * gravHeight / gravWidth));
 
 
-		int id = 0;
+		GraphViewer *gv = new GraphViewer(width, defaultHeight, false);
+		gv->createWindow(width, defaultHeight);
+		gv->defineEdgeColor(edgeColor);
 
-		for(unsigned i = 0; i < graph.getVertexSet().size(); i++){
-			Node node = graph.getVertexSet().at(i)->getInfo();
-			gv->addNode(node.getID(), node.getX(), node.getY());
+		gv->defineVertexSize(vertexSize);
+		gv->defineEdgeCurved(false);
 
+		// --------
+		// VERTICES
+		// --------
+
+		for(auto v : graph.getVertexSet()) {
+
+			Node node = v->getInfo();
+
+			double displayX = (node.getX() - minX ) * width / gravWidth * 0.95;
+			double displayY = (node.getY() - minY ) * defaultHeight / gravHeight * 0.95;
+
+			displayX += (0.025 * width);
+			displayY += (0.025 * defaultHeight);
+
+			gv->addNode(node.getID(), (int) displayX, (int) displayY);
+
+			switch(node.getType()) {
+
+				case BANK:
+					gv->setVertexColor(node.getID(), "BLUE");
+					break;
+
+				case FIN_ADVICE:
+					gv->setVertexColor(node.getID(), "RED");
+					break;
+
+				case ATM:
+					gv->setVertexColor(node.getID(), "GREEN");
+					break;
+
+				case TAX_ADVISOR:
+					gv->setVertexColor(node.getID(), "WHITE");
+					break;
+
+				case AUDIT:
+					gv->setVertexColor(node.getID(), "ORANGE");
+					break;
+
+				case MONEY_MOV:
+					gv->setVertexColor(node.getID(), "YELLOW");
+					break;
+
+				case OTHER:
+					gv->setVertexColor(node.getID(), "LIGHT_GRAY");
+					break;
+
+				case CENTRAL:
+					gv->setVertexColor(node.getID(), "BLACK");
+					break;
+
+				default:
+					break;
+			}
 		}
+
+
+		// --------
+		// ARESTAS
+		// --------
+
+		int idAresta = 1;
+
 
 		for(unsigned i = 0; i < graph.getVertexSet().size(); i++){
 
 			Node init_node = graph.getVertexSet().at(i)->getInfo();
-			vector<Edge<Node>> edges = graph.getVertexSet().at(i)->getAdj();
+			vector<Edge<Node> > edges = graph.getVertexSet().at(i)->getAdj();
 
 			for(unsigned j = 0; j < edges.size(); j++){
-				gv->addEdge(id, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::DIRECTED);
-				id++;
+				if(edges.at(j).shouldBeDisplayed()) {
+					gv->addEdge(idAresta, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
+					idAresta++;
+				}
 			}
 
 		}
 
 
-
-
-
 		gv->rearrange();
+
+		return gv;
 }
 

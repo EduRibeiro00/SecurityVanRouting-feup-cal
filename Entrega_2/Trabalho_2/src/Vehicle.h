@@ -40,7 +40,7 @@ private:
 	vector<Delivery> deliveries;
 
 
-private:
+public:
 
 	/**
 	 * Construtor do veiculo.
@@ -53,7 +53,7 @@ private:
 	/**
 	 * Destrutor default.
 	 */
-	~Vehicle();
+	// ~Vehicle();
 
 
 	/**

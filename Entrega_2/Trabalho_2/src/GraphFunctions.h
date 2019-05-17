@@ -16,13 +16,11 @@
 /**
  * Funcao que le, de certos ficheiros txt, informacao de modo a gerar um grafo.
  *
- * @param edgeFile Ficheiro que contem a informacao sobre as arestas
- * @param XYFile Ficheiro que contem a informacao sobre as coordenadas dos nos
- * @param tagsFile Ficheiro que contem a informacao sobre as tags/tipos dos nos
+ * @param folderName Nome do ficheiro que tem a informacao sobre o grafo
  *
  * @return Grafo gerado com a informacao dada.
  */
-Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile);
+Graph<Node> loadGraph(string folderName);
 
 
 /**
@@ -38,6 +36,22 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile);
 double getDistance(double x1, double y1, double x2, double y2);
 
 
+/**
+ * Funcao que remove arestas de peso 0, que nao devem ser usadas pelos veiculos.
+ * @param graph O grafo contendo os vertices e as arestas
+ */
+void removeUselessEdges(Graph<Node> graph);
+
+
+/**
+ * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
+ * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
+ *
+ * @param graph O grafo, ja construido
+ *
+ * @return A tabela com as distancias e os vertices anteriores.
+ */
+vector<vector< pair<double, Vertex<Node>* > > > buildDistanceTable(Graph<Node> graph);
 
 
 #endif /* GRAPHFUNCTIONS_H_ */

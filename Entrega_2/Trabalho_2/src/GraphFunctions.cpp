@@ -8,41 +8,37 @@
 #include "GraphFunctions.h"
 
 #include <cstdio>
-#include "graphviewer.h"
-#include <fstream>
 #include <iostream>
-#include <sstream>
-
-#include "GVFunctions.h"
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <algorithm>
 #include <iomanip>
 #include <cmath>
+#include <utility>
 
 using namespace std;
 
-Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
+Graph<Node> loadGraph(string folderName) {
 
 	Graph<Node> graph;
 
 	ifstream XYStream, edgeStream, tagsStream;
-	XYStream.open(XYFile);
+	XYStream.open("Mapas/" + folderName + "/T08_nodes_X_Y_" + folderName + ".txt");
 
 	if(!XYStream) {
 		cout << "Couldn't open XY file!" << endl;
 		return graph;
 	}
 
-	edgeStream.open(edgeFile);
+	edgeStream.open("Mapas/" + folderName + "/T08_edges_" + folderName + ".txt");
 
 	if(!edgeStream) {
 		cout << "Couldn't open edge file!" << endl;
 		return graph;
 	}
 
-	tagsStream.open(tagsFile);
+	tagsStream.open("Mapas/" + folderName + "/T08_tags_" + folderName + ".txt");
 
 	if(!tagsStream) {
 		cout << "Couldn't open tags file!" << endl;
@@ -122,8 +118,9 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
 		double distance = getDistance(v1->getInfo().getX(), v1->getInfo().getY(), v2->getInfo().getX(), v2->getInfo().getY());
 
 
-		// adds the edge to the graph
-		graph.addEdge(Node(id1), Node(id2), distance);
+		// adds the edges to the graph - BIDIRECTIONAL EDGES
+		graph.addEdge(Node(id1), Node(id2), distance, true);
+		graph.addEdge(Node(id2), Node(id1), distance, false);
 	}
 
 	int total = 0;
@@ -132,13 +129,11 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
 		total += v->getAdj().size();
 	}
 
-	if(total != numEdges) {
+	if(total != (numEdges * 2)) {
 		cout << "Number of edges in the graph is wrong! ";
-		cout << total << " instead of " << numEdges << "." << endl;
+		cout << total << " instead of " << numEdges * 2 << "." << endl;
 		return graph;
 	}
-
-
 
 	// -----------
 	// READS TAGS
@@ -207,5 +202,68 @@ double getDistance(double x1, double y1, double x2, double y2) {
 
 	return sqrt(value1 + value2);
 }
+
+
+
+void removeUselessEdges(Graph<Node> graph) {
+
+	for(auto v : graph.getVertexSet())
+		for(int i = 0; i < v->getAdj().size(); i++)
+			if(v->getAdj().at(i).getWeight() == 0)
+				v->removeEdge(i);
+}
+
+
+vector<vector< pair<double, Vertex<Node>* > > > buildDistanceTable(Graph<Node> graph) {
+
+	// uma vez que os grafos que nos foram dados pelos monitores
+	// sao esparsos (nº de arestas e similar ao nº de vertices),
+	// compensa mais utilizar o algoritmo de Dijkstra para todos
+	// os vertices, do que usar o algoritmo de Floyd-Warshall.
+
+	vector<vector< pair<double, Vertex<Node>* > > > table;
+
+
+	table.resize(graph.getVertexSet().size());
+
+	for(int i = 0; i < graph.getVertexSet().size(); i++)
+		table.at(i).resize(graph.getVertexSet().size());
+
+
+	// inicializa a tabela com valores invalidos/nulos
+	for(int i = 0; i < table.size(); i++)
+		for(int j = 0; j < table.at(i).size(); j++) {
+			table.at(i).at(j).first = -1;
+			table.at(i).at(j).second = NULL;
+		}
+
+	vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
+
+	for(int i = 0; i < vertexSet.size(); i++) {
+
+		Vertex<Node>* v = vertexSet.at(i);
+
+		// calcula as distancias para os vertices acessiveis a partir do vertice atual
+		graph.dijkstraShortestPath(v->getInfo());
+
+		for(int j = 0; j < vertexSet.size(); j++) {
+
+			// se visited e igual a true, entao quer dizer que este vertice e acessivel atraves
+			// do vertice de indice i, e foi incluido no seu algoritmo dijkstra!
+			if(vertexSet.at(j)->getVisited()) {
+
+				table.at(i).at(j).first = vertexSet.at(j)->getDist();
+				table.at(i).at(j).second = vertexSet.at(j)->getPath();
+				vertexSet.at(j)->setVisited(false); // resets "visited", for the next dijkstra iteration
+			}
+		}
+	}
+
+
+	return table;
+}
+
+
+
 
 

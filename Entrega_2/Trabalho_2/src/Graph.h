@@ -33,6 +33,7 @@ class Vertex {
 
 	bool processing = false;
 	void addEdge(Vertex<T> *dest, double w);
+	void addEdge(Vertex<T> *dest, double w, bool shouldDisplay);
 
 public:
 	Vertex(T in);
@@ -40,7 +41,10 @@ public:
 	T& getInfo();
 	double getDist() const;
 	Vertex *getPath() const;
+	bool getVisited() const;
+	void setVisited(bool visited);
 	vector<Edge<T> > getAdj() const;
+	void removeEdge(int index);
 	friend class Graph<T>;
 	friend class MutablePriorityQueue<Vertex<T> >;
 
@@ -60,8 +64,28 @@ void Vertex<T>::addEdge(Vertex<T> *d, double w) {
 }
 
 template <class T>
+void Vertex<T>::addEdge(Vertex<T> *dest, double w, bool shouldDisplay) {
+	adj.push_back(Edge<T>(dest, w, shouldDisplay));
+}
+
+template <class T>
+void Vertex<T>::removeEdge(int index) {
+	adj.erase(adj.begin() + index);
+}
+
+template <class T>
 vector<Edge<T> > Vertex<T>::getAdj() const {
 	return adj;
+}
+
+template <class T>
+bool Vertex<T>::getVisited() const {
+	return this->visited;
+}
+
+template <class T>
+void Vertex<T>::setVisited(bool visited) {
+	this->visited = visited;
 }
 
 template <class T>
@@ -88,17 +112,24 @@ Vertex<T> *Vertex<T>::getPath() const {
 
 template <class T>
 class Edge {
-	Vertex<T> * dest;      // destination vertex
-	double weight;         // edge weight
+	Vertex<T> * dest;      	// destination vertex
+	double weight;        	// edge weight
+	bool shouldDisplay;	// for GraphViewer
 public:
 	Edge(Vertex<T> *d, double w);
+	Edge(Vertex<T> *d, double w, bool shouldDisplay);
 	friend class Graph<T>;
 	friend class Vertex<T>;
 	Vertex<T>* getDest();
+	double getWeight();
+	bool shouldBeDisplayed();
 };
 
 template <class T>
-Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
+Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w), shouldDisplay(true) {}
+
+template <class T>
+Edge<T>::Edge(Vertex<T> *d, double w, bool shouldDisplay): dest(d), weight(w), shouldDisplay(shouldDisplay) {}
 
 
 /*************************** Graph  **************************/
@@ -114,6 +145,7 @@ public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
 	bool addEdge(const T &sourc, const T &dest, double w);
+	bool addEdge(const T &sourc, const T &dest, double w, bool shouldDisplay);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
 
@@ -147,6 +179,14 @@ vector<Vertex<T> *> Graph<T>::getVertexSet() const {
 
 template <class T>
 Vertex<T>*  Edge<T>::getDest(){ return this->dest;}
+
+template <class T>
+double Edge<T>::getWeight(){ return this->weight;}
+
+
+template <class T>
+bool Edge<T>::shouldBeDisplayed() {return this->shouldDisplay;}
+
 
 /*
  * Auxiliary function to find a vertex with a given content.
@@ -185,6 +225,17 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
 	v1->addEdge(v2,w);
 	return true;
 }
+
+template <class T>
+bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, bool shouldDisplay) {
+	auto v1 = findVertex(sourc);
+	auto v2 = findVertex(dest);
+	if (v1 == NULL || v2 == NULL)
+		return false;
+	v1->addEdge(v2,w, shouldDisplay);
+	return true;
+}
+
 
 
 //--------------------
@@ -233,6 +284,9 @@ void Graph<T>::dijkstraShortestPath(const T &origin) {
 	while(!q.empty()){
 		auto v = q.extractMin();
 		for(auto e : v->adj){
+
+			e.dest->visited = true; // para indicar quais os vertices do grafo que foram visitados
+
 			auto oldDist = e.dest->dist;
 			if(relax(v, e.dest, e.weight)){
 				if(oldDist == INF)
