@@ -71,10 +71,12 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
 		// gets rid of the commas
 		line.erase(remove(line.begin(), line.end(), ','), line.end());
 
+
 		int id;
 		double x, y;
 		stringstream linestream(line);
 		linestream >> id >> x >> y;
+
 
 		// add node to vertex
 		graph.addVertex(Node(id, x, y));
@@ -119,6 +121,7 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
 		// calculates the distance between the two nodes
 		double distance = getDistance(v1->getInfo().getX(), v1->getInfo().getY(), v2->getInfo().getX(), v2->getInfo().getY());
 
+
 		// adds the edge to the graph
 		graph.addEdge(Node(id1), Node(id2), distance);
 	}
@@ -137,8 +140,61 @@ Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
 
 
 
+	// -----------
+	// READS TAGS
+	// -----------
 
 
+	int numDifTags;
+	tagsStream >> numDifTags;
+
+
+	for(int i = 0; i < numDifTags; i++) {
+
+		// extracts tag name
+		tagsStream >> line;
+
+		int numTags;
+		tagsStream >> numTags;
+
+		int id;
+
+		for(int j = 0; j < numTags; j++) {
+
+			tagsStream >> id;
+
+			Vertex<Node>* v = graph.findVertex(Node(id));
+
+			if(line == "amenity=bank")
+				v->getInfo().setType(BANK);
+
+			else if(line == "barrier=hedge_bank")
+				v->getInfo().setType(BANK);
+
+			else if(line == "amenity=financial_advice")
+				v->getInfo().setType(FIN_ADVICE);
+
+			else if(line == "amenity=atm")
+				v->getInfo().setType(ATM);
+
+			else if(line == "office=tax_advisor")
+				v->getInfo().setType(TAX_ADVISOR);
+
+			else if(line == "government=audit")
+				v->getInfo().setType(AUDIT);
+
+			else if(line == "shop=money_lender")
+				v->getInfo().setType(MONEY_MOV);
+
+			else if(line == "amenity=money_transfer")
+				v->getInfo().setType(MONEY_MOV);
+
+			else if(line == "shop=moneylender")
+				v->getInfo().setType(MONEY_MOV);
+
+		}
+
+	}
 
 	return graph;
 }

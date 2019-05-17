@@ -11,6 +11,7 @@
 #include "graphviewer.h"
 #include "GVFunctions.h"
 #include "GraphFunctions.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -21,7 +22,4 @@ int main() {
 								  "Mapas/Aveiro/T08_tags_Aveiro.txt");
 
 
-	cout << graph.getVertexSet().size() << endl;
-
-	cout << graph.getVertexSet().at(0)->getInfo().getID() << endl;
 }

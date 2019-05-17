@@ -21,7 +21,7 @@ void displayGraph(Graph<Node> graph){
 		gv->defineVertexColor("blue");
 		gv->defineEdgeColor("black");
 
-		for(unsigned i = 0; i < graph.vertexSet.size(); i++){
+		/*for(unsigned i = 0; i < graph.vertexSet.size(); i++){
 			Node node = graph.vertexSet.at(i)->getInfo();
 			gv->addNode(node.getID(), node.getX(), node.getY());
 
@@ -30,13 +30,11 @@ void displayGraph(Graph<Node> graph){
 		for(unsigned i = 0; i < graph.vertexSet.size(); i++){
 			Node node = graph.vertexSet.at(i)->getInfo();
 
-		}
+		}*/
 
 
 
 
 
 		gv->rearrange();
-	}
-
 }
