@@ -94,6 +94,7 @@ public:
 	Edge(Vertex<T> *d, double w);
 	friend class Graph<T>;
 	friend class Vertex<T>;
+	Vertex<T>* getDest();
 };
 
 template <class T>
@@ -143,6 +144,9 @@ template <class T>
 vector<Vertex<T> *> Graph<T>::getVertexSet() const {
 	return vertexSet;
 }
+
+template <class T>
+Vertex<T>*  Edge<T>::getDest(){ return this->dest;}
 
 /*
  * Auxiliary function to find a vertex with a given content.
