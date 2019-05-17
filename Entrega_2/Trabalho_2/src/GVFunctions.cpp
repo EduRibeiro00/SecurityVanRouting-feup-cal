@@ -13,58 +13,30 @@
 
 using namespace std;
 
-Graph<Node> loadGraph(string edgeFile, string XYFile, string tagsFile) {
+void displayGraph(Graph<Node> graph){
 
-	Graph<Node> graph;
+		GraphViewer *gv = new GraphViewer(600, 600, false);
+		//gv->setBackground("b84.png");
+		gv->createWindow(600, 600);
+		gv->defineVertexColor("blue");
+		gv->defineEdgeColor("black");
 
-	ifstream XYStream, edgeStream, tagsStream;
-	XYStream.open(XYFile);
+		for(unsigned i = 0; i < graph.vertexSet.size(); i++){
+			Node node = graph.vertexSet.at(i)->getInfo();
+			gv->addNode(node.getID(), node.getX(), node.getY());
 
-	if(!XYStream) {
-		cout << "Couldn't open XY file!" << endl;
-		return graph;
+		}
+
+		for(unsigned i = 0; i < graph.vertexSet.size(); i++){
+			Node node = graph.vertexSet.at(i)->getInfo();
+
+		}
+
+
+
+
+
+		gv->rearrange();
 	}
 
-	edgeStream.open(edgeFile);
-
-	if(!edgeStream) {
-		cout << "Couldn't open edge file!" << endl;
-		return graph;
-	}
-
-	tagsStream.open(tagsFile);
-
-	if(!tagsStream) {
-		cout << "Couldn't open tags file!" << endl;
-		return graph;
-	}
-
-
-	int numNodes;
-	XYStream >> numNodes;
-
-	string line;
-
-	// to clear the newline
-	getline(XYStream, line);
-
-	int i = 0;
-
-	while(getline(XYStream, line)) {
-
-		// gets rid of the parentheses
-		line = line.substr(1, line.size() - 3);
-
-		// gets rid of the commas
-		line.erase(remove(line.begin(), line.end(), ','), line.end());
-
-		int id;
-		double x, y;
-		stringstream linestream(line);
-		linestream >> id >> x >> y;
-
-		graph.addVertex(Node(id, x, y));
-	}
-
-	return graph;
 }

@@ -54,6 +54,13 @@ public:
 	 */
 	Node(int id, double xCoord, double yCoord): id(id), xCoord(xCoord), yCoord(yCoord), type(OTHER){}
 
+
+	/**
+	 * Terceiro construtor do node (apenas inicializa o ID).
+	 * @param id ID do node
+	 */
+	Node(int id): id(id), xCoord(0), yCoord(0), type(OTHER){}
+
 	/**
 	 * Destrutor default.
 	 */

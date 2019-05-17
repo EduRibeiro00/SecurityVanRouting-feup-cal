@@ -10,6 +10,7 @@
 
 #include "graphviewer.h"
 #include "GVFunctions.h"
+#include "GraphFunctions.h"
 
 using namespace std;
 
