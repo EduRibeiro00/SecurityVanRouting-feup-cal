@@ -7,10 +7,20 @@
 //============================================================================
 
 #include <iostream>
+
 #include "graphviewer.h"
+#include "GVFunctions.h"
+
 using namespace std;
 
 int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
-	return 0;
+
+	Graph<Node> graph = loadGraph("Mapas/Aveiro/T08_edges_Aveiro.txt",
+								  "Mapas/Aveiro/T08_nodes_X_Y_Aveiro.txt",
+								  "Mapas/Aveiro/T08_tags_Aveiro.txt");
+
+
+	cout << graph.getVertexSet().size() << endl;
+
+	cout << graph.getVertexSet().at(0)->getInfo().getID() << endl;
 }

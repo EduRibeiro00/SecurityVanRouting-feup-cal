@@ -5,6 +5,34 @@
  *      Author: eduribeiro
  */
 
+#include "Node.h"
 
 
+int Node::getID() const {
+	return id;
+}
 
+
+double Node::getX() const {
+	return xCoord;
+}
+
+
+double Node::getY() const {
+	return yCoord;
+}
+
+
+TYPE Node::getType() const {
+	return type;
+}
+
+
+void Node::setType(TYPE type) {
+	this->type = type;
+}
+
+
+bool Node::operator==(const Node& n) const {
+	return id == n.getID();
+}

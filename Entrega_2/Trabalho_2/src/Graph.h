@@ -9,13 +9,17 @@
 #include <limits>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
+
+#include "MutablePriorityQueue.h"
 
 using namespace std;
+
 
 template <class T> class Edge;
 template <class T> class Graph;
 
-constexpr auto INF = std::numeric_limits<double>::max();
+// auto INF = std::numeric_limits<double>::max();
 
 /*
  * ================================================================================================
@@ -215,7 +219,7 @@ bool Graph<T>::findAugmentationPath(Vertex<T>* s, Vertex<T>* t) {
 
 template <class T>
 int Graph<T>::findMinResidualAlongPath(Vertex<T> *s, Vertex<T> *t) {
-    int f = INF;
+    int f = 999999999;
     Vertex<T>* v = t;
 
     while(v != s) {
