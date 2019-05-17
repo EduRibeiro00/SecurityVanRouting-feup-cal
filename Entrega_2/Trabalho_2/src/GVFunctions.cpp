@@ -36,6 +36,7 @@ void displayGraph(Graph<Node> graph){
 		gv->defineVertexColor("blue");
 		gv->defineEdgeColor("black");
 
+
 		int id = 0;
 
 		for(unsigned i = 0; i < graph.getVertexSet().size(); i++){
@@ -53,6 +54,7 @@ void displayGraph(Graph<Node> graph){
 				gv->addEdge(id, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::DIRECTED);
 				id++;
 			}
+
 		}
 
 

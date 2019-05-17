@@ -8,8 +8,15 @@
 #ifndef NODE_H_
 #define NODE_H_
 
-// VER MELHOR OS TIPOS DE NOS NOS FICHEIROS TXT DADOS
-enum TYPE { BANK, MUSEUM, STORE , OTHER, CENTRAL };
+
+enum TYPE { BANK,
+		    FIN_ADVICE,
+			ATM ,
+			TAX_ADVISOR,
+			AUDIT,
+			MONEY_MOV,
+			OTHER,
+			CENTRAL };
 
 class Node {
 
