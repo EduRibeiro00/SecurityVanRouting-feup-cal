@@ -101,7 +101,10 @@ Graph<Node> loadGraph(string folderName) {
 	while(getline(edgeStream, line)) {
 
 		// gets rid of the parentheses
-		line = line.substr(1, line.size() - 3);
+		size_t pos = line.find(')');
+		if (pos != string::npos)
+		    line = line.substr(1, pos);
+
 
 		// gets rid of the commas
 		line.erase(remove(line.begin(), line.end(), ','), line.end());
