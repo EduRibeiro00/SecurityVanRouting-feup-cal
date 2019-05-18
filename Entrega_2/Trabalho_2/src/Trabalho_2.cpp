@@ -11,18 +11,22 @@
 #include <map>
 #include <utility>
 
+#include "UserFunctions.h"
 #include "graphviewer.h"
 #include "GVFunctions.h"
 #include "GraphFunctions.h"
 #include "Node.h"
 #include "Vehicle.h"
 
+
 using namespace std;
 
 int main() {
 
+	string map = chooseMap();
+
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Teste");
+	Graph<Node> graph = loadGraph(map);
 	cout << "Done!" << endl << endl;
 
 
@@ -55,8 +59,6 @@ int main() {
     cout << "Distance from 2 to 7: " << getDistFromTable(v2, v1, table) << endl;
     cout << "Path from 7 to 2: " << getPathFromTable(v1, v2, table)->getInfo().getID() << endl;
     cout << "Path from 2 to 7: " << getPathFromTable(v2, v1, table)->getInfo().getID() << endl << endl;
-
-
 
 
 #if defined(_WIN32) || defined(WIN32)

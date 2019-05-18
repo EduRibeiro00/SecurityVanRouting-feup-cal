@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "Delivery.h"
+#include "GraphFunctions.h"
 
 class Vehicle {
 
@@ -29,9 +29,9 @@ private:
 
 
 	/**
-	 * Vetor que ira conter as arestas pelas quais o veiculo tera de passar para cumprir o seu percurso.
+	 * Vetor que ira conter os vertices pelos quais o veiculo tera de passar para cumprir o seu percurso.
 	 */
-	vector<Edge<Node>* > edgePath;
+	vector<Vertex<Node>* > vehiclePath;
 
 
 	/**
@@ -46,8 +46,14 @@ public:
 	 * Construtor do veiculo.
 	 * @param id ID do veiculo
 	 * @param type Tipo do veiculo
+	 * @param central No do grafo que simboliza a central dos veiculos, a qual ira ser o ponto de partida e chegada de qualquer trajeto
 	 */
-	Vehicle(int id, TYPE type): id(id), type(type){}
+	Vehicle(int id, TYPE type, Vertex<Node>* central): id(id), type(type){
+
+		// inserido duas vezes, porque sera o inicio e o fim do trajeto
+		vehiclePath.push_back(central);
+		vehiclePath.push_back(central);
+	}
 
 
 	/**
@@ -71,10 +77,10 @@ public:
 
 
 	/**
-	 * Funcao que retorna o vetor de arestas do veiculo.
-	 * @return Vetor de arestas do veiculo.
+	 * Funcao que retorna o vetor ordenado de vertices do veiculo.
+	 * @return Vetor de vertices do veiculo.
 	 */
-	vector<Edge<Node>* > getEdgePath() const;
+	vector<Vertex<Node>* > getVehiclePath() const;
 
 
 	/**
@@ -85,17 +91,33 @@ public:
 
 
 	/**
-	 * Adiciona ao vetor de arestas a aresta passada como argumento.
-	 * @param edge A aresta a acrescentar ao vetor
+	 * Adiciona ao vetor de vertices o vertice passado como argumento, na posicao indicada.
+	 * @param vertex O vertice a acrescentar ao vetor
+	 * @param index O indice em que se deve inserir o vertice.
 	 */
-	void addEdgeToPath(Edge<Node>* edge);
+	void addVertexToPath(Vertex<Node>* vertex, int index);
 
 
 	/**
-	 * Adiciona ao vetor de entregas a entrega passada como argumento.
-	 * @param delivery A entrega a acrescentar ao vetor
+	 * Funcao que adiciona a entrega passada como argumento ao vetor de entregas.
+	 * @param delivery A entrega a adicionar ao veto
 	 */
 	void addDelivery(Delivery delivery);
+
+	/**
+	 * Testa o que aconteceria se este veiculo ficasse encarregue desta entrega. Calcula as melhores
+	 * posicoes para se inserir a origem e o destino da entrega, tendo em conta as distancias
+	 * presentes na tabela, e retorna a distancia adicional implicada pela adicao desta entrega
+	 * ao percurso.
+	 *
+	 * @param delivery A entrega a acrescentar
+	 * @param table Tabela com distancias entre os vertices, para saber onde os inserir
+	 * @param bestPositionOrigin Indice ideal onde se deve inserir a origem
+	 * @param bestPositionDestination Indice ideal onde se deve inserir o destino
+	 *
+	 * @return Distancia adicional que resultaria se a entrega fosse realmente adicionada.
+	 */
+	double testInsertDelivery(Delivery delivery, Table table, int& bestPositionOrigin, int& bestPositionDestination);
 
 };
 
