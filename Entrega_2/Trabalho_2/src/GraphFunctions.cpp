@@ -288,22 +288,28 @@ map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > buildDijk
 
     vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
 
-    for(int i = 0; i < vertexSet.size(); i++) {
-
-        Vertex<Node>* v = vertexSet.at(i);
+    for(auto v1 : vertexSet) {
 
         // calcula as distancias para os vertices acessiveis a partir do vertice atual
-        graph.dijkstraShortestPath(v->getInfo());
+        graph.dijkstraShortestPath(v1->getInfo());
 
-        for(int j = 0; j < vertexSet.size(); j++) {
+        for(auto v2 : vertexSet) {
+
+        	pair< map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> >::iterator, bool> ret;
 
             // se visited e igual a true, entao quer dizer que este vertice e acessivel atraves
             // do vertice de indice i, e foi incluido no seu algoritmo dijkstra!
-            if(vertexSet.at(j)->getVisited()) {
+            if(v2->getVisited()) {
 
-                table.at(i).at(j).first = vertexSet.at(j)->getDist();
-                table.at(i).at(j).second = vertexSet.at(j)->getPath();
-                vertexSet.at(j)->setVisited(false); // resets "visited", for the next dijkstra iteration
+            	pair<Vertex<Node>*, Vertex<Node>*> pair1(v1, v2);
+            	pair<double, Vertex<Node>*> > pair2(v2->getDist(), v2->getPath());
+
+            	ret = table.insert(pair< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> >(pair1, pair2);
+
+            	if(!ret.second)
+            		cout << "Element already existed!" << endl;
+
+                v2->setVisited(false); // resets "visited", for the next dijkstra iteration
             }
         }
     }
