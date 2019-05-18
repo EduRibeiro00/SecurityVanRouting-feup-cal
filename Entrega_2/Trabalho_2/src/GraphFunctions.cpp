@@ -275,8 +275,6 @@ bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, Table table)
 	// verificacao dos pontos
 	for(auto d : deliveries) {
 
-		cout << d.getID() << " - ";
-
 		if(getDistFromTable(central, d.getOrigem(), table) == -1)
 			return false;
 
