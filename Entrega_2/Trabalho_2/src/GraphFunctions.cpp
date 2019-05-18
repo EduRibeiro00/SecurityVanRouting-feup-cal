@@ -248,8 +248,8 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) 
 
 		Vertex<Node>* vAux = table.at(make_pair(v2, v1)).second;
 
-		if (vAux == v1)
-			return vAux;
+		if (vAux == v2)
+			return v1;
 		else
 			return getPathFromTable(vAux, v2, table);
 
@@ -271,13 +271,8 @@ Table buildDijkstraTable(Graph<Node> graph) {
 
     vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
 
-    for(auto v1 : vertexSet) {
-
-        // calcula as distancias para os vertices acessiveis a partir do vertice atual
-        graph.dijkstraShortestPathTable(table, v1->getInfo());
-
-    }
-
+    for(auto v1 : vertexSet)
+    	graph.dijkstraShortestPathTable(table, v1->getInfo());
 
     return table;
 }

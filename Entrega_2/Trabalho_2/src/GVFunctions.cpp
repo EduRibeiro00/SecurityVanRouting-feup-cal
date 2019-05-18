@@ -73,6 +73,12 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
 
+			// TIRAR DPS
+			stringstream ss;
+			ss << node.getID();
+			gv->setVertexLabel(node.getID(), ss.str());
+
+
 			switch(node.getType()) {
 
 				case BANK:
@@ -131,7 +137,7 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 
 					// TIRAR DPS
 					stringstream ss;
-					ss << idAresta << " - " << edges.at(j).getWeight();
+					ss << idAresta << " - " << fixed << setprecision(5) << edges.at(j).getWeight();
 					gv->setEdgeLabel(idAresta, ss.str());
 
                     idAresta++;

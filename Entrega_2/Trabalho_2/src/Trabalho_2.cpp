@@ -47,6 +47,18 @@ int main() {
         cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
     }
 
+
+    Vertex<Node>* v1 = graph.findVertex(Node(7));
+    Vertex<Node>* v2 = graph.findVertex(Node(2));
+
+    cout << "Distance from 7 to 2: " << getDistFromTable(v1, v2, table) << endl;
+    cout << "Distance from 2 to 7: " << getDistFromTable(v2, v1, table) << endl;
+    cout << "Path from 7 to 2: " << getPathFromTable(v1, v2, table)->getInfo().getID() << endl;
+    cout << "Path from 2 to 7: " << getPathFromTable(v2, v1, table)->getInfo().getID() << endl << endl;
+
+
+
+
 #if defined(_WIN32) || defined(WIN32)
     system("pause");
 #endif
