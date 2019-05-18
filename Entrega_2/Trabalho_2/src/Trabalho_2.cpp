@@ -18,37 +18,42 @@
 #include "Node.h"
 #include "Vehicle.h"
 #include "Manager.h"
-
+#include "consoleColors.h"
 
 using namespace std;
 
 int main() {
 
+    clearScreen();
 	string map = chooseMap();
 
 	cout << "Building graph..." << endl;
 	Graph<Node> graph = loadGraph(map);
-	cout << "Done!" << endl << endl;
+    setColor(CONSOLE_LIGHTGREEN);
+    cout << "Done!" << endl << endl;
+    setColor(CONSOLE_LIGHTGRAY);
 
 
 	cout << "Removing useless edges..." << endl;
 	removeUselessEdges(graph);
-	cout << "Done!" << endl << endl;
+    setColor(CONSOLE_LIGHTGREEN);
+    cout << "Done!" << endl << endl;
+    setColor(CONSOLE_LIGHTGRAY);
 
 
 	cout << "Building table..." << endl;
 	Table table = buildDijkstraTable(graph);
+    setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
+    setColor(CONSOLE_LIGHTGRAY);
 
 
-/*
-    for (Table::iterator it = table.begin(); it != table.end(); it++) {
-        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
-        cout << "second vertex: " << it->first.second->getInfo().getID() << "\n";
-        cout << "distance: " << it->second.first << "   -   ";
-        cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
-    }
-*/
+//    for (Table::iterator it = table.begin(); it != table.end(); it++) {
+//        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
+//        cout << "second vertex: " << it->first.second->getInfo().getID() << "\n";
+//        cout << "distance: " << it->second.first << "   -   ";
+//        cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
+//    }
 
 //    Vertex<Node>* central = graph.findVertex(Node(5));
 //    central->getInfo().setType(CENTRAL);

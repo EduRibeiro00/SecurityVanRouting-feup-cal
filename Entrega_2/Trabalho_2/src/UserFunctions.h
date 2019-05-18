@@ -42,7 +42,9 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph);
  *
  * @return Vetor com as entregas a serem feitas.
  */
+/*
 vector<Delivery> readDeliveries();
+*/
 
 
 #endif /* USERFUNCTIONS_H_ */
