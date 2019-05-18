@@ -12,7 +12,6 @@
 #include <map>
 
 #include "Graph.h"
-#include "Node.h"
 #include "Delivery.h"
 
 /**
@@ -52,19 +51,6 @@ void removeUselessEdges(Graph<Node> graph);
 bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, vector<vector< pair<double, Vertex<Node>* > > > table);
 
 
-
-/**
- * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
- * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
- *
- * @param graph O grafo, ja construido
- *
- * @return A tabela com as distancias e os vertices anteriores.
- */
-/*
-vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> graph);
-*/
-
 /**
 * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
 * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
@@ -74,7 +60,7 @@ vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> g
 * @return A tabela com as distancias e os vertices anteriores.
 */
 
-map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > buildDijkstraTable(Graph<Node> graph);
+Table buildDijkstraTable(Graph<Node> graph);
 
 
 

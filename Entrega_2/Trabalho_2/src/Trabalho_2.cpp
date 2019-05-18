@@ -32,13 +32,17 @@ int main() {
 
 
 	cout << "Building table..." << endl;
-	map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > table = buildDijkstraTable(graph);
-    // vector<vector< pair<double, Vertex<Node>* > > > table = buildDijkstraTable(graph);
-	cout << "Done!" << endl << endl;
+	Table table = buildDijkstraTable(graph);
+    cout << "Done!" << endl << endl;
 
 
 	cout << "Displaying graph..." << endl;
-	GraphViewer *gv = displayGraph(graph, "black", 5);
+	displayGraph(graph, "black", 5);
+
+#if defined(_WIN32) || defined(WIN32)
+    system("pause");
+#endif
+
 	cout << "Done!" << endl << endl;
 
 

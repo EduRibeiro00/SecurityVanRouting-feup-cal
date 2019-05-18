@@ -10,7 +10,10 @@
 #include <list>
 #include <limits>
 #include <cmath>
+#include <map>
+#include "Node.h"
 #include "MutablePriorityQueue.h"
+
 
 using namespace std;
 
@@ -19,6 +22,8 @@ template <class T> class Graph;
 template <class T> class Vertex;
 
 #define INF std::numeric_limits<double>::max()
+
+typedef map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > Table;
 
 /************************* Vertex  **************************/
 
@@ -151,6 +156,7 @@ public:
 
 	// Fp05 - single source
 	void dijkstraShortestPath(const T &s);
+    void dijkstraShortestPathTable(Table &table, const T &s);
 	void dijkstraShortestPathOld(const T &s);
 	void unweightedShortestPath(const T &s);
 	void bellmanFordShortestPath(const T &s);
@@ -284,16 +290,39 @@ void Graph<T>::dijkstraShortestPath(const T &origin) {
 	while(!q.empty()){
 		auto v = q.extractMin();
 		for(auto e : v->adj){
-
-			e.dest->visited = true; // para indicar quais os vertices do grafo que foram visitados
-
-			auto oldDist = e.dest->dist;
+		    auto oldDist = e.dest->dist;
 			if(relax(v, e.dest, e.weight)){
 				if(oldDist == INF)
 					q.insert(e.dest);
 			}
 		}
 	}
+}
+
+
+template<class T>
+void Graph<T>::dijkstraShortestPathTable(Table &table, const T &origin) {
+    auto s = initSingleSource(origin);
+    MutablePriorityQueue<Vertex<T> > q;
+    q.insert(s);
+    while(!q.empty()){
+
+        auto v = q.extractMin();
+
+        if ((v != s) && (table.find(make_pair(v, s)) == table.end())) {
+            table.insert(make_pair(make_pair(s, v), make_pair(v->getDist(), v->getPath())));
+        }
+
+        for(auto e : v->adj){
+
+            auto oldDist = e.dest->dist;
+            if(relax(v, e.dest, e.weight)){
+                if(oldDist == INF)
+                    q.insert(e.dest);
+            }
+
+        }
+    }
 }
 
 template<class T>
