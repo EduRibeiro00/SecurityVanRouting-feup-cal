@@ -47,8 +47,6 @@ void Vehicle::addDelivery(Delivery delivery) {
 
 double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPositionOrigin, int& bestPositionDestination) {
 
-	double deltaOrigin, deltaDestination;
-
 	Vertex<Node>* origin = delivery.getOrigem();
 	Vertex<Node>* destination = delivery.getDestino();
 
@@ -59,10 +57,10 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 
 		Vertex<Node>* central = vehiclePath.at(0);
 
-		deltaOrigin = getDistFromTable(central, origin, table) +
+		double deltaOrigin = getDistFromTable(central, origin, table) +
 					  getDistFromTable(origin, central, table);
 
-		deltaDestination = getDistFromTable(origin, destination, table) +
+		double deltaDestination = getDistFromTable(origin, destination, table) +
 						   getDistFromTable(destination, central, table) -
 						   getDistFromTable(origin, central, table);
 
@@ -85,12 +83,13 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 		// ja foi avaliada, e que existe sempre um caminho entre
 		// qualquer par de vertices.
 
-		 curDeltaOrigin = getDistFromTable(previous, origin, table) +
-		              getDistFromTable(origin, next, table) -
-					  getDistFromTable(previous, next, table);
+		curDeltaOrigin = getDistFromTable(previous, origin, table) +
+						 getDistFromTable(origin, next, table) -
+					     getDistFromTable(previous, next, table);
 
 		 for (int j = i; j < vehiclePath.size() - 1; j++) {
-             previous = vehiclePath.at(j - 1);
+
+			 previous = vehiclePath.at(j - 1);
              next = vehiclePath.at(j + 1);
 
              // NOTA: A funcao admite que a conectividade do grafo
@@ -104,22 +103,19 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
              }
              else {
                  curDeltaDestination = getDistFromTable(previous, destination, table) +
-                               getDistFromTable(destination, next, table) -
-                               getDistFromTable(previous, next, table);
+                               	   	   getDistFromTable(destination, next, table) -
+									   getDistFromTable(previous, next, table);
              }
 
              if(curDeltaOrigin + curDeltaDestination < minDistance) {
                  minDistance = curDeltaOrigin + curDeltaDestination;
                  bestPositionOrigin = i;
                  bestPositionDestination = j + 1;
-                 deltaOrigin = curDeltaOrigin;
-                 deltaDestination = curDeltaDestination;
              }
 		 }
 	}
 
-	return deltaOrigin + deltaDestination;
-
+	return minDistance;
 }
 
 
