@@ -53,3 +53,92 @@ string chooseMap() {
 }
 
 
+
+vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph) {
+
+	cout << "--------------------------" << endl;
+	cout << "Central and Vehicle File" << endl;
+	cout << "--------------------------" << endl << endl;
+
+	string fileName;
+	ifstream stream;
+
+	do {
+		cout << "Please insert the central and vehicles file name:" << endl;
+		cin >> fileName;
+
+		stream.open(fileName);
+		if(!stream)
+			cout << "Couldn't open file! Please insert another one." << endl;
+
+	} while(!stream);
+
+
+	string line;
+
+
+	int centralID;
+	stream >> centralID;
+
+	Vertex<Node>* central = graph.findVertex(Node(centralID));
+
+	central->getInfo().setType(CENTRAL);
+
+	// limpa o resto da linha
+	getline(stream, line);
+
+
+
+	int numVehicles;
+	stream >> numVehicles;
+
+	// limpa o resto da linha
+	getline(stream, line);
+
+
+	vector<Vehicle*> vehicles;
+
+	while(getline(stream, line)) {
+
+		stringstream ss(line);
+
+		int id;
+		string typeStr;
+
+		ss >> id >> typeStr;
+
+		// limpa o resto da linha
+		getline(stream, line);
+
+		TYPE type;
+
+		if(typeStr == "BANK")
+			type = BANK;
+		else if(typeStr == "FIN_ADVICE")
+			type = FIN_ADVICE;
+		else if(typeStr == "ATM")
+			type = ATM;
+		else if(typeStr == "TAX_ADVISOR")
+			type = TAX_ADVISOR;
+		else if(typeStr == "AUDIT")
+			type = AUDIT;
+		else if(typeStr == "MONEY_MOV")
+			type = MONEY_MOV;
+
+		vehicles.push_back(new Vehicle(id, type, central));
+	}
+
+	if(vehicles.size() != numVehicles)
+		cout << "Couldn't read all vehicles!" << endl;
+
+
+	return vehicles;
+}
+
+
+
+vector<Delivery> readDeliveries() {
+
+
+}
+

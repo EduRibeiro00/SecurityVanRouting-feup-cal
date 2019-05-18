@@ -50,100 +50,74 @@ int main() {
     }
 */
 
-    Vertex<Node>* central = graph.findVertex(Node(5));
-    central->getInfo().setType(CENTRAL);
-
-    Vehicle* v1 = new Vehicle(1, BANK, central);
-    vector<Vehicle*> vehicles = {v1};
-
-    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
-    assignDeliveryToVehicle(vehicles, d1, table);
-
-    for (auto vehicle : vehicles) {
-        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-        for (auto vertex : vehicle->getVehiclePath()) {
-            cout << vertex->getInfo().getID() << ' ';
-        }
-        cout << '\n';
-        cout << "And the deliveries are:\n";
-        for (auto delivery : vehicle->getDeliveries()) {
-            cout << delivery.getID() << ' ';
-        }
-        cout << "\n\n";
-    }
-
-    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
-    assignDeliveryToVehicle(vehicles, d2, table);
-
-    for (auto vehicle : vehicles) {
-        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-        for (auto vertex : vehicle->getVehiclePath()) {
-            cout << vertex->getInfo().getID() << ' ';
-        }
-        cout << '\n';
-        cout << "And the deliveries are:\n";
-        for (auto delivery : vehicle->getDeliveries()) {
-            cout << delivery.getID() << ' ';
-        }
-        cout << "\n\n";
-    }
-
-/*
-    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
-    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
-    Delivery d3(3, graph.findVertex(Node(6)), graph.findVertex(Node(8)));
+//    Vertex<Node>* central = graph.findVertex(Node(5));
+//    central->getInfo().setType(CENTRAL);
+//
+//    Vehicle* v1 = new Vehicle(1, BANK, central);
+//    Vehicle* v2 = new Vehicle(2, BANK, central);
+//    vector<Vehicle*> vehicles;
+//    vehicles.push_back(v1);
+//    vehicles.push_back(v2);
+//
+//    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
+//    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
+//    Delivery d3(3, graph.findVertex(Node(6)), graph.findVertex(Node(8)));
 //    Delivery d4(4, graph.findVertex(Node(7)), graph.findVertex(Node(8)));
-    vector<Delivery> deliveries = {d1, d2, d3};
-    vector<Vehicle*> vehicles = {v1, v2};
+//    Delivery d5(5, graph.findVertex(Node(6)), graph.findVertex(Node(3)));
+//    vector<Delivery> deliveries;
+//    deliveries.push_back(d1);
+//    deliveries.push_back(d2);
+//    deliveries.push_back(d3);
+//    deliveries.push_back(d4);
+//    deliveries.push_back(d5);
+//
+//    for (auto delivery : deliveries) {
+//        if (!assignDeliveryToVehicle(vehicles, delivery, table)) {
+//            cout << "Assignment of delivery " << delivery.getID() << " to vehicles failed.\n";
+//        }
+//    }
+//
+//    for (auto vehicle : vehicles) {
+//        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+//        for (auto vertex : vehicle->getVehiclePath()) {
+//            cout << vertex->getInfo().getID() << ' ';
+//        }
+//        cout << '\n';
+//        cout << "And the deliveries are:\n";
+//        for (auto delivery : vehicle->getDeliveries()) {
+//            cout << delivery.getID() << ' ';
+//        }
+//        cout << "\n\n";
+//    }
+//
+//    for (auto vehicle : vehicles) {
+//        vehicle->removeDuplicateNodes();
+//    }
+//
+//    cout << "AFTER REMOVING THE DUPLICATES:\n\n";
+//
+//    for (auto vehicle : vehicles) {
+//        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+//        for (auto vertex : vehicle->getVehiclePath()) {
+//            cout << vertex->getInfo().getID() << ' ';
+//        }
+//        cout << '\n';
+//        cout << "And the deliveries are:\n";
+//        for (auto delivery : vehicle->getDeliveries()) {
+//            cout << delivery.getID() << ' ';
+//        }
+//        cout << "\n\n";
+//    }
 
-    for (auto delivery : deliveries) {
-        if (!assignDeliveryToVehicle(vehicles, delivery, table)) {
-            cout << "Assignment of delivery " << delivery.getID() << " to vehicles failed.\n";
-        }
-    }
 
-    for (auto vehicle : vehicles) {
-        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-        for (auto vertex : vehicle->getVehiclePath()) {
-            cout << vertex->getInfo().getID() << ' ';
-        }
-        cout << '\n';
-        cout << "And the deliveries are:\n";
-        for (auto delivery : vehicle->getDeliveries()) {
-            cout << delivery.getID() << ' ';
-        }
-        cout << "\n\n";
-    }
-
-    for (auto vehicle : vehicles) {
-        vehicle->removeDuplicateNodes();
-    }
-
-    cout << "AFTER REMOVING THE DUPLICATES:\n\n";
-
-    for (auto vehicle : vehicles) {
-        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-        for (auto vertex : vehicle->getVehiclePath()) {
-            cout << vertex->getInfo().getID() << ' ';
-        }
-        cout << '\n';
-        cout << "And the deliveries are:\n";
-        for (auto delivery : vehicle->getDeliveries()) {
-            cout << delivery.getID() << ' ';
-        }
-        cout << "\n\n";
-    }
-*/
-
-
-    cout << "Displaying graph..." << endl;
-    GraphViewer* gv = displayGraph(graph, "black", 5);
-    cout << "Done!" << endl << endl;
-
-
-#if defined(_WIN32) || defined(WIN32)
-    system("pause");
-#endif
+//    cout << "Displaying graph..." << endl;
+//    GraphViewer* gv = displayGraph(graph, "black", 5);
+//    cout << "Done!" << endl << endl;
+//
+//
+// #if defined(_WIN32) || defined(WIN32)
+//    system("pause");
+// #endif
 
 
     return 0;

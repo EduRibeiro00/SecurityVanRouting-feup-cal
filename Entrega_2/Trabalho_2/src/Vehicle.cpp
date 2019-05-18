@@ -95,7 +95,7 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
              // ja foi avaliada, e que existe sempre um caminho entre
              // qualquer par de vertices.
 
-             if (i == bestPositionOrigin) {
+             if (i == j) {
                  curDeltaDestination = getDistFromTable(origin, destination, table) +
                                        getDistFromTable(destination, next, table) -
                                        getDistFromTable(origin, next, table);
@@ -105,6 +105,7 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
                                	   	   getDistFromTable(destination, next, table) -
 									   getDistFromTable(previous, next, table);
              }
+
 
              if(curDeltaOrigin + curDeltaDestination < minDistance) {
                  minDistance = curDeltaOrigin + curDeltaDestination;
