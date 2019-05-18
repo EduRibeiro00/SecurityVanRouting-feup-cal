@@ -128,7 +128,13 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 			for(unsigned j = 0; j < edges.size(); j++){
 				if(edges.at(j).shouldBeDisplayed()) {
 					gv->addEdge(idAresta, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
-					idAresta++;
+
+					// TIRAR DPS
+					stringstream ss;
+					ss << idAresta << " - " << edges.at(j).getWeight();
+					gv->setEdgeLabel(idAresta, ss.str());
+
+                    idAresta++;
 				}
 			}
 

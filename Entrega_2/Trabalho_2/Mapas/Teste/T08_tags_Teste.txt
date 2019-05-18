@@ -1,0 +1,4 @@
+1
+amenity=bank
+1
+4

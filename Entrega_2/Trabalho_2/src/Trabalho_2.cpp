@@ -21,9 +21,8 @@ using namespace std;
 
 int main() {
 
-	/*
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Aveiro");
+	Graph<Node> graph = loadGraph("Teste");
 	cout << "Done!" << endl << endl;
 
 
@@ -38,15 +37,19 @@ int main() {
 
 
 	cout << "Displaying graph..." << endl;
-	displayGraph(graph, "black", 5);
+	GraphViewer* gv = displayGraph(graph, "black", 5);
 	cout << "Done!" << endl << endl;
+
+    for (Table::iterator it = table.begin(); it != table.end(); it++) {
+        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
+        cout << "second vertex: " << it->first.second->getInfo().getID() << "\n";
+        cout << "distance: " << it->second.first << "   -   ";
+        cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
+    }
 
 #if defined(_WIN32) || defined(WIN32)
     system("pause");
 #endif
-    */
 
-
-
-	return 0;
+    return 0;
 }

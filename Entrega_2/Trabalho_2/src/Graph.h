@@ -153,6 +153,7 @@ public:
 	bool addEdge(const T &sourc, const T &dest, double w, bool shouldDisplay);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+	int getNumEdges() const;
 
 	// Fp05 - single source
 	void dijkstraShortestPath(const T &s);
@@ -181,6 +182,15 @@ int Graph<T>::getNumVertex() const {
 template <class T>
 vector<Vertex<T> *> Graph<T>::getVertexSet() const {
 	return vertexSet;
+}
+
+template <class T>
+int Graph<T>::getNumEdges() const {
+    int total = 0;
+    for (auto v : vertexSet) {
+        total += v->getAdj().size();
+    }
+    return total;
 }
 
 template <class T>
