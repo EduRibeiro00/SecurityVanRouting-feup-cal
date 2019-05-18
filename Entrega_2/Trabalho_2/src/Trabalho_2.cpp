@@ -21,7 +21,7 @@ using namespace std;
 int main() {
 
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Braga");
+	Graph<Node> graph = loadGraph("Aveiro");
 	cout << "Done!" << endl << endl;
 
 
