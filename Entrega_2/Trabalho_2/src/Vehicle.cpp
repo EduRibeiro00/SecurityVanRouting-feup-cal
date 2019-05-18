@@ -58,24 +58,23 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 		Vertex<Node>* central = vehiclePath.at(0);
 
 		double deltaOrigin = getDistFromTable(central, origin, table) +
-					  getDistFromTable(origin, central, table);
+		                     getDistFromTable(origin, central, table);
 
 		double deltaDestination = getDistFromTable(origin, destination, table) +
-						   getDistFromTable(destination, central, table) -
-						   getDistFromTable(origin, central, table);
+		                          getDistFromTable(destination, central, table) -
+						          getDistFromTable(origin, central, table);
 
 		return deltaOrigin + deltaDestination;
 	}
-
 
 	double minDistance = INF;
 
 	// nao considera a primeira e ultima posicoes do vetor
 	// de vertices, uma vez que estes sao a central.
-	for(int i = 1; i < vehiclePath.size() - 1; i++) {
+	for(int i = 1; i < vehiclePath.size(); i++) {
 
 		Vertex<Node>* previous = vehiclePath.at(i - 1);
-		Vertex<Node>* next = vehiclePath.at(i + 1);
+		Vertex<Node>* next = vehiclePath.at(i);
 
         double curDeltaOrigin, curDeltaDestination;
 
@@ -87,10 +86,10 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 						 getDistFromTable(origin, next, table) -
 					     getDistFromTable(previous, next, table);
 
-		 for (int j = i; j < vehiclePath.size() - 1; j++) {
+		for (int j = i; j < vehiclePath.size(); j++) {
 
 			 previous = vehiclePath.at(j - 1);
-             next = vehiclePath.at(j + 1);
+             next = vehiclePath.at(j);
 
              // NOTA: A funcao admite que a conectividade do grafo
              // ja foi avaliada, e que existe sempre um caminho entre
@@ -98,8 +97,8 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 
              if (i == bestPositionOrigin) {
                  curDeltaDestination = getDistFromTable(origin, destination, table) +
-                               getDistFromTable(destination, next, table) -
-                               getDistFromTable(origin, next, table);
+                                       getDistFromTable(destination, next, table) -
+                                       getDistFromTable(origin, next, table);
              }
              else {
                  curDeltaDestination = getDistFromTable(previous, destination, table) +
@@ -112,10 +111,21 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
                  bestPositionOrigin = i;
                  bestPositionDestination = j + 1;
              }
-		 }
+		}
 	}
 
 	return minDistance;
+}
+
+void Vehicle::removeDuplicateNodes() {
+
+    for (int i = 2; i < vehiclePath.size() - 1; i++) {
+        if (vehiclePath.at(i-1) == vehiclePath.at(i)) {
+            vehiclePath.erase(vehiclePath.begin() + i);
+            i--;
+        }
+    }
+
 }
 
 

@@ -119,6 +119,12 @@ public:
 	 */
 	double testInsertDelivery(Delivery delivery, Table table, int& bestPositionOrigin, int& bestPositionDestination);
 
+	/**
+	 * No final da inserção de todas as Deliveries ao percurso, remove as ocorrências de vértices
+	 * duplicados no caminho do veículo.
+	 */
+	void removeDuplicateNodes();
+
 };
 
 

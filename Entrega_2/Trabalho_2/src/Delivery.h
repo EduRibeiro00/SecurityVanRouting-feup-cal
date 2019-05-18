@@ -41,11 +41,20 @@ public:
 	/**
 	 * Construtor de entregas.
 	 * @param id ID da entrega
-	 * @param type Tipo da entrega
 	 * @param origem Vertice origem da entrega
 	 * @param destino Vertice destino da entrega
 	 */
-	Delivery(int id, TYPE type, Vertex<Node>* origem, Vertex<Node>* destino): id(id), type(type), origem(origem), destino(destino){}
+	Delivery(int id, Vertex<Node>* origem, Vertex<Node>* destino): id(id), origem(origem), destino(destino){
+	    if ( (origem == destino) || (origem->getInfo().getType() != destino->getInfo().getType()) ) {
+            this->origem = NULL;
+            this->destino = NULL;
+            this->id = -1;
+            cout << "Types do not match. Delivery could not be created." << endl;
+	    }
+	    else {
+	        this->type = origem->getInfo().getType();
+	    }
+	}
 
 
 	/**
@@ -81,6 +90,5 @@ public:
 	 */
 	Vertex<Node>* getDestino() const;
 };
-
 
 #endif /* DELIVERY_H_ */

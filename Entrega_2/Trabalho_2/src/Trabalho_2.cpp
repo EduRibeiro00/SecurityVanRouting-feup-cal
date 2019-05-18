@@ -17,6 +17,7 @@
 #include "GraphFunctions.h"
 #include "Node.h"
 #include "Vehicle.h"
+#include "Manager.h"
 
 
 using namespace std;
@@ -40,30 +41,110 @@ int main() {
     cout << "Done!" << endl << endl;
 
 
-	cout << "Displaying graph..." << endl;
-	GraphViewer* gv = displayGraph(graph, "black", 5);
-	cout << "Done!" << endl << endl;
-
+/*
     for (Table::iterator it = table.begin(); it != table.end(); it++) {
         cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
         cout << "second vertex: " << it->first.second->getInfo().getID() << "\n";
         cout << "distance: " << it->second.first << "   -   ";
         cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
     }
+*/
+
+    Vertex<Node>* central = graph.findVertex(Node(5));
+    central->getInfo().setType(CENTRAL);
+
+    Vehicle* v1 = new Vehicle(1, BANK, central);
+    vector<Vehicle*> vehicles = {v1};
+
+    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
+    assignDeliveryToVehicle(vehicles, d1, table);
+
+    for (auto vehicle : vehicles) {
+        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+        for (auto vertex : vehicle->getVehiclePath()) {
+            cout << vertex->getInfo().getID() << ' ';
+        }
+        cout << '\n';
+        cout << "And the deliveries are:\n";
+        for (auto delivery : vehicle->getDeliveries()) {
+            cout << delivery.getID() << ' ';
+        }
+        cout << "\n\n";
+    }
+
+    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
+    assignDeliveryToVehicle(vehicles, d2, table);
+
+    for (auto vehicle : vehicles) {
+        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+        for (auto vertex : vehicle->getVehiclePath()) {
+            cout << vertex->getInfo().getID() << ' ';
+        }
+        cout << '\n';
+        cout << "And the deliveries are:\n";
+        for (auto delivery : vehicle->getDeliveries()) {
+            cout << delivery.getID() << ' ';
+        }
+        cout << "\n\n";
+    }
+
+/*
+    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
+    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
+    Delivery d3(3, graph.findVertex(Node(6)), graph.findVertex(Node(8)));
+//    Delivery d4(4, graph.findVertex(Node(7)), graph.findVertex(Node(8)));
+    vector<Delivery> deliveries = {d1, d2, d3};
+    vector<Vehicle*> vehicles = {v1, v2};
+
+    for (auto delivery : deliveries) {
+        if (!assignDeliveryToVehicle(vehicles, delivery, table)) {
+            cout << "Assignment of delivery " << delivery.getID() << " to vehicles failed.\n";
+        }
+    }
+
+    for (auto vehicle : vehicles) {
+        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+        for (auto vertex : vehicle->getVehiclePath()) {
+            cout << vertex->getInfo().getID() << ' ';
+        }
+        cout << '\n';
+        cout << "And the deliveries are:\n";
+        for (auto delivery : vehicle->getDeliveries()) {
+            cout << delivery.getID() << ' ';
+        }
+        cout << "\n\n";
+    }
+
+    for (auto vehicle : vehicles) {
+        vehicle->removeDuplicateNodes();
+    }
+
+    cout << "AFTER REMOVING THE DUPLICATES:\n\n";
+
+    for (auto vehicle : vehicles) {
+        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+        for (auto vertex : vehicle->getVehiclePath()) {
+            cout << vertex->getInfo().getID() << ' ';
+        }
+        cout << '\n';
+        cout << "And the deliveries are:\n";
+        for (auto delivery : vehicle->getDeliveries()) {
+            cout << delivery.getID() << ' ';
+        }
+        cout << "\n\n";
+    }
+*/
 
 
-    Vertex<Node>* v1 = graph.findVertex(Node(7));
-    Vertex<Node>* v2 = graph.findVertex(Node(2));
-
-    cout << "Distance from 7 to 2: " << getDistFromTable(v1, v2, table) << endl;
-    cout << "Distance from 2 to 7: " << getDistFromTable(v2, v1, table) << endl;
-    cout << "Path from 7 to 2: " << getPathFromTable(v1, v2, table)->getInfo().getID() << endl;
-    cout << "Path from 2 to 7: " << getPathFromTable(v2, v1, table)->getInfo().getID() << endl << endl;
+    cout << "Displaying graph..." << endl;
+    GraphViewer* gv = displayGraph(graph, "black", 5);
+    cout << "Done!" << endl << endl;
 
 
 #if defined(_WIN32) || defined(WIN32)
     system("pause");
 #endif
+
 
     return 0;
 }

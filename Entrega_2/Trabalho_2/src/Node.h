@@ -11,7 +11,7 @@
 
 enum TYPE { BANK,
 		    FIN_ADVICE,
-			ATM ,
+			ATM,
 			TAX_ADVISOR,
 			AUDIT,
 			MONEY_MOV,

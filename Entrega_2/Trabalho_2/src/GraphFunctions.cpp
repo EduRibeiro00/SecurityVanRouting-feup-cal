@@ -224,6 +224,9 @@ void removeUselessEdges(Graph<Node> graph) {
 
 double getDistFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
 
+    if (v1 == v2)
+        return 0;
+
 	// se o par v1-v2 esta na tabela
 	if(table.find(make_pair(v1, v2)) != table.end())
 		return table.at(make_pair(v1, v2)).first;

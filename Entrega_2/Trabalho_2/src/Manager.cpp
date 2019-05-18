@@ -24,6 +24,8 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 			double curDelta = v->testInsertDelivery(delivery, table, pOrigin, pDestination);
 
+			cout << "Delta for delivery " << delivery.getID() << " and vehicle " << v->getID() << " is " << curDelta << endl;
+
 			if(curDelta < bestDelta) {
 				bestPositionOrigin = pOrigin;
 				bestPositionDestination = pDestination;
