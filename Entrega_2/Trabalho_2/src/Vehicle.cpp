@@ -79,42 +79,46 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 		Vertex<Node>* previous = vehiclePath.at(i - 1);
 		Vertex<Node>* next = vehiclePath.at(i + 1);
 
-		// NOTA: A funcao admite que a conectividade do grafo
+        double curDeltaOrigin, curDeltaDestination;
+
+        // NOTA: A funcao admite que a conectividade do grafo
 		// ja foi avaliada, e que existe sempre um caminho entre
 		// qualquer par de vertices.
 
-		double curDistance = getDistFromTable(previous, origin, table) +
-						  	 getDistFromTable(origin, next, table) -
-							 getDistFromTable(previous, next, table);
+		 curDeltaOrigin = getDistFromTable(previous, origin, table) +
+		              getDistFromTable(origin, next, table) -
+					  getDistFromTable(previous, next, table);
 
-		if(curDistance < minDistance) {
-			minDistance = curDistance;
-			bestPositionOrigin = i;
-		}
+		 for (int j = i; j < vehiclePath.size() - 1; j++) {
+             previous = vehiclePath.at(j - 1);
+             next = vehiclePath.at(j + 1);
+
+             // NOTA: A funcao admite que a conectividade do grafo
+             // ja foi avaliada, e que existe sempre um caminho entre
+             // qualquer par de vertices.
+
+             if (i == bestPositionOrigin) {
+                 curDeltaDestination = getDistFromTable(origin, destination, table) +
+                               getDistFromTable(destination, next, table) -
+                               getDistFromTable(origin, next, table);
+             }
+             else {
+                 curDeltaDestination = getDistFromTable(previous, destination, table) +
+                               getDistFromTable(destination, next, table) -
+                               getDistFromTable(previous, next, table);
+             }
+
+             if(curDeltaOrigin + curDeltaDestination < minDistance) {
+                 minDistance = curDeltaOrigin + curDeltaDestination;
+                 bestPositionOrigin = i;
+                 bestPositionDestination = j + 1;
+                 deltaOrigin = curDeltaOrigin;
+                 deltaDestination = curDeltaDestination;
+             }
+		 }
 	}
 
-	minDistance = INF;
-
-	// mesmo processo para o destino da entrega, so que o destino tem de vir
-	// obrigatoriamente depois da origem
-	for(int i = bestPositionOrigin + 1; i < vehiclePath.size() - 1; i++) {
-
-		Vertex<Node>* previous = vehiclePath.at(i - 1);
-		Vertex<Node>* next = vehiclePath.at(i + 1);
-
-		// NOTA: A funcao admite que a conectividade do grafo
-		// ja foi avaliada, e que existe sempre um caminho entre
-		// qualquer par de vertices.
-
-		double curDistance = getDistFromTable(previous, destination, table) +
-						  	 getDistFromTable(destination, next, table) -
-							 getDistFromTable(previous, next, table);
-
-		if(curDistance < minDistance) {
-			minDistance = curDistance;
-			bestPositionDestination = i;
-		}
-	}
+	return deltaOrigin + deltaDestination;
 
 }
 
