@@ -21,8 +21,9 @@ using namespace std;
 
 int main() {
 
+	/*
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Braga");
+	Graph<Node> graph = loadGraph("Aveiro");
 	cout << "Done!" << endl << endl;
 
 
@@ -38,12 +39,13 @@ int main() {
 
 	cout << "Displaying graph..." << endl;
 	displayGraph(graph, "black", 5);
+	cout << "Done!" << endl << endl;
 
 #if defined(_WIN32) || defined(WIN32)
     system("pause");
 #endif
+    */
 
-	cout << "Done!" << endl << endl;
 
 
 	return 0;

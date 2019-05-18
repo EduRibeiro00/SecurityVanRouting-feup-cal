@@ -45,10 +45,33 @@ void removeUselessEdges(Graph<Node> graph);
 
 
 /**
+ * Funcao que acede a tabela, e retorna a distancia entre os dois vertices.
+ *
+ * @param v1 Primeiro vertice
+ * @param v2 Segundo vertice
+ * @param table Tabela com os valores
+ *
+ * @return Distancia entre os dois vertices (-1 se nao existe nenhum caminho entre os dois).
+ */
+double getDistFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
+
+/**
+ * Funcao que retorna o ultimo vertice no caminho de v1 para v2.
+ *
+ * @param v1 Primeiro vertice
+ * @param v2 Segundo vertice
+ * @param table Tabela com os valores
+ *
+ * @return Ultimo vertice no caminho (NULL se o caminho nao existir).
+ */
+Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
+
+
+/**
  * Funcao que, dado os vertices do grafo pelo qual o(s) veiculo(s) terao de passar, indica se existe algum trajeto
  * que ligue todos os vertices (necessario para que
  */
-bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, vector<vector< pair<double, Vertex<Node>* > > > table);
+bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, Table table);
 
 
 /**
