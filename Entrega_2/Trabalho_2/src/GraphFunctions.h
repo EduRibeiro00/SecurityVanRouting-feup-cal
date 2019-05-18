@@ -12,6 +12,7 @@
 
 #include "Graph.h"
 #include "Node.h"
+#include "Delivery.h"
 
 /**
  * Funcao que le, de certos ficheiros txt, informacao de modo a gerar um grafo.
@@ -44,6 +45,14 @@ void removeUselessEdges(Graph<Node> graph);
 
 
 /**
+ * Funcao que, dado os vertices do grafo pelo qual o(s) veiculo(s) terao de passar, indica se existe algum trajeto
+ * que ligue todos os vertices (necessario para que
+ */
+bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, vector<vector< pair<double, Vertex<Node>* > > > table);
+
+
+
+/**
  * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
  * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
  *
@@ -51,7 +60,8 @@ void removeUselessEdges(Graph<Node> graph);
  *
  * @return A tabela com as distancias e os vertices anteriores.
  */
-vector<vector< pair<double, Vertex<Node>* > > > buildDistanceTable(Graph<Node> graph);
+vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> graph);
+
 
 
 #endif /* GRAPHFUNCTIONS_H_ */

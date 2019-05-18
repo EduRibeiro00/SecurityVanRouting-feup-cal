@@ -212,12 +212,15 @@ void removeUselessEdges(Graph<Node> graph) {
 
 	for(auto v : graph.getVertexSet())
 		for(int i = 0; i < v->getAdj().size(); i++)
-			if(v->getAdj().at(i).getWeight() == 0)
+			if(v->getAdj().at(i).getWeight() == 0) {
 				v->removeEdge(i);
+				i--;
+			}
+
 }
 
 
-vector<vector< pair<double, Vertex<Node>* > > > buildDistanceTable(Graph<Node> graph) {
+vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> graph) {
 
 	// uma vez que os grafos que nos foram dados pelos monitores
 	// sao esparsos (nº de arestas e similar ao nº de vertices),

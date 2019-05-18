@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
 
 #include "graphviewer.h"
 #include "GVFunctions.h"
@@ -20,10 +21,23 @@ using namespace std;
 int main() {
 
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Aveiro");
+	Graph<Node> graph = loadGraph("Braga");
 	cout << "Done!" << endl << endl;
 
-	vector<Vehicle> vehicles;
+
+	cout << "Removing useless edges..." << endl;
+	removeUselessEdges(graph);
+	cout << "Done!" << endl << endl;
+
+
+	cout << "Building table..." << endl;
+	vector<vector< pair<double, Vertex<Node>* > > > table = buildDijkstraTable(graph);
+	cout << "Done!" << endl << endl;
+
+
+
+
+
 
 	cout << "Displaying graph..." << endl;
 	displayGraph(graph, "black", 5);
