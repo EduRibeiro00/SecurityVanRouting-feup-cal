@@ -49,16 +49,26 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 
 	double deltaOrigin, deltaDestination;
 
+	Vertex<Node>* origin = delivery.getOrigem();
+	Vertex<Node>* destination = delivery.getDestino();
+
 	// caso particular: o veiculo ainda nao tem nenhuma entrega associada
 	if(deliveries.empty()) {
 		bestPositionOrigin = 1;
 		bestPositionDestination = 2;
 
-		return;
+		Vertex<Node>* central = vehiclePath.at(0);
+
+		deltaOrigin = getDistFromTable(central, origin, table) +
+					  getDistFromTable(origin, central, table);
+
+		deltaDestination = getDistFromTable(origin, destination, table) +
+						   getDistFromTable(destination, central, table) -
+						   getDistFromTable(origin, central, table);
+
+		return deltaOrigin + deltaDestination;
 	}
 
-	Vertex<Node>* origin = delivery.getOrigem();
-	Vertex<Node>* destination = delivery.getDestino();
 
 	double minDistance = INF;
 
@@ -96,8 +106,8 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 		// ja foi avaliada, e que existe sempre um caminho entre
 		// qualquer par de vertices.
 
-		double curDistance = getDistFromTable(previous, origin, table) +
-						  	 getDistFromTable(origin, next, table) -
+		double curDistance = getDistFromTable(previous, destination, table) +
+						  	 getDistFromTable(destination, next, table) -
 							 getDistFromTable(previous, next, table);
 
 		if(curDistance < minDistance) {
