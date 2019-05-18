@@ -222,6 +222,7 @@ void removeUselessEdges(Graph<Node> graph) {
 }
 
 
+/*
 vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> graph) {
 
 	// uma vez que os grafos que nos foram dados pelos monitores
@@ -231,21 +232,19 @@ vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> g
 
 	vector<vector< pair<double, Vertex<Node>* > > > table;
 
+    table.resize(graph.getVertexSet().size());
 
-	table.resize(graph.getVertexSet().size());
-
-	for(int i = 0; i < graph.getVertexSet().size(); i++)
+    for(int i = 0; i < graph.getVertexSet().size(); i++)
 		table.at(i).resize(graph.getVertexSet().size());
 
-
-	// inicializa a tabela com valores invalidos/nulos
+    // inicializa a tabela com valores invalidos/nulos
 	for(int i = 0; i < table.size(); i++)
 		for(int j = 0; j < table.at(i).size(); j++) {
 			table.at(i).at(j).first = -1;
 			table.at(i).at(j).second = NULL;
 		}
 
-	vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
+    vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
 
 	for(int i = 0; i < vertexSet.size(); i++) {
 
@@ -270,7 +269,48 @@ vector<vector< pair<double, Vertex<Node>* > > > buildDijkstraTable(Graph<Node> g
 
 	return table;
 }
+*/
 
+map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > buildDijkstraTable(Graph<Node> graph)
+{
+    // uma vez que os grafos que nos foram dados pelos monitores
+    // sao esparsos (nº de arestas e similar ao nº de vertices),
+    // compensa mais utilizar o algoritmo de Dijkstra para todos
+    // os vertices, do que usar o algoritmo de Floyd-Warshall.
+
+    map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> >  table;
+
+    map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> >::iterator it;
+    for (it = table.begin(); it != table.end(); it++) {
+        it->second.first = -1;
+        it->second.second = NULL;
+    }
+
+    vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
+
+    for(int i = 0; i < vertexSet.size(); i++) {
+
+        Vertex<Node>* v = vertexSet.at(i);
+
+        // calcula as distancias para os vertices acessiveis a partir do vertice atual
+        graph.dijkstraShortestPath(v->getInfo());
+
+        for(int j = 0; j < vertexSet.size(); j++) {
+
+            // se visited e igual a true, entao quer dizer que este vertice e acessivel atraves
+            // do vertice de indice i, e foi incluido no seu algoritmo dijkstra!
+            if(vertexSet.at(j)->getVisited()) {
+
+                table.at(i).at(j).first = vertexSet.at(j)->getDist();
+                table.at(i).at(j).second = vertexSet.at(j)->getPath();
+                vertexSet.at(j)->setVisited(false); // resets "visited", for the next dijkstra iteration
+            }
+        }
+    }
+
+
+    return table;
+}
 
 
 

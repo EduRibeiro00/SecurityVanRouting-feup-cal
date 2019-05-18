@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <utility>
 
 #include "graphviewer.h"
@@ -21,7 +22,7 @@ using namespace std;
 int main() {
 
 	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph("Aveiro");
+	Graph<Node> graph = loadGraph("Braga");
 	cout << "Done!" << endl << endl;
 
 
@@ -31,16 +32,13 @@ int main() {
 
 
 	cout << "Building table..." << endl;
-	vector<vector< pair<double, Vertex<Node>* > > > table = buildDijkstraTable(graph);
+	map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > table = buildDijkstraTable(graph);
+    // vector<vector< pair<double, Vertex<Node>* > > > table = buildDijkstraTable(graph);
 	cout << "Done!" << endl << endl;
 
 
-
-
-
-
 	cout << "Displaying graph..." << endl;
-	displayGraph(graph, "black", 5);
+	GraphViewer *gv = displayGraph(graph, "black", 5);
 	cout << "Done!" << endl << endl;
 
 
