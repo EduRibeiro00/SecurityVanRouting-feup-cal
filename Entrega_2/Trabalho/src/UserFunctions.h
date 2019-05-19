@@ -29,7 +29,7 @@ string chooseMap();
  * sobre a central e os veiculos esta contida; le esse ficheiro e processa a informacao
  * nele contida.
  *
- * @param graph Grafo ja inicializado, contendo nos e arestas, de modo a definir qual o no que e a central
+ * @param graph Grafo ja inicializado, contendo nos e arestas, de modo a definir qual o no e que e a central
  *
  * @return Vetor com os veiculos disponiveis.
  */
@@ -40,11 +40,12 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph);
  * sobre as entregas a serem feitas; le esse ficheiro e processa a informacao
  * nele contida.
  *
+ * @param graph Grafo ja inicializado, contendo nos e arestas
+ *
  * @return Vetor com as entregas a serem feitas.
  */
-/*
-vector<Delivery> readDeliveries();
-*/
+vector<Delivery> readDeliveries(Graph<Node> graph);
+
 
 
 #endif /* USERFUNCTIONS_H_ */

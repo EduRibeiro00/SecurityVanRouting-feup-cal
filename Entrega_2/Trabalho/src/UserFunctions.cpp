@@ -11,7 +11,7 @@
 
 string chooseMap() {
 
-    setColor(CONSOLE_YELLOW, CONSOLE_BLACK);
+     setColor(CONSOLE_YELLOW, CONSOLE_BLACK);
 	cout << "----------------------------------------------" << endl;
 	cout << "                 Choose Map" << endl;
 	cout << "----------------------------------------------" << endl;
@@ -21,9 +21,9 @@ string chooseMap() {
 	unsigned int i;
 
 	do {
-        setColor(CONSOLE_LIGHTGREEN);
+         setColor(CONSOLE_LIGHTGREEN);
 		cout << "Please select the desired map:" << endl;
-		setColor(CONSOLE_LIGHTGRAY);
+		 setColor(CONSOLE_LIGHTGRAY);
 		cout << "0 -> Aveiro" << endl;
 		cout << "1 -> Braga" << endl;
 		cout << "2 -> Coimbra" << endl;
@@ -140,10 +140,61 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph) {
 
 
 
-/*
-vector<Delivery> readDeliveries() {
+vector<Delivery> readDeliveries(Graph<Node> graph) {
+
+	cout << "--------------------------" << endl;
+	cout << "Deliveries File" << endl;
+	cout << "--------------------------" << endl << endl;
+
+	string fileName;
+	ifstream stream;
+
+	do {
+		cout << "Please insert the deliveries file name:" << endl;
+		cin >> fileName;
+
+		stream.open(fileName);
+		if(!stream)
+			cout << "Couldn't open file! Please insert another one." << endl;
+
+	} while(!stream);
 
 
+	string line;
+
+	int numDeliveries;
+	stream >> numDeliveries;
+
+	// limpa o resto da linha
+	getline(stream, line);
+
+	vector<Delivery> deliveries;
+
+	while(getline(stream, line)) {
+
+		stringstream ss(line);
+
+		int id, originId, destId;
+		ss >> id >> originId >> destId;
+
+		// limpa o resto da linha
+		getline(stream, line);
+
+		Vertex<Node>* origin = graph.findVertex(Node(originId));
+		Vertex<Node>* dest = graph.findVertex(Node(destId));
+
+		Delivery d(id, origin, dest);
+
+		// os valores passados sao validos, se id != -1
+		if(id != -1)
+			deliveries.push_back(d);
+
+	}
+
+
+	if(numDeliveries != deliveries.size())
+		cout << "Couldn't read all deliveries!" << endl;
+
+	return deliveries;
 }
-*/
 

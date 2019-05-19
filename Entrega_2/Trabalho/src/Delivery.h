@@ -49,7 +49,7 @@ public:
             this->origem = NULL;
             this->destino = NULL;
             this->id = -1;
-            cout << "Types do not match. Delivery could not be created." << endl;
+            cout << "Invalid values passed. Delivery could not be created." << endl;
 	    }
 	    else {
 	        this->type = origem->getInfo().getType();

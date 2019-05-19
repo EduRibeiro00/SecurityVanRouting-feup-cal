@@ -24,8 +24,6 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 			double curDelta = v->testInsertDelivery(delivery, table, pOrigin, pDestination);
 
-			cout << "Delta for delivery " << delivery.getID() << " and vehicle " << v->getID() << " is " << curDelta << endl;
-
 			if(curDelta < bestDelta) {
 				bestPositionOrigin = pOrigin;
 				bestPositionDestination = pDestination;
@@ -48,4 +46,18 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 	return true;
 }
+
+
+
+void assignDeliveries(vector<Vehicle*> vehicles, vector<Delivery>& deliveries, Table table) {
+
+	for(int i = 0; i < deliveries.size(); i++) {
+		// se a entrega foi atribuida, apagar do vetor de entregas
+		if(assignDeliveryToVehicle(vehicles, deliveries.at(i), table)) {
+			deliveries.erase(deliveries.begin() + i);
+			i--;
+		}
+	}
+}
+
 
