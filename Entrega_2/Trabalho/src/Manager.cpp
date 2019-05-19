@@ -61,3 +61,32 @@ void assignDeliveries(vector<Vehicle*> vehicles, vector<Delivery>& deliveries, T
 }
 
 
+
+void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table) {
+
+	// como todos os percursos comecam e acabam na central, mesmo que as entregas
+	// acabem por ser feitas por varios veiculos, nao tendo um que passar em todos
+	// os pontos, e necessario na mesma que haja um caminho entre todos os pontos.
+
+	// central nao pode ser origem nem destino!
+
+	// verificacao dos pontos
+	for(int i = 0; i < deliveries.size(); i++) {
+
+		Delivery d = deliveries.at(i);
+
+		if((getDistFromTable(central, d.getOrigem(), table) == -1) ||
+		   (getDistFromTable(central, d.getDestino(), table) == -1)) {
+
+			cout << "Entrega " << d.getID();
+			cout << " (" << d.getOrigem()->getInfo().getID();
+			cout << " -> " << d.getDestino()->getInfo().getID() << ") ";
+			cout << << "nao pode ser feita." << endl;
+
+			// apaga do vetor das entregas
+			deliveries.erase(deliveries.begin() + i);
+			i--;
+		}
+	}
+
+}

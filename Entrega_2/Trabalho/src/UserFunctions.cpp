@@ -110,9 +110,6 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph) {
 
 		ss >> id >> typeStr;
 
-		// limpa o resto da linha
-		getline(stream, line);
-
 		TYPE type;
 
 		if(typeStr == "BANK")
@@ -176,9 +173,6 @@ vector<Delivery> readDeliveries(Graph<Node> graph) {
 
 		int id, originId, destId;
 		ss >> id >> originId >> destId;
-
-		// limpa o resto da linha
-		getline(stream, line);
 
 		Vertex<Node>* origin = graph.findVertex(Node(originId));
 		Vertex<Node>* dest = graph.findVertex(Node(destId));

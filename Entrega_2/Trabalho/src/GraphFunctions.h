@@ -68,13 +68,6 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
 
 
 /**
- * Funcao que, dado os vertices do grafo pelo qual o(s) veiculo(s) terao de passar, indica se existe algum trajeto
- * que ligue todos os vertices (necessario para que
- */
-bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, Table table);
-
-
-/**
 * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
 * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
 *

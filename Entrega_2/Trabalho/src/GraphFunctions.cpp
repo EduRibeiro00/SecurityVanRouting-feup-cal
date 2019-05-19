@@ -263,33 +263,6 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) 
 }
 
 
-bool pathExists(Vertex<Node>* central, vector<Delivery> deliveries, Table table) {
-
-	// como todos os percursos comecam e acabam na central, mesmo que as entregas
-	// acabem por ser feitas por varios veiculos, nao tendo um que passar em todos
-	// os pontos, e necessario na mesma que haja um caminho entre todos os pontos.
-
-	// retorna false, uma vez que nao ha caminho, porque nao ha entregas...
-	if(deliveries.empty())
-		return false;
-
-	// central nao pode ser origem nem destino!
-
-	// verificacao dos pontos
-	for(auto d : deliveries) {
-
-		if(getDistFromTable(central, d.getOrigem(), table) == -1)
-			return false;
-
-		if(getDistFromTable(central, d.getDestino(), table) == -1)
-			return false;
-	}
-
-	return true;
-}
-
-
-
 Table buildDijkstraTable(Graph<Node> graph) {
 
     // uma vez que os grafos que nos foram dados pelos monitores

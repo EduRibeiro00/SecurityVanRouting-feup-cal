@@ -24,29 +24,78 @@ using namespace std;
 
 int main() {
 
-    // clearScreen();
 	string map = chooseMap();
 
 	cout << "Building graph..." << endl;
 	Graph<Node> graph = loadGraph(map);
-    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-    // setColor(CONSOLE_LIGHTGRAY);
 
 
 	cout << "Removing useless edges..." << endl;
 	removeUselessEdges(graph);
-    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-    // setColor(CONSOLE_LIGHTGRAY);
 
+
+    vector<Vehicle*> vehicles = readCentralAndVehicles(graph);
+    cout << endl;
+
+    vector<Delivery> deliveries = readDeliveries(graph);
+    cout << endl;
 
 	cout << "Building table..." << endl;
 	Table table = buildDijkstraTable(graph);
-    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-    // setColor(CONSOLE_LIGHTGRAY);
 
+
+
+    for (auto vehicle : vehicles) {
+     cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+     for (auto vertex : vehicle->getVehiclePath()) {
+     	cout << vertex->getInfo().getID() << ' ';
+   	 	}
+   	  cout << '\n';
+   	  cout << "And his type is: ";
+
+   	  switch(vehicle->getType()) {
+
+   	  	  case BANK:
+   	  		  cout << "BANK" << endl;
+   	  		  break;
+
+   	  	  case FIN_ADVICE:
+   	  		  cout << "FIN_ADVICE" << endl;
+   	  		  break;
+
+   	  	  case ATM:
+   	  		  cout << "ATM" << endl;
+   	  		  break;
+
+   	  	  case TAX_ADVISOR:
+   	  		  cout << "TAX_ADVISOR" << endl;
+   	  		  break;
+
+   	  	  case AUDIT:
+   	  		  cout << "AUDIT" << endl;
+   	  		  break;
+
+   	  	  case MONEY_MOV:
+   	  		  cout << "MONEY_MOV" << endl;
+   	  		  break;
+
+   	  	  default:
+   	  		  cout << "UNKNOWN" << endl;
+   	  		  break;
+   	  }
+    }
+
+    cout << endl << endl << endl;
+
+    for(auto d: deliveries) {
+    	cout << "Delivery with id " << d.getID();
+    	cout << " has origin in node " << d.getOrigem()->getInfo().getID();
+    	cout << " and destination in node " << d.getDestino()->getInfo().getID();
+    	cout << endl;
+    }
 
 //    for (Table::iterator it = table.begin(); it != table.end(); it++) {
 //        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
@@ -115,14 +164,14 @@ int main() {
 //    }
 
 
-    cout << "Displaying graph..." << endl;
-    GraphViewer* gv = displayGraph(graph, "black", 5);
-    cout << "Done!" << endl << endl;
-
-
- #if defined(_WIN32) || defined(WIN32)
-    system("pause");
- #endif
+//    cout << "Displaying graph..." << endl;
+//    GraphViewer* gv = displayGraph(graph, "black", 5);
+//    cout << "Done!" << endl << endl;
+//
+//
+// #if defined(_WIN32) || defined(WIN32)
+//    system("pause");
+// #endif
 
 
     return 0;
