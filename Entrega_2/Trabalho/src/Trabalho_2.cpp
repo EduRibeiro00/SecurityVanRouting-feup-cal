@@ -18,34 +18,34 @@
 #include "Node.h"
 #include "Vehicle.h"
 #include "Manager.h"
-#include "consoleColors.h"
+// #include "consoleColors.h"
 
 using namespace std;
 
 int main() {
 
-     clearScreen();
+    // clearScreen();
 	string map = chooseMap();
 
 	cout << "Building graph..." << endl;
 	Graph<Node> graph = loadGraph(map);
-     setColor(CONSOLE_LIGHTGREEN);
+    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-     setColor(CONSOLE_LIGHTGRAY);
+    // setColor(CONSOLE_LIGHTGRAY);
 
 
 	cout << "Removing useless edges..." << endl;
 	removeUselessEdges(graph);
-     setColor(CONSOLE_LIGHTGREEN);
+    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-     setColor(CONSOLE_LIGHTGRAY);
+    // setColor(CONSOLE_LIGHTGRAY);
 
 
 	cout << "Building table..." << endl;
 	Table table = buildDijkstraTable(graph);
-     setColor(CONSOLE_LIGHTGREEN);
+    // setColor(CONSOLE_LIGHTGREEN);
     cout << "Done!" << endl << endl;
-     setColor(CONSOLE_LIGHTGRAY);
+    // setColor(CONSOLE_LIGHTGRAY);
 
 
 //    for (Table::iterator it = table.begin(); it != table.end(); it++) {

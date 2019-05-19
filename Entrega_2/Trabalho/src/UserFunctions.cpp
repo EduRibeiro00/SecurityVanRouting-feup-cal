@@ -7,11 +7,11 @@
 
 
 #include "UserFunctions.h"
-#include "consoleColors.h"
+// #include "consoleColors.h"
 
 string chooseMap() {
 
-     setColor(CONSOLE_YELLOW, CONSOLE_BLACK);
+    // setColor(CONSOLE_YELLOW, CONSOLE_BLACK);
 	cout << "----------------------------------------------" << endl;
 	cout << "                 Choose Map" << endl;
 	cout << "----------------------------------------------" << endl;
@@ -21,9 +21,9 @@ string chooseMap() {
 	unsigned int i;
 
 	do {
-         setColor(CONSOLE_LIGHTGREEN);
+        // setColor(CONSOLE_LIGHTGREEN);
 		cout << "Please select the desired map:" << endl;
-		 setColor(CONSOLE_LIGHTGRAY);
+		// setColor(CONSOLE_LIGHTGRAY);
 		cout << "0 -> Aveiro" << endl;
 		cout << "1 -> Braga" << endl;
 		cout << "2 -> Coimbra" << endl;
