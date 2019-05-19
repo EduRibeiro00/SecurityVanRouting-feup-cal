@@ -70,6 +70,8 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 
 	// central nao pode ser origem nem destino!
 
+	bool impDelivery = false;
+
 	// verificacao dos pontos
 	for(int i = 0; i < deliveries.size(); i++) {
 
@@ -78,10 +80,11 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 		if((getDistFromTable(central, d.getOrigem(), table) == -1) ||
 		   (getDistFromTable(central, d.getDestino(), table) == -1)) {
 
-			cout << "Entrega " << d.getID();
+			impDelivery = true;
+			cout << "Delivery " << d.getID();
 			cout << " (" << d.getOrigem()->getInfo().getID();
 			cout << " -> " << d.getDestino()->getInfo().getID() << ") ";
-			cout << << "nao pode ser feita." << endl;
+			cout << "cannot be done." << endl;
 
 			// apaga do vetor das entregas
 			deliveries.erase(deliveries.begin() + i);
@@ -89,4 +92,6 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 		}
 	}
 
+	if(impDelivery)
+		cout << "The impossible deliveries were removed." << endl;
 }

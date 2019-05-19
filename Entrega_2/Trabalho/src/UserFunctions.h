@@ -30,10 +30,11 @@ string chooseMap();
  * nele contida.
  *
  * @param graph Grafo ja inicializado, contendo nos e arestas, de modo a definir qual o no e que e a central
+ * @param central Endereco que, quando a funcao retornar, ira apontar para o vertice do grafo correspondente a central
  *
  * @return Vetor com os veiculos disponiveis.
  */
-vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph);
+vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &central);
 
 /**
  * Funcao que pergunta ao utilizador qual o nome do ficheiro que contem a informacao

@@ -57,7 +57,7 @@ string chooseMap() {
 
 
 
-vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph) {
+vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &central) {
 
 	cout << "--------------------------" << endl;
 	cout << "Central and Vehicle File" << endl;
@@ -83,7 +83,7 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph) {
 	int centralID;
 	stream >> centralID;
 
-	Vertex<Node>* central = graph.findVertex(Node(centralID));
+	central = graph.findVertex(Node(centralID));
 
 	central->getInfo().setType(CENTRAL);
 
@@ -180,7 +180,7 @@ vector<Delivery> readDeliveries(Graph<Node> graph) {
 		Delivery d(id, origin, dest);
 
 		// os valores passados sao validos, se id != -1
-		if(id != -1)
+		if(d.getID() != -1)
 			deliveries.push_back(d);
 
 	}

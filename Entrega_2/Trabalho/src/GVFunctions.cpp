@@ -14,7 +14,7 @@
 
 using namespace std;
 
-GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
+GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, int& width, int& height) {
 
 		double maxX = 0, maxY = 0, minX = 9999999999, minY = 9999999999;
 
@@ -42,16 +42,16 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 		// CALCULO DE DIMENSOES
 		// --------
 
-		int defaultHeight = 800;
+		height = 800;
 		double gravWidth = maxX - minX;
 		double gravHeight = maxY - minY;
 
 		// uso de uma regra de tres simples para calcular o comprimento ideal para a janela
-		int width = max(defaultHeight, (int) (defaultHeight * gravHeight / gravWidth));
+		width = max(height, (int) (height * gravHeight / gravWidth));
 
 
-		GraphViewer *gv = new GraphViewer(width, defaultHeight, false);
-		gv->createWindow(width, defaultHeight);
+		GraphViewer *gv = new GraphViewer(width, height, false);
+		gv->createWindow(width, height);
 		gv->defineEdgeColor(edgeColor);
 
 		gv->defineVertexSize(vertexSize);
@@ -66,12 +66,15 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 			Node node = v->getInfo();
 
 			double displayX = (node.getX() - minX ) * width / gravWidth * 0.95;
-			double displayY = (node.getY() - minY ) * defaultHeight / gravHeight * 0.95;
+			double displayY = (node.getY() - minY ) * height / gravHeight * 0.95;
 
 			displayX += (0.025 * width);
-			displayY += (0.025 * defaultHeight);
+			displayY += (0.025 * height);
 
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
+
+			node.setDisplayX(displayX);
+			node.setDisplayY(displayY);
 
 			// TIRAR DPS
 			stringstream ss;
@@ -152,3 +155,18 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize) {
 		return gv;
 }
 
+
+
+
+GraphViewer* displayVehiclePaths(GraphViewer* gv, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor) {
+
+	gv->closeWindow();
+	gv->createWindow(width, height);
+	gv->defineEdgeColor(edgeColor);
+	gv->defineEdgeCurved(false);
+
+	for(auto v : vehicles) {
+
+		// FAZER
+	}
+}

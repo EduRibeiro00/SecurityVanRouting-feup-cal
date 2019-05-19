@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <limits>
 
 #include "UserFunctions.h"
 #include "graphviewer.h"
@@ -36,7 +37,9 @@ int main() {
     cout << "Done!" << endl << endl;
 
 
-    vector<Vehicle*> vehicles = readCentralAndVehicles(graph);
+    Vertex<Node>* central;
+
+    vector<Vehicle*> vehicles = readCentralAndVehicles(graph, central);
     cout << endl;
 
     vector<Delivery> deliveries = readDeliveries(graph);
@@ -47,55 +50,106 @@ int main() {
     cout << "Done!" << endl << endl;
 
 
+    cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
+    pathExists(central, deliveries, table);
+    cout << "Done!" << endl << endl;
 
-    for (auto vehicle : vehicles) {
-     cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-     for (auto vertex : vehicle->getVehiclePath()) {
-     	cout << vertex->getInfo().getID() << ' ';
-   	 	}
-   	  cout << '\n';
-   	  cout << "And his type is: ";
 
-   	  switch(vehicle->getType()) {
+    cout << "Assigning deliveries to vehicles..." << endl;
+    assignDeliveries(vehicles, deliveries, table);
 
-   	  	  case BANK:
-   	  		  cout << "BANK" << endl;
-   	  		  break;
+    for (auto vehicle : vehicles)
+	   vehicle->removeDuplicateNodes();
 
-   	  	  case FIN_ADVICE:
-   	  		  cout << "FIN_ADVICE" << endl;
-   	  		  break;
+    cout << "Done!" << endl << endl;
 
-   	  	  case ATM:
-   	  		  cout << "ATM" << endl;
-   	  		  break;
 
-   	  	  case TAX_ADVISOR:
-   	  		  cout << "TAX_ADVISOR" << endl;
-   	  		  break;
+    // --- Testing the values --- //
 
-   	  	  case AUDIT:
-   	  		  cout << "AUDIT" << endl;
-   	  		  break;
+       for (auto vehicle : vehicles) {
+           cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+           for (auto vertex : vehicle->getVehiclePath()) {
+               cout << vertex->getInfo().getID() << ' ';
+           }
+           cout << '\n';
+           cout << "And the deliveries are:\n";
+           for (auto delivery : vehicle->getDeliveries()) {
+               cout << delivery.getID() << ' ';
+           }
+           cout << "\n\n";
+       }
 
-   	  	  case MONEY_MOV:
-   	  		  cout << "MONEY_MOV" << endl;
-   	  		  break;
 
-   	  	  default:
-   	  		  cout << "UNKNOWN" << endl;
-   	  		  break;
-   	  }
-    }
+       cout << "And the deliveries that couldn't be made were:" << endl;
+       for(auto d : deliveries) {
+    	   cout << d.getID() << " ";
+       }
 
-    cout << endl << endl << endl;
 
-    for(auto d: deliveries) {
-    	cout << "Delivery with id " << d.getID();
-    	cout << " has origin in node " << d.getOrigem()->getInfo().getID();
-    	cout << " and destination in node " << d.getDestino()->getInfo().getID();
-    	cout << endl;
-    }
+       cout << endl << endl;
+
+       int width, height;
+
+       cout << "Displaying graph..." << endl;
+       GraphViewer* gv = displayGraph(graph, "black", 5, width, height);
+       cout << "Done!" << endl << endl;
+
+
+       cout << "To display the path of the vehicles, please press ENTER." << endl;
+       cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+       cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+
+
+    // -------------------------- //
+
+//    for (auto vehicle : vehicles) {
+//     cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+//     for (auto vertex : vehicle->getVehiclePath()) {
+//     	cout << vertex->getInfo().getID() << ' ';
+//   	 	}
+//   	  cout << '\n';
+//   	  cout << "And his type is: ";
+//
+//   	  switch(vehicle->getType()) {
+//
+//   	  	  case BANK:
+//   	  		  cout << "BANK" << endl;
+//   	  		  break;
+//
+//   	  	  case FIN_ADVICE:
+//   	  		  cout << "FIN_ADVICE" << endl;
+//   	  		  break;
+//
+//   	  	  case ATM:
+//   	  		  cout << "ATM" << endl;
+//   	  		  break;
+//
+//   	  	  case TAX_ADVISOR:
+//   	  		  cout << "TAX_ADVISOR" << endl;
+//   	  		  break;
+//
+//   	  	  case AUDIT:
+//   	  		  cout << "AUDIT" << endl;
+//   	  		  break;
+//
+//   	  	  case MONEY_MOV:
+//   	  		  cout << "MONEY_MOV" << endl;
+//   	  		  break;
+//
+//   	  	  default:
+//   	  		  cout << "UNKNOWN" << endl;
+//   	  		  break;
+//   	  }
+//    }
+//
+//    cout << endl << endl << endl;
+
+//    for(auto d: deliveries) {
+//    	cout << "Delivery with id " << d.getID();
+//    	cout << " has origin in node " << d.getOrigem()->getInfo().getID();
+//    	cout << " and destination in node " << d.getDestino()->getInfo().getID();
+//    	cout << endl;
+//    }
 
 //    for (Table::iterator it = table.begin(); it != table.end(); it++) {
 //        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";

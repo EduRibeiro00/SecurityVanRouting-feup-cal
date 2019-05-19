@@ -26,7 +26,7 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 
 /**
- * Funcao que atribui todas as entregas a veiculo que compensar mais. As entregas que sobrarem
+ * Funcao que atribui todas as entregas ao veiculo que compensar mais. As entregas que sobrarem
  * no vetor das entregas serao aquelas que nao foram atribuidas a nenhum veiculo.
  *
  * @param vehicles Vetor com todos os veiculos disponiveis
