@@ -62,9 +62,11 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 	ifstream stream;
 
 	do {
+/*
 		cout << "Please insert the central and vehicles file name:" << endl;
 		cin >> fileName;
-
+*/
+        fileName = "VehicleFile.txt";
 		stream.open(fileName);
 		if(!stream)
 			cout << "Couldn't open file! Please insert another one." << endl;
@@ -81,6 +83,12 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 	central = graph.findVertex(Node(centralID));
 
 	central->getInfo().setType(CENTRAL);
+
+    cout << "Edges connected to central:\n";
+    for (auto e : central->getAdj()) {
+	    cout << "- towards " << e.getDest()->getInfo().getID() << endl;
+	}
+    cout << endl;
 
 	// limpa o resto da linha
 	getline(stream, line);
@@ -142,8 +150,11 @@ vector<Delivery> readDeliveries(Graph<Node> graph) {
 	ifstream stream;
 
 	do {
+/*
 		cout << "Please insert the deliveries file name:" << endl;
 		cin >> fileName;
+*/
+        fileName = "DeliveryFile.txt";
 
 		stream.open(fileName);
 		if(!stream)

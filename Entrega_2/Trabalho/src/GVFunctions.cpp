@@ -80,13 +80,21 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 			node.setDisplayY((int) displayY);
 
 
+/*
 			// TIRAR DPS
 			stringstream ss;
 			ss << node.getID();
 			gv->setVertexLabel(node.getID(), ss.str());
+*/
 
 
 			gv->setVertexColor(node.getID(), colors[node.getType()]);
+
+			if (node.getType() == CENTRAL) {
+                gv->setVertexLabel(node.getID(), "CENTRAL");
+                gv->setVertexSize(node.getID(), 5);
+            }
+
 		}
 
 
@@ -106,10 +114,12 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 				if(edges.at(j).shouldBeDisplayed()) {
 					gv->addEdge(idAresta, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
 
+/*
 					// TIRAR DPS
 					stringstream ss;
 					ss << idAresta << " - " << fixed << setprecision(5) << edges.at(j).getWeight();
 					gv->setEdgeLabel(idAresta, ss.str());
+*/
 
                     idAresta++;
 				}
@@ -162,12 +172,14 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 						gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
 						gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
 
+/*
 						// TIRAR DPS
 						stringstream ssT, ssV;
 						ssT << t->getInfo().getID();
 						gv->setVertexLabel(t->getInfo().getID(), ssT.str());
 						ssV << v->getInfo().getID();
 						gv->setVertexLabel(v->getInfo().getID(), ssV.str());
+*/
 
 
 						gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
@@ -189,12 +201,14 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 							gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
 							gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
 
+/*
 							// TIRAR DPS
 							stringstream ssT, ssV;
 							ssT << t->getInfo().getID();
 							gv->setVertexLabel(t->getInfo().getID(), ssT.str());
 							ssV << v->getInfo().getID();
 							gv->setVertexLabel(v->getInfo().getID(), ssV.str());
+*/
 
 							gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
 							idAresta++;

@@ -77,18 +77,25 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 
 		Delivery d = deliveries.at(i);
 
+		int b = -2;
+
 		if((getDistFromTable(central, d.getOrigem(), table) == -1) ||
-		   (getDistFromTable(central, d.getDestino(), table) == -1)) {
+		   ((b = getDistFromTable(central, d.getDestino(), table)) == -1)) {
 
 			impDelivery = true;
 			cout << "Delivery " << d.getID();
-			cout << " (" << d.getOrigem()->getInfo().getID();
+			cout << "\t(" << d.getOrigem()->getInfo().getID();
 			cout << " -> " << d.getDestino()->getInfo().getID() << ") ";
-			cout << "cannot be done." << endl;
+			cout << "cannot be done. ";
+			cout << "(No path between central and ";
+			if (b == -1) cout << "destination";
+			else cout << "origin";
+			cout << ".)" << endl;
 
 			// apaga do vetor das entregas
 			deliveries.erase(deliveries.begin() + i);
 			i--;
+
 		}
 	}
 
