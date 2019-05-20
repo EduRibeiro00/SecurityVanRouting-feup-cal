@@ -99,6 +99,10 @@ int main() {
        cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
        cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
+       cout << "Displaying calculated paths for the vehicles..." << endl;
+       displayVehiclePaths(graph, vehicles, table, width, height, "black");
+       cout << "Done!" << endl << endl;
+
 
     // -------------------------- //
 

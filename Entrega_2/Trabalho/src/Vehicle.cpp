@@ -69,8 +69,8 @@ double Vehicle::testInsertDelivery(Delivery delivery, Table table, int& bestPosi
 
 	double minDistance = INF;
 
-	// nao considera a primeira e ultima posicoes do vetor
-	// de vertices, uma vez que estes sao a central.
+	// a primeira e ultima posicoes do vetor de vertices
+	// nao podem ser alteradas, uma vez que sao a central.
 	for(int i = 1; i < vehiclePath.size(); i++) {
 
 		Vertex<Node>* previous = vehiclePath.at(i - 1);

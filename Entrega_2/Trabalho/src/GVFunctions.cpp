@@ -14,7 +14,10 @@
 
 using namespace std;
 
-GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, int& width, int& height) {
+string colors[8] = {"BLUE", "RED", "GREEN", "WHITE", "ORANGE", "YELLOW", "LIGHT_GRAY", "BLACK" };
+
+
+GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, int& width, int& height) {
 
 		double maxX = 0, maxY = 0, minX = 9999999999, minY = 9999999999;
 
@@ -63,7 +66,7 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, i
 
 		for(auto v : graph.getVertexSet()) {
 
-			Node node = v->getInfo();
+			Node& node = v->getInfo();
 
 			double displayX = (node.getX() - minX ) * width / gravWidth * 0.95;
 			double displayY = (node.getY() - minY ) * height / gravHeight * 0.95;
@@ -73,8 +76,9 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, i
 
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
 
-			node.setDisplayX(displayX);
-			node.setDisplayY(displayY);
+			node.setDisplayX((int) displayX);
+			node.setDisplayY((int) displayY);
+
 
 			// TIRAR DPS
 			stringstream ss;
@@ -82,43 +86,7 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, i
 			gv->setVertexLabel(node.getID(), ss.str());
 
 
-			switch(node.getType()) {
-
-				case BANK:
-					gv->setVertexColor(node.getID(), "BLUE");
-					break;
-
-				case FIN_ADVICE:
-					gv->setVertexColor(node.getID(), "RED");
-					break;
-
-				case ATM:
-					gv->setVertexColor(node.getID(), "GREEN");
-					break;
-
-				case TAX_ADVISOR:
-					gv->setVertexColor(node.getID(), "WHITE");
-					break;
-
-				case AUDIT:
-					gv->setVertexColor(node.getID(), "ORANGE");
-					break;
-
-				case MONEY_MOV:
-					gv->setVertexColor(node.getID(), "YELLOW");
-					break;
-
-				case OTHER:
-					gv->setVertexColor(node.getID(), "LIGHT_GRAY");
-					break;
-
-				case CENTRAL:
-					gv->setVertexColor(node.getID(), "BLACK");
-					break;
-
-				default:
-					break;
-			}
+			gv->setVertexColor(node.getID(), colors[node.getType()]);
 		}
 
 
@@ -158,15 +126,92 @@ GraphViewer* displayGraph(Graph<Node> graph, string edgeColor, int vertexSize, i
 
 
 
-GraphViewer* displayVehiclePaths(GraphViewer* gv, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor) {
+GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor) {
 
-	gv->closeWindow();
+	GraphViewer* gv = new GraphViewer(width, height, false);
 	gv->createWindow(width, height);
 	gv->defineEdgeColor(edgeColor);
 	gv->defineEdgeCurved(false);
 
+	int idAresta = 1;
+
 	for(auto v : vehicles) {
 
-		// FAZER
+		if(!v->getDeliveries().empty()) {
+
+			vector<Vertex<Node>* > path = v->getVehiclePath();
+
+			for(int i = path.size() - 1; i >= 1; i--) {
+
+				Vertex<Node>* v = path.at(i);
+				Vertex<Node>* s = path.at(i - 1);
+
+				while(s != v) {
+					Vertex<Node>* t = getPathFromTable(s, v, table);
+
+					cout << "t: " << t->getInfo().getID() << " v: " << v->getInfo().getID();
+
+					Edge<Node>* e = graph.getEdge(t->getInfo(), v->getInfo());
+
+					if(e != NULL && e->shouldBeDisplayed()) {
+
+						cout << " - deu display";
+
+						gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
+						gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
+						gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
+						gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
+
+						// TIRAR DPS
+						stringstream ssT, ssV;
+						ssT << t->getInfo().getID();
+						gv->setVertexLabel(t->getInfo().getID(), ssT.str());
+						ssV << v->getInfo().getID();
+						gv->setVertexLabel(v->getInfo().getID(), ssV.str());
+
+
+						gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
+						idAresta++;
+
+						// de modo a nao desenhar a mesma aresta da proxima vez
+						e->setShouldDisplay(false);
+					}
+					else {
+
+						e = graph.getEdge(v->getInfo(), t->getInfo());
+
+						if(e != NULL && e->shouldBeDisplayed()) {
+
+							cout << " - deu display";
+
+							gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
+							gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
+							gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
+							gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
+
+							// TIRAR DPS
+							stringstream ssT, ssV;
+							ssT << t->getInfo().getID();
+							gv->setVertexLabel(t->getInfo().getID(), ssT.str());
+							ssV << v->getInfo().getID();
+							gv->setVertexLabel(v->getInfo().getID(), ssV.str());
+
+							gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
+							idAresta++;
+
+							// de modo a nao desenhar a mesma aresta da proxima vez
+							e->setShouldDisplay(false);
+						}
+					}
+
+					cout << endl;
+
+					v = t;
+				}
+
+			}
+		}
 	}
+
+	return gv;
 }

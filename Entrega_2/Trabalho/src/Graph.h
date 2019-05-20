@@ -128,6 +128,7 @@ public:
 	Vertex<T>* getDest();
 	double getWeight();
 	bool shouldBeDisplayed();
+	void setShouldDisplay(bool display);
 };
 
 template <class T>
@@ -154,6 +155,7 @@ public:
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
 	int getNumEdges() const;
+	Edge<T>* getEdge(const T& s, const T& t);
 
 	// Fp05 - single source
 	void dijkstraShortestPath(const T &s);
@@ -194,6 +196,22 @@ int Graph<T>::getNumEdges() const {
 }
 
 template <class T>
+Edge<T>* Graph<T>::getEdge(const T& s, const T& t) {
+
+	Vertex<T>* source = findVertex(s);
+	Vertex<T>* dest = findVertex(t);
+
+	// Edge<T> notFound(NULL, 0, false);
+
+	for(auto e : source->adj)
+		if(e.dest == dest)
+			return &e;
+
+	return NULL;
+}
+
+
+template <class T>
 Vertex<T>*  Edge<T>::getDest(){ return this->dest;}
 
 template <class T>
@@ -202,6 +220,11 @@ double Edge<T>::getWeight(){ return this->weight;}
 
 template <class T>
 bool Edge<T>::shouldBeDisplayed() {return this->shouldDisplay;}
+
+template <class T>
+void Edge<T>::setShouldDisplay(bool display) {
+	this->shouldDisplay = display;
+}
 
 
 /*
