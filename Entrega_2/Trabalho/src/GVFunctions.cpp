@@ -87,13 +87,12 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 			gv->setVertexLabel(node.getID(), ss.str());
 */
 
-
-			gv->setVertexColor(node.getID(), colors[node.getType()]);
-
 			if (node.getType() == CENTRAL) {
                 gv->setVertexLabel(node.getID(), "CENTRAL");
-                gv->setVertexSize(node.getID(), 5);
+                gv->setVertexSize(node.getID(), 40);
             }
+
+			gv->setVertexColor(node.getID(), colors[node.getType()]);
 
 		}
 

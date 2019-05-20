@@ -7,7 +7,6 @@
 
 
 #include "UserFunctions.h"
-// #include "consoleColors.h"
 
 string chooseMap() {
 
@@ -140,7 +139,7 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 
 
 
-vector<Delivery> readDeliveries(Graph<Node> graph) {
+vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central) {
 
     cout << "----------------------------------------------" << endl;
 	cout << "               Deliveries File" << endl;
@@ -183,7 +182,7 @@ vector<Delivery> readDeliveries(Graph<Node> graph) {
 		Vertex<Node>* origin = graph.findVertex(Node(originId));
 		Vertex<Node>* dest = graph.findVertex(Node(destId));
 
-		Delivery d(id, origin, dest);
+		Delivery d(id, origin, dest, central);
 
 		// os valores passados sao validos, se id != -1
 		if(d.getID() != -1)

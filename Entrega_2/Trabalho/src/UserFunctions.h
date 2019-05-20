@@ -42,10 +42,11 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
  * nele contida.
  *
  * @param graph Grafo ja inicializado, contendo nos e arestas
+ * @param central Vertice que representa a central dos veiculos
  *
  * @return Vetor com as entregas a serem feitas.
  */
-vector<Delivery> readDeliveries(Graph<Node> graph);
+vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central);
 
 
 

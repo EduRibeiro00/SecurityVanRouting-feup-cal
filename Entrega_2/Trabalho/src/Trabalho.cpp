@@ -41,8 +41,11 @@ int main() {
     vector<Vehicle*> vehicles = readCentralAndVehicles(graph, central);
     cout << endl;
 
-    vector<Delivery> deliveries = readDeliveries(graph);
+    vector<Delivery> deliveries = readDeliveries(graph, central);
     cout << endl;
+
+
+    vector<Delivery> deliveryTest = deliveries;
 
 	cout << "Building table..." << endl;
 	Table table = buildDijkstraTable(graph);
@@ -92,6 +95,18 @@ int main() {
        cout << "Displaying graph..." << endl;
        GraphViewer* gv = displayGraph(graph, "black", 5, width, height);
        cout << "Done!" << endl << endl;
+
+
+       for(auto d : deliveryTest) {
+    	   stringstream ss;
+    	   ss << d.getID();
+    	   gv->setVertexLabel(d.getOrigem()->getInfo().getID(), ss.str() + " - origem");
+    	   gv->setVertexLabel(d.getDestino()->getInfo().getID(), ss.str() + " - destino");
+       }
+
+       gv->rearrange();
+
+
 
 
        cout << "To display the path of the vehicles, please press ENTER." << endl;

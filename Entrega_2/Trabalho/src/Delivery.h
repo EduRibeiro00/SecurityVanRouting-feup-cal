@@ -44,8 +44,8 @@ public:
 	 * @param origem Vertice origem da entrega
 	 * @param destino Vertice destino da entrega
 	 */
-	Delivery(int id, Vertex<Node>* origem, Vertex<Node>* destino): id(id), origem(origem), destino(destino){
-	    if ( (origem == destino) || (origem->getInfo().getType() != destino->getInfo().getType()) ) {
+	Delivery(int id, Vertex<Node>* origem, Vertex<Node>* destino, Vertex<Node>* central): id(id), origem(origem), destino(destino){
+	    if ((origem == central) || (destino == central) || (origem == destino) || (origem->getInfo().getType() != destino->getInfo().getType()) ) {
             this->origem = NULL;
             this->destino = NULL;
             this->id = -1;
