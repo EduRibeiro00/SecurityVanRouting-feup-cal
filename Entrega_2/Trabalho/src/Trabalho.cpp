@@ -19,7 +19,6 @@
 #include "Node.h"
 #include "Vehicle.h"
 #include "Manager.h"
-// #include "consoleColors.h"
 
 using namespace std;
 
@@ -225,11 +224,11 @@ int main() {
 //    cout << "Displaying graph..." << endl;
 //    GraphViewer* gv = displayGraph(graph, "black", 5);
 //    cout << "Done!" << endl << endl;
-//
-//
-// #if defined(_WIN32) || defined(WIN32)
-//    system("pause");
-// #endif
+
+
+#if defined(_WIN32) || defined(WIN32)
+   system("pause");
+#endif
 
 
     return 0;

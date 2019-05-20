@@ -11,19 +11,14 @@
 
 string chooseMap() {
 
-    // setColor(CONSOLE_YELLOW, CONSOLE_BLACK);
 	cout << "----------------------------------------------" << endl;
 	cout << "                 Choose Map" << endl;
-	cout << "----------------------------------------------" << endl;
-
-	cout << endl;
+	cout << "----------------------------------------------" << endl << endl;
 
 	unsigned int i;
 
 	do {
-        // setColor(CONSOLE_LIGHTGREEN);
 		cout << "Please select the desired map:" << endl;
-		// setColor(CONSOLE_LIGHTGRAY);
 		cout << "0 -> Aveiro" << endl;
 		cout << "1 -> Braga" << endl;
 		cout << "2 -> Coimbra" << endl;
@@ -59,9 +54,9 @@ string chooseMap() {
 
 vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &central) {
 
-	cout << "--------------------------" << endl;
-	cout << "Central and Vehicle File" << endl;
-	cout << "--------------------------" << endl << endl;
+    cout << "----------------------------------------------" << endl;
+	cout << "          Central and Vehicle File" << endl;
+    cout << "----------------------------------------------" << endl << endl;
 
 	string fileName;
 	ifstream stream;
@@ -139,9 +134,9 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 
 vector<Delivery> readDeliveries(Graph<Node> graph) {
 
-	cout << "--------------------------" << endl;
-	cout << "Deliveries File" << endl;
-	cout << "--------------------------" << endl << endl;
+    cout << "----------------------------------------------" << endl;
+	cout << "               Deliveries File" << endl;
+    cout << "----------------------------------------------" << endl << endl;
 
 	string fileName;
 	ifstream stream;
