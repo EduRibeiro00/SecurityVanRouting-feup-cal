@@ -45,7 +45,14 @@ int main() {
     cout << endl;
 
 
-    vector<Delivery> deliveryTest = deliveries;
+    int width, height;
+
+    cout << "Displaying graph..." << endl;
+    GraphViewer* gv = displayGraph(graph, "black", width, height);
+    displayDeliveryNodes(deliveries, gv);
+    cout << "Done!" << endl << endl;
+
+
 
 	cout << "Building table..." << endl;
 	Table table = buildDijkstraTable(graph);
@@ -66,56 +73,17 @@ int main() {
     cout << "Done!" << endl << endl;
 
 
-    // --- Testing the values --- //
-
-       for (auto vehicle : vehicles) {
-           cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-           for (auto vertex : vehicle->getVehiclePath()) {
-               cout << vertex->getInfo().getID() << ' ';
-           }
-           cout << '\n';
-           cout << "And the deliveries are:\n";
-           for (auto delivery : vehicle->getDeliveries()) {
-               cout << delivery.getID() << ' ';
-           }
-           cout << "\n\n";
-       }
-
-
-       cout << "And the deliveries that couldn't be made were:" << endl;
-       for(auto d : deliveries) {
-    	   cout << d.getID() << " ";
-       }
-
-
-       cout << endl << endl;
-
-       int width, height;
-
-       cout << "Displaying graph..." << endl;
-       GraphViewer* gv = displayGraph(graph, "black", 5, width, height);
-       cout << "Done!" << endl << endl;
-
-
-       for(auto d : deliveryTest) {
-    	   stringstream ss;
-    	   ss << d.getID();
-    	   gv->setVertexLabel(d.getOrigem()->getInfo().getID(), ss.str() + " - origem");
-    	   gv->setVertexLabel(d.getDestino()->getInfo().getID(), ss.str() + " - destino");
-       }
-
-       gv->rearrange();
+    displayResults(vehicles, deliveries);
 
 
 
+    cout << "To display the path of the vehicles, please press ENTER." << endl;
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
-       cout << "To display the path of the vehicles, please press ENTER." << endl;
-       cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-       cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-
-       cout << "Displaying calculated paths for the vehicles..." << endl;
-       displayVehiclePaths(graph, vehicles, table, width, height, "black");
-       cout << "Done!" << endl << endl;
+    cout << "Displaying calculated paths for the vehicles..." << endl;
+    displayVehiclePaths(graph, vehicles, table, width, height, "black");
+    cout << "Done!" << endl << endl;
 
 
     // -------------------------- //

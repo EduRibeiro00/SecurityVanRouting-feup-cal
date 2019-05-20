@@ -49,5 +49,12 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central);
 
 
+/**
+ * Funcao que escreve no terminal o resultado da aplicacao de algoritmos e estrategias para calcular a melhor rota para cada
+ * um dos veiculos; imprime o caminho a ser percorrido por cada um deles e que entregas e que cada um ira fazer, bem como
+ * as entregas que nao puderam ser feitas (se houver alguma).
+ */
+void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries);
+
 
 #endif /* USERFUNCTIONS_H_ */

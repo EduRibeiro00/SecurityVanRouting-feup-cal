@@ -61,11 +61,11 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 	ifstream stream;
 
 	do {
-/*
+
 		cout << "Please insert the central and vehicles file name:" << endl;
 		cin >> fileName;
-*/
-        fileName = "VehicleFile.txt";
+
+
 		stream.open(fileName);
 		if(!stream)
 			cout << "Couldn't open file! Please insert another one." << endl;
@@ -83,11 +83,6 @@ vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &centra
 
 	central->getInfo().setType(CENTRAL);
 
-    cout << "Edges connected to central:\n";
-    for (auto e : central->getAdj()) {
-	    cout << "- towards " << e.getDest()->getInfo().getID() << endl;
-	}
-    cout << endl;
 
 	// limpa o resto da linha
 	getline(stream, line);
@@ -149,11 +144,9 @@ vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central) {
 	ifstream stream;
 
 	do {
-/*
 		cout << "Please insert the deliveries file name:" << endl;
 		cin >> fileName;
-*/
-        fileName = "DeliveryFile.txt";
+
 
 		stream.open(fileName);
 		if(!stream)
@@ -197,3 +190,29 @@ vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central) {
 	return deliveries;
 }
 
+
+
+void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
+
+	for (auto vehicle : vehicles) {
+        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
+        for (auto vertex : vehicle->getVehiclePath()) {
+            cout << vertex->getInfo().getID() << ' ';
+        }
+        cout << '\n';
+        cout << "And the deliveries are:\n";
+        for (auto delivery : vehicle->getDeliveries()) {
+            cout << delivery.getID() << ' ';
+        }
+        cout << "\n\n";
+    }
+
+
+    cout << "And the deliveries that couldn't be made were:" << endl;
+    for(auto d : deliveries) {
+ 	   cout << d.getID() << " ";
+    }
+
+
+    cout << endl << endl;
+}

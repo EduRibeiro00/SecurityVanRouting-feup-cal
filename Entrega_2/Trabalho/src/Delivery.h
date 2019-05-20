@@ -43,6 +43,7 @@ public:
 	 * @param id ID da entrega
 	 * @param origem Vertice origem da entrega
 	 * @param destino Vertice destino da entrega
+	 * @param central Vertice que representa a central dos veiculos
 	 */
 	Delivery(int id, Vertex<Node>* origem, Vertex<Node>* destino, Vertex<Node>* central): id(id), origem(origem), destino(destino){
 	    if ((origem == central) || (destino == central) || (origem == destino) || (origem->getInfo().getType() != destino->getInfo().getType()) ) {
@@ -53,6 +54,10 @@ public:
 	    }
 	    else {
 	        this->type = origem->getInfo().getType();
+	        if((this->type == OTHER) || (this->type == CENTRAL)) {
+	        	this->id = -1;
+	        	cout << "Invalid values passed. Delivery could not be created." << endl;
+	        }
 	    }
 	}
 

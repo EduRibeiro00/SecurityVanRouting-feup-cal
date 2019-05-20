@@ -17,7 +17,7 @@ using namespace std;
 string colors[8] = {"BLUE", "RED", "GREEN", "WHITE", "ORANGE", "YELLOW", "LIGHT_GRAY", "BLACK" };
 
 
-GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, int& width, int& height) {
+GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int& height) {
 
 		double maxX = 0, maxY = 0, minX = 9999999999, minY = 9999999999;
 
@@ -57,8 +57,7 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 		gv->createWindow(width, height);
 		gv->defineEdgeColor(edgeColor);
 
-		gv->defineVertexSize(vertexSize);
-		gv->defineEdgeCurved(false);
+		gv->defineEdgeCurved(true);
 
 		// --------
 		// VERTICES
@@ -74,26 +73,29 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 			displayX += (0.025 * width);
 			displayY += (0.025 * height);
 
+			displayY = height - displayY;
+
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
 
 			node.setDisplayX((int) displayX);
 			node.setDisplayY((int) displayY);
 
 
-/*
 			// TIRAR DPS
-			stringstream ss;
-			ss << node.getID();
-			gv->setVertexLabel(node.getID(), ss.str());
-*/
+//			stringstream ss;
+//			ss << node.getID();
+//			gv->setVertexLabel(node.getID(), ss.str());
+
 
 			if (node.getType() == CENTRAL) {
                 gv->setVertexLabel(node.getID(), "CENTRAL");
                 gv->setVertexSize(node.getID(), 40);
             }
+			else
+				gv->setVertexSize(node.getID(), 15);
+
 
 			gv->setVertexColor(node.getID(), colors[node.getType()]);
-
 		}
 
 
@@ -134,21 +136,39 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, 
 
 
 
+GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv) {
+
+	for(auto d : deliveries) {
+
+		stringstream ssOrigem, ssDestino;
+		ssOrigem << d.getID() << " - origem";
+		ssDestino << d.getID() << " - destino";
+		gv->setVertexLabel(d.getOrigem()->getInfo().getID(), ssOrigem.str());
+		gv->setVertexLabel(d.getDestino()->getInfo().getID(), ssDestino.str());
+	}
+
+	gv->rearrange();
+	return gv;
+}
+
+
+
 
 GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor) {
 
 	GraphViewer* gv = new GraphViewer(width, height, false);
 	gv->createWindow(width, height);
 	gv->defineEdgeColor(edgeColor);
-	gv->defineEdgeCurved(false);
+	gv->defineEdgeCurved(true);
 
 	int idAresta = 1;
+	int numArestasAnterior = 1;
 
-	for(auto v : vehicles) {
+	for(auto vehicle : vehicles) {
 
-		if(!v->getDeliveries().empty()) {
+		if(!vehicle->getDeliveries().empty()) {
 
-			vector<Vertex<Node>* > path = v->getVehiclePath();
+			vector<Vertex<Node>* > path = vehicle->getVehiclePath();
 
 			for(int i = path.size() - 1; i >= 1; i--) {
 
@@ -158,18 +178,33 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 				while(s != v) {
 					Vertex<Node>* t = getPathFromTable(s, v, table);
 
-					cout << "t: " << t->getInfo().getID() << " v: " << v->getInfo().getID();
+//					cout << "t: " << t->getInfo().getID() << " v: " << v->getInfo().getID();
 
 					Edge<Node>* e = graph.getEdge(t->getInfo(), v->getInfo());
 
 					if(e != NULL && e->shouldBeDisplayed()) {
 
-						cout << " - deu display";
+//						cout << " - deu display";
 
 						gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
 						gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
 						gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
 						gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
+
+						if (t->getInfo().getType() == CENTRAL) {
+			                gv->setVertexLabel(t->getInfo().getID(), "CENTRAL");
+			                gv->setVertexSize(t->getInfo().getID(), 40);
+			            }
+						else
+							gv->setVertexSize(t->getInfo().getID(), 15);
+
+
+						if (v->getInfo().getType() == CENTRAL) {
+			                gv->setVertexLabel(v->getInfo().getID(), "CENTRAL");
+			                gv->setVertexSize(v->getInfo().getID(), 40);
+			            }
+						else
+							gv->setVertexSize(v->getInfo().getID(), 15);
 
 /*
 						// TIRAR DPS
@@ -185,7 +220,7 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 						idAresta++;
 
 						// de modo a nao desenhar a mesma aresta da proxima vez
-						e->setShouldDisplay(false);
+//						e->setShouldDisplay(false);
 					}
 					else {
 
@@ -193,12 +228,28 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 
 						if(e != NULL && e->shouldBeDisplayed()) {
 
-							cout << " - deu display";
+//							cout << " - deu display";
 
 							gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
 							gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
 							gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
 							gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
+
+
+							if (t->getInfo().getType() == CENTRAL) {
+				                gv->setVertexLabel(t->getInfo().getID(), "CENTRAL");
+				                gv->setVertexSize(t->getInfo().getID(), 40);
+				            }
+							else
+								gv->setVertexSize(t->getInfo().getID(), 15);
+
+
+							if (v->getInfo().getType() == CENTRAL) {
+				                gv->setVertexLabel(v->getInfo().getID(), "CENTRAL");
+				                gv->setVertexSize(v->getInfo().getID(), 40);
+				            }
+							else
+								gv->setVertexSize(v->getInfo().getID(), 15);
 
 /*
 							// TIRAR DPS
@@ -213,18 +264,35 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 							idAresta++;
 
 							// de modo a nao desenhar a mesma aresta da proxima vez
-							e->setShouldDisplay(false);
+//							e->setShouldDisplay(false);
 						}
 					}
 
-					cout << endl;
+//					cout << endl;
 
 					v = t;
 				}
 
 			}
+
+
+			for(int i = 1; i <= idAresta - numArestasAnterior; i++)
+				gv->setEdgeLabel(idAresta - i, "Veiculo " + to_string(vehicle->getID()) + " - " + to_string(i));
+
+			numArestasAnterior = idAresta;
+
+
+			for(auto d : vehicle->getDeliveries()) {
+				stringstream ssOrigem, ssDestino;
+				ssOrigem << d.getID() << " - origem";
+				ssDestino << d.getID() << " - destino";
+				gv->setVertexLabel(d.getOrigem()->getInfo().getID(), ssOrigem.str());
+				gv->setVertexLabel(d.getDestino()->getInfo().getID(), ssDestino.str());
+			}
 		}
 	}
 
+
+	gv->rearrange();
 	return gv;
 }

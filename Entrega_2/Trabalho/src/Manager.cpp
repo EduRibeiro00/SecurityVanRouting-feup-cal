@@ -68,6 +68,11 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 	// acabem por ser feitas por varios veiculos, nao tendo um que passar em todos
 	// os pontos, e necessario na mesma que haja um caminho entre todos os pontos.
 
+	// uma vez que a tabela ja foi gerada pela aplicacao do algoritmo de Dijkstra,
+	// nao e necessario efetuar uma pesquisa em profundidade para verificar a
+	// conectividade; basta aceder aos valores da tabela, o que fica bastante mais
+	// eficiente.
+
 	// central nao pode ser origem nem destino!
 
 	bool impDelivery = false;
@@ -77,20 +82,14 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 
 		Delivery d = deliveries.at(i);
 
-		int b = -2;
-
 		if((getDistFromTable(central, d.getOrigem(), table) == -1) ||
-		   ((b = getDistFromTable(central, d.getDestino(), table)) == -1)) {
+		   (getDistFromTable(central, d.getDestino(), table) == -1)) {
 
 			impDelivery = true;
 			cout << "Delivery " << d.getID();
-			cout << "\t(" << d.getOrigem()->getInfo().getID();
+			cout << " (" << d.getOrigem()->getInfo().getID();
 			cout << " -> " << d.getDestino()->getInfo().getID() << ") ";
-			cout << "cannot be done. ";
-			cout << "(No path between central and ";
-			if (b == -1) cout << "destination";
-			else cout << "origin";
-			cout << ".)" << endl;
+			cout << "cannot be done." << endl;
 
 			// apaga do vetor das entregas
 			deliveries.erase(deliveries.begin() + i);

@@ -19,13 +19,23 @@
  *
  * @param graph Grafo a ser desenhado
  * @param edgeColor Cor a dar as arestas
- * @param vertexSize Tamanho dos vertices do grafo
  * @param width Comprimento da janela do grafo (sera calculado e retornado)
  * @param height Altura da janela do grafo (sera calculado e retornado)
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int vertexSize, int& width, int& height);
+GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor,int& width, int& height);
+
+
+/**
+ * Funcao que indica, no grafo desenhado, as origens e destinos de cada entrega.
+ *
+ * @param deliveries Vetor com as entregas que irao ser feitas (em principio) pelos veiculos
+ * @param gv Pointer para objeto GraphViewer, ja inicializado
+ *
+ * @return Pointer para o objeto GraphViewer.
+ */
+GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv);
 
 /**
  * Funcao que calcula qual o percurso exato que cada veiculo tera de fazer para fazer as
