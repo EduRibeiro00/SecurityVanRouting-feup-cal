@@ -203,7 +203,7 @@ Edge<T>* Graph<T>::getEdge(const T& s, const T& t) {
 
 	// Edge<T> notFound(NULL, 0, false);
 
-	for(auto e : source->adj)
+	for(auto &e : source->adj)
 		if(e.dest == dest)
 			return &e;
 
