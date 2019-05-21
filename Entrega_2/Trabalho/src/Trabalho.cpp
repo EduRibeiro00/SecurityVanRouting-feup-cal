@@ -213,6 +213,7 @@ int main() {
 
     cout << "To exit the program, please press ENTER." << endl;
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
 
     return 0;
