@@ -82,9 +82,11 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int&
 
 
 			// TIRAR DPS
-//			stringstream ss;
-//			ss << node.getID();
-//			gv->setVertexLabel(node.getID(), ss.str());
+/*
+			stringstream ss;
+			ss << node.getID();
+			gv->setVertexLabel(node.getID(), ss.str());
+*/
 
 
 			if (node.getType() == CENTRAL) {
@@ -134,7 +136,36 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int&
 		return gv;
 }
 
+void labelAccessibleVertices(Graph<Node>& graph, Vertex<Node>* central, Table table, GraphViewer* gv) {
 
+    for (auto v : graph.getVertexSet()) {
+
+        if (v->getInfo().getType() != CENTRAL) {
+            if (getDistFromTable(v, central, table) != -1) {
+                stringstream ss;
+                ss << v->getInfo().getID();
+                gv->setVertexLabel(v->getInfo().getID(), ss.str());
+            }
+        }
+    }
+
+    gv->rearrange();
+
+}
+
+void clearLabels(Graph<Node>& graph, GraphViewer* gv) {
+
+    for (auto v : graph.getVertexSet()) {
+
+        if (v->getInfo().getType() != CENTRAL) {
+            gv->clearVertexLabel(v->getInfo().getID());
+        }
+
+    }
+
+    gv->rearrange();
+
+}
 
 GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv) {
 

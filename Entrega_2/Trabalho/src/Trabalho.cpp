@@ -41,22 +41,24 @@ int main() {
     vector<Vehicle*> vehicles = readCentralAndVehicles(graph, central);
     cout << endl;
 
-    vector<Delivery> deliveries = readDeliveries(graph, central);
-    cout << endl;
+
+    cout << "Building table..." << endl;
+    Table table = buildDijkstraTable(graph);
+    cout << "Done!" << endl << endl;
 
 
     int width, height;
 
     cout << "Displaying graph..." << endl;
     GraphViewer* gv = displayGraph(graph, "black", width, height);
+    labelAccessibleVertices(graph, central, table, gv);
+    cout << "Done!" << endl << endl;
+
+
+    vector<Delivery> deliveries = readDeliveries(graph, central);
+    cout << endl;
+    clearLabels(graph, gv);
     displayDeliveryNodes(deliveries, gv);
-    cout << "Done!" << endl << endl;
-
-
-
-	cout << "Building table..." << endl;
-	Table table = buildDijkstraTable(graph);
-    cout << "Done!" << endl << endl;
 
 
     cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
@@ -209,9 +211,8 @@ int main() {
 //    cout << "Done!" << endl << endl;
 
 
-#if defined(_WIN32) || defined(WIN32)
-   system("pause");
-#endif
+    cout << "To exit the program, please press ENTER." << endl;
+    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
 
     return 0;

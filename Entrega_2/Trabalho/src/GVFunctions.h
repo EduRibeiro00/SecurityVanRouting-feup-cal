@@ -26,6 +26,26 @@
  */
 GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor,int& width, int& height);
 
+/**
+ * TEST ONLY!!
+ * Funcao que identifica, no GraphViewer, os vertices acessiveis a partir da central
+ * definida, para facilitar a construçao das entregas para testar o programa.
+ *
+ * @param graph Grafo, com nos e arestas
+ * @param central Central definida para o grafo
+ * @param table Tabela contendo as distancias entre nos, e outras informacoes necessarias para o calculo dos trajetos
+ * @param gv Pointer para o objeto GraphViewer.
+ */
+void labelAccessibleVertices(Graph<Node>& graph, Vertex<Node>* central, Table table, GraphViewer* gv);
+
+/**
+ * TEST ONLY!!
+ * Funcao que elimina todos os labels auxiliares dos vertices do objeto GraphViewer.
+ *
+ * @param graph Grafo, com nos e arestas
+ * @param gv Pointer para o objeto GraphViewer.
+ */
+void clearLabels(Graph<Node>& graph, GraphViewer* gv);
 
 /**
  * Funcao que indica, no grafo desenhado, as origens e destinos de cada entrega.

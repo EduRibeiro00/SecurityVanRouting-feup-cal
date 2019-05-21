@@ -68,13 +68,13 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
 
 
 /**
-* Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
-* (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
-*
-* @param graph O grafo, ja construido
-*
-* @return A tabela com as distancias e os vertices anteriores.
-*/
+ * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
+ * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
+ *
+ * @param graph O grafo, ja construido
+ *
+ * @return A tabela com as distancias e os vertices anteriores.
+ */
 
 Table buildDijkstraTable(Graph<Node> graph);
 

@@ -44,6 +44,17 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 	bestVehicle->addDelivery(delivery);
 
+	// para entregas seguintes, no caso de haver igualdade no termo de
+	// comparação, o veiculo ao qual acaba de ser associada uma entrega
+	// tera menor prioridade, o que no contexto do problema, na vida
+	// real, se traduziria numa reducao do tempo total das entregas, sem
+	// haver um aumento na distancia total percorrida
+    for (size_t i = 0; i < vehicles.size() - 1; i++) {
+        if (bestVehicle == vehicles[i]) {
+            swap(vehicles[i], vehicles[i+1]);
+        }
+    }
+
 	return true;
 }
 
