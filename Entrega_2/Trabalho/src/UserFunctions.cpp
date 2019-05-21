@@ -8,6 +8,36 @@
 
 #include "UserFunctions.h"
 
+
+int chooseMenuOption() {
+
+	cout << "----------------------------------------------" << endl;
+	cout << "             CHOOSE AN OPTION" << endl;
+	cout << "----------------------------------------------" << endl << endl;
+
+	unsigned int i;
+
+	do {
+		cout << "0: Load new graph and generate new table" << endl;
+		cout << "1: Read new vehicle file" << endl;
+		cout << "2: Display graph" << endl;
+		cout << "3: Display accesible graph from the central" << endl;
+		cout << "4: Read delivery file and calculate vehicle paths" << endl;
+		cout << "5: Exit program" << endl;
+		cout << "Option: ";
+		cin >> i;
+		cout << endl << endl;
+
+		if(i > 5)
+			cout << "Invalid option. Please try again." << endl << endl;
+
+	} while(i > 5);
+
+	return i;
+}
+
+
+
 string chooseMap() {
 
 	cout << "----------------------------------------------" << endl;
@@ -217,25 +247,3 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
     cout << endl << endl;
 }
 
-
-
-bool askForAccessGraph() {
-
-	int answer;
-
-	do {
-
-		cout << "Do you wish to see a graph containing the acessible nodes from the central?" << endl;
-		cout << "0 -> no" << endl;
-		cout << "1 -> yes" << endl;
-		cout << "Answer: ";
-		cin >> answer;
-
-		if((answer != 0) && (answer != 1))
-			cout << endl << "Invalid option! Try again." << endl << endl;
-
-	} while((answer != 0) && (answer != 1));
-
-
-	return answer;
-}

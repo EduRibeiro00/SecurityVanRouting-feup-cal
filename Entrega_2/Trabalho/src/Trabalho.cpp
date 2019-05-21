@@ -24,209 +24,173 @@ using namespace std;
 
 int main() {
 
-	GraphViewer* gvMain, *gvAccess, *gvVehicle;
+	Graph<Node> graph;
+	GraphViewer* gvMain = NULL, *gvAccess = NULL, *gvVehicle = NULL;
+	Vertex<Node>* central = NULL;
+	vector<Vehicle*> vehicles;
+	vector<Delivery> deliveries;
 
-	string map = chooseMap();
+	bool graphDefined = false;
+	bool displayAccessible = false;
+	Table table;
+	string map;
 
-	cout << "Building graph..." << endl;
-	Graph<Node> graph = loadGraph(map);
-    cout << "Done!" << endl << endl;
+    int width = 0, height = 0;
 
+    int option;
 
-	cout << "Removing useless edges..." << endl;
-	removeUselessEdges(graph);
-    cout << "Done!" << endl << endl;
+	while((option = chooseMenuOption()) != 5) {
 
+	  switch(option) {
 
-    Vertex<Node>* central;
+		case 0:
+			if(gvMain != NULL) {
+				gvMain->closeWindow();
+				gvMain = NULL;
+			}
+			vehicles.clear();
+			deliveries.clear();
+			graphDefined = true;
+			displayAccessible = false;
+			central = NULL;
+			map = chooseMap();
 
-    vector<Vehicle*> vehicles = readCentralAndVehicles(graph, central);
-    cout << endl;
+			cout << "Building graph..." << endl;
+			graph = loadGraph(map);
+			cout << "Done!" << endl << endl;
 
+			cout << "Removing useless edges..." << endl;
+			removeUselessEdges(graph);
+			cout << "Done!" << endl << endl;
 
-    cout << "Building table..." << endl;
-    Table table = buildDijkstraTable(graph);
-    cout << "Done!" << endl << endl;
+		    cout << "Building table..." << endl;
+		    table = buildDijkstraTable(graph);
+		    cout << "Done!" << endl << endl;
 
+		    break;
 
-    int width, height;
+		case 1:
+			if(!graphDefined) {
+				cout << "Cannot do operation! Graph is not defined." << endl;
+				break;
+			}
 
-    cout << "Displaying graph..." << endl;
-    gvMain = displayGraph(graph, "black", width, height);
-    cout << "Done!" << endl << endl;
+			displayAccessible = false;
+			central = NULL;
+		    vehicles = readCentralAndVehicles(graph, central);
+		    cout << "Done!" << endl << endl;
 
-    bool displayAccessible = false;
+		    break;
 
-    if(askForAccessGraph()) {
-    	displayAccessible = true;
-    	cout << endl << endl << "Calculating and displaying access graph..." << endl;
-    	displayAccessibleGraph(graph, central);
-    	cout << "Done!" << endl;
-    }
-
-    vector<Delivery> deliveries = readDeliveries(graph, central);
-    cout << endl;
-    displayDeliveryNodes(deliveries, gvMain);
-    cout << endl << "The delivery nodes can be seen in the main graph." << endl;
-
-    cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
-    pathExists(central, deliveries, table);
-    cout << "Done!" << endl << endl;
-
-
-    cout << "Assigning deliveries to vehicles..." << endl;
-    assignDeliveries(vehicles, deliveries, table);
-
-    for (auto vehicle : vehicles)
-	   vehicle->removeDuplicateNodes();
-
-    cout << "Done!" << endl << endl;
-
-
-    displayResults(vehicles, deliveries);
-
-
-    cout << "To display the path of the vehicles, please press ENTER." << endl;
-    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-
-    cout << "Displaying calculated paths for the vehicles..." << endl;
-    gvVehicle = displayVehiclePaths(graph, vehicles, table, width, height, "black");
-    cout << "Done!" << endl << endl;
+		case 2:
+			if(!graphDefined) {
+				cout << "Cannot do operation! Graph is not defined." << endl;
+				break;
+			}
 
 
-    // -------------------------- //
+			if(gvMain != NULL) {
+				gvMain->closeWindow();
+				gvMain = NULL;
+			}
+		    cout << "Displaying graph..." << endl;
+		    gvMain = displayGraph(graph, "black");
+		    cout << "Done!" << endl << endl;
 
-//    for (auto vehicle : vehicles) {
-//     cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-//     for (auto vertex : vehicle->getVehiclePath()) {
-//     	cout << vertex->getInfo().getID() << ' ';
-//   	 	}
-//   	  cout << '\n';
-//   	  cout << "And his type is: ";
-//
-//   	  switch(vehicle->getType()) {
-//
-//   	  	  case BANK:
-//   	  		  cout << "BANK" << endl;
-//   	  		  break;
-//
-//   	  	  case FIN_ADVICE:
-//   	  		  cout << "FIN_ADVICE" << endl;
-//   	  		  break;
-//
-//   	  	  case ATM:
-//   	  		  cout << "ATM" << endl;
-//   	  		  break;
-//
-//   	  	  case TAX_ADVISOR:
-//   	  		  cout << "TAX_ADVISOR" << endl;
-//   	  		  break;
-//
-//   	  	  case AUDIT:
-//   	  		  cout << "AUDIT" << endl;
-//   	  		  break;
-//
-//   	  	  case MONEY_MOV:
-//   	  		  cout << "MONEY_MOV" << endl;
-//   	  		  break;
-//
-//   	  	  default:
-//   	  		  cout << "UNKNOWN" << endl;
-//   	  		  break;
-//   	  }
-//    }
-//
-//    cout << endl << endl << endl;
+		    break;
 
-//    for(auto d: deliveries) {
-//    	cout << "Delivery with id " << d.getID();
-//    	cout << " has origin in node " << d.getOrigem()->getInfo().getID();
-//    	cout << " and destination in node " << d.getDestino()->getInfo().getID();
-//    	cout << endl;
-//    }
+		case 3:
+			if(!graphDefined) {
+				cout << "Cannot do operation! Graph is not defined." << endl;
+				break;
+			}
 
-//    for (Table::iterator it = table.begin(); it != table.end(); it++) {
-//        cout << "first vertex: " << it->first.first->getInfo().getID() << "   -   ";
-//        cout << "second vertex: " << it->first.second->getInfo().getID() << "\n";
-//        cout << "distance: " << it->second.first << "   -   ";
-//        cout << "path: " << it->second.second->getInfo().getID() << "\n\n";
-//    }
+			if(central == NULL) {
+				cout << "Cannot do operation! Central is not defined." << endl << endl;
+				break;
+			}
 
-//    Vertex<Node>* central = graph.findVertex(Node(5));
-//    central->getInfo().setType(CENTRAL);
-//
-//    Vehicle* v1 = new Vehicle(1, BANK, central);
-//    Vehicle* v2 = new Vehicle(2, BANK, central);
-//    vector<Vehicle*> vehicles;
-//    vehicles.push_back(v1);
-//    vehicles.push_back(v2);
-//
-//    Delivery d1(1, graph.findVertex(Node(1)), graph.findVertex(Node(2)));
-//    Delivery d2(2, graph.findVertex(Node(3)), graph.findVertex(Node(4)));
-//    Delivery d3(3, graph.findVertex(Node(6)), graph.findVertex(Node(8)));
-//    Delivery d4(4, graph.findVertex(Node(7)), graph.findVertex(Node(8)));
-//    Delivery d5(5, graph.findVertex(Node(6)), graph.findVertex(Node(3)));
-//    vector<Delivery> deliveries;
-//    deliveries.push_back(d1);
-//    deliveries.push_back(d2);
-//    deliveries.push_back(d3);
-//    deliveries.push_back(d4);
-//    deliveries.push_back(d5);
-//
-//    for (auto delivery : deliveries) {
-//        if (!assignDeliveryToVehicle(vehicles, delivery, table)) {
-//            cout << "Assignment of delivery " << delivery.getID() << " to vehicles failed.\n";
-//        }
-//    }
-//
-//    for (auto vehicle : vehicles) {
-//        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-//        for (auto vertex : vehicle->getVehiclePath()) {
-//            cout << vertex->getInfo().getID() << ' ';
-//        }
-//        cout << '\n';
-//        cout << "And the deliveries are:\n";
-//        for (auto delivery : vehicle->getDeliveries()) {
-//            cout << delivery.getID() << ' ';
-//        }
-//        cout << "\n\n";
-//    }
-//
-//    for (auto vehicle : vehicles) {
-//        vehicle->removeDuplicateNodes();
-//    }
-//
-//    cout << "AFTER REMOVING THE DUPLICATES:\n\n";
-//
-//    for (auto vehicle : vehicles) {
-//        cout << "For vehicle of id " << vehicle->getID() << ", the path is:\n";
-//        for (auto vertex : vehicle->getVehiclePath()) {
-//            cout << vertex->getInfo().getID() << ' ';
-//        }
-//        cout << '\n';
-//        cout << "And the deliveries are:\n";
-//        for (auto delivery : vehicle->getDeliveries()) {
-//            cout << delivery.getID() << ' ';
-//        }
-//        cout << "\n\n";
-//    }
+			if(gvAccess != NULL) {
+				gvAccess->closeWindow();
+				gvAccess = NULL;
+			}
+	    	displayAccessible = true;
+	    	cout << "Calculating and displaying access graph..." << endl;
+	    	gvAccess = displayAccessibleGraph(graph, central, width, height);
+	    	cout << "Done!" << endl << endl;
+
+	    	break;
+
+		case 4:
+			if(!graphDefined) {
+				cout << "Cannot do operation! Graph is not defined." << endl;
+				break;
+			}
+
+			if(central == NULL) {
+				cout << "Cannot do operation! Central is not defined." << endl << endl;
+				break;
+			}
+
+			if(vehicles.empty()) {
+				cout << "Cannot do operation! There are no vehicles." << endl << endl;
+				break;
+			}
+
+			deliveries = readDeliveries(graph, central);
+		    if(gvMain != NULL) {
+		    	cout << endl;
+		    	gvMain = displayDeliveryNodes(deliveries, gvMain);
+		    	cout << endl << "The delivery nodes can be seen in the main graph." << endl;
+		    }
+
+		    cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
+		    pathExists(central, deliveries, table);
+		    cout << "Done!" << endl << endl;
+
+		    cout << "Assigning deliveries to vehicles..." << endl;
+		    assignDeliveries(vehicles, deliveries, table);
+
+		    for (auto vehicle : vehicles)
+			   vehicle->removeDuplicateNodes();
+
+		    cout << "Done!" << endl << endl;
 
 
-//    cout << "Displaying graph..." << endl;
-//    GraphViewer* gv = displayGraph(graph, "black", 5);
-//    cout << "Done!" << endl << endl;
+		    displayResults(vehicles, deliveries);
+
+		    cout << "To display the path of the vehicles, please press ENTER." << endl;
+		    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+		    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+
+		    cout << "Displaying calculated paths for the vehicles..." << endl;
+
+		     // in order to know the position to give each one of the nodes, in the GraphViewer window
+		     // (if the variable is true, that means the nodes already have the positions assigned to them,
+		     // and the function doesn't need to be called again).
+		     if(!displayAccessible) {
+		     	calculateAccessNodesDisplayCoords(graph, central, width, height);
+		     	displayAccessible = true;
+		     }
+
+		     if(gvVehicle != NULL) {
+		    	 gvVehicle->closeWindow();
+		    	 gvVehicle = NULL;
+		     }
+		     gvVehicle = displayVehiclePaths(graph, vehicles, table, "black", width, height);
+		     cout << "Done!" << endl << endl;
 
 
-    cout << "To exit the program, please press ENTER." << endl;
-    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
-    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
+		     vehicles = resetVehicles(vehicles);
 
-    gvMain->closeWindow();
-    gvVehicle->closeWindow();
+			break;
 
-    if(displayAccessible)
-    	gvVehicle->closeWindow();
+		default:
+			break;
+
+	  }
+
+	}
 
     cout << "Thank you!" << endl;
 

@@ -19,6 +19,14 @@
 using namespace std;
 
 /**
+ * Funcao que pergunta ao utilizador que opcao do menu e que este pretende fazer.
+ *
+ * @return O numero da opcao.
+ */
+int chooseMenuOption();
+
+
+/**
  * Funcao que pergunta ao utilizador qual o mapa que este deseja escolher.
  * @return Nome da cidade/pais.
  */
@@ -55,15 +63,6 @@ vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central);
  * as entregas que nao puderam ser feitas (se houver alguma).
  */
 void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries);
-
-
-
-/**
- * Funcao que pergunta ao utilizador se este deseja ver um grafo com todos os nos acessiveis a partir da central, cada um com o seu id
- *
- * @return True se o utilizador quer, false se nao
- */
-bool askForAccessGraph();
 
 
 #endif /* USERFUNCTIONS_H_ */

@@ -133,22 +133,23 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor) {
 }
 
 
-GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central) {
 
-	vector<Node> vertexesToDraw;
-	double maxX = 0, maxY = 0, minX = 999999999, minY = 999999999;
-	int width, height = 800;
+vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vertex<Node>* central, int& width, int& height) {
+
+	vector<Vertex<Node>* > accessNodes;
+	double maxX = 0, maxY = 0, minX = INF, minY = INF;
+	height = 800;
 
 
 	// faz uma visita em profundidade a partir da central; uma vez que o grafo e bidirecional,
 	// isto faz com que o vetor retorne com todos os vertices acessiveis a partir da central.
-	graph.dfsVisit(central, vertexesToDraw);
+	graph.dfsVisit(central, accessNodes);
 
 
-	for(auto n : vertexesToDraw) {
+	for(auto v : accessNodes) {
 
-		double currentX = n.getX();
-		double currentY = n.getY();
+		double currentX = v->getInfo().getX();
+		double currentY = v->getInfo().getY();
 
 		if(currentX > maxX)
 			maxX = currentX;
@@ -164,12 +165,38 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central) {
 
 	}
 
-
 	double gravWidth = maxX - minX;
 	double gravHeight = maxY - minY;
 
 	// uso de uma regra de tres simples para calcular o comprimento ideal para a janela
 	width = max(height, (int) (height * gravHeight / gravWidth));
+
+	for(auto v : accessNodes) {
+
+		double displayX = (v->getInfo().getX() - minX ) * width / gravWidth * 0.95;
+		double displayY = (v->getInfo().getY() - minY ) * height / gravHeight * 0.95;
+
+		displayX += (0.025 * width);
+		displayY += (0.025 * height);
+
+		displayY = height - displayY;
+
+
+		v->getInfo().setDisplayX((int) displayX);
+		v->getInfo().setDisplayY((int) displayY);
+	}
+
+
+	return accessNodes;
+}
+
+
+
+
+GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, int& width, int& height) {
+
+	vector<Vertex<Node>* > vertexesToDraw = calculateAccessNodesDisplayCoords(graph, central, width, height);
+
 
 	GraphViewer *gv = new GraphViewer(width, height, false);
 	gv->createWindow(width, height);
@@ -177,17 +204,11 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central) {
 	gv->defineEdgeCurved(true);
 
 
-	for(auto node : vertexesToDraw) {
+	for(auto v : vertexesToDraw) {
 
-		double displayX = (node.getX() - minX ) * width / gravWidth * 0.95;
-		double displayY = (node.getY() - minY ) * height / gravHeight * 0.95;
+		Node node = v->getInfo();
 
-		displayX += (0.025 * width);
-		displayY += (0.025 * height);
-
-		displayY = height - displayY;
-
-		gv->addNode(node.getID(), (int) displayX, (int) displayY);
+		gv->addNode(node.getID(), node.getDisplayX(), node.getDisplayY());
 
 		if (node.getType() == CENTRAL) {
 		     gv->setVertexLabel(node.getID(), "CENTRAL");
@@ -204,15 +225,13 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central) {
 
 	int idAresta = 1;
 
-	for(auto n : vertexesToDraw){
-
-		Vertex<Node>* v = graph.findVertex(n);
+	for(auto v : vertexesToDraw){
 
 		vector<Edge<Node> > edges = v->getAdj();
 
 		for(auto e : edges){
 			if(e.shouldBeDisplayed()) {
-				gv->addEdge(idAresta, n.getID(), e.getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
+				gv->addEdge(idAresta, v->getInfo().getID(), e.getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
                 idAresta++;
 			}
 		}
@@ -241,7 +260,7 @@ GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv) 
 
 
 
-GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor) {
+GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor, int width, int height) {
 
 	GraphViewer* gv = new GraphViewer(width, height, false);
 	gv->createWindow(width, height);
@@ -291,21 +310,10 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 						else
 							gv->setVertexSize(v->getInfo().getID(), 15);
 
-/*
-						// TIRAR DPS
-						stringstream ssT, ssV;
-						ssT << t->getInfo().getID();
-						gv->setVertexLabel(t->getInfo().getID(), ssT.str());
-						ssV << v->getInfo().getID();
-						gv->setVertexLabel(v->getInfo().getID(), ssV.str());
-*/
-
 
 						gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
 						idAresta++;
 
-						// de modo a nao desenhar a mesma aresta da proxima vez
-//						e->setShouldDisplay(false);
 					}
 					else {
 
@@ -335,20 +343,9 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 							else
 								gv->setVertexSize(v->getInfo().getID(), 15);
 
-/*
-							// TIRAR DPS
-							stringstream ssT, ssV;
-							ssT << t->getInfo().getID();
-							gv->setVertexLabel(t->getInfo().getID(), ssT.str());
-							ssV << v->getInfo().getID();
-							gv->setVertexLabel(v->getInfo().getID(), ssV.str());
-*/
 
 							gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
 							idAresta++;
-
-							// de modo a nao desenhar a mesma aresta da proxima vez
-//							e->setShouldDisplay(false);
 						}
 					}
 

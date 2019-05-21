@@ -157,8 +157,8 @@ public:
 	int getNumEdges() const;
 	Edge<T>* getEdge(const T& s, const T& t);
 
-	vector<T> dfs() const;
-	void dfsVisit(Vertex<T>* v, vector<T>& res) const;
+	vector<Vertex<T>* > dfs() const;
+	void dfsVisit(Vertex<T> *v, vector<Vertex<T>* > & res) const;
 
 
 	// Fp05 - single source
@@ -282,8 +282,8 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, bool shouldDispl
 
 
 template <class T>
-vector<T> Graph<T>::dfs() const {
-	vector<T> res;
+vector<Vertex<T>* > Graph<T>::dfs() const {
+	vector<Vertex<T>* > res;
 	for (auto v : vertexSet)
 		v->visited = false;
 	for (auto v : vertexSet)
@@ -295,9 +295,9 @@ vector<T> Graph<T>::dfs() const {
 
 
 template <class T>
-void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res) const {
+void Graph<T>::dfsVisit(Vertex<T> *v, vector<Vertex<T>* > & res) const {
 	v->visited = true;
-	res.push_back(v->info);
+	res.push_back(v);
 	for (auto & e : v->adj) {
 		auto w = e.dest;
 	    if ( ! w->visited)

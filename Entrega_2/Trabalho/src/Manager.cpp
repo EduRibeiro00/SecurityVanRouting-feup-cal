@@ -116,3 +116,19 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 	else
 		cout << "Every delivery is valid!" << endl;
 }
+
+
+
+vector<Vehicle*> resetVehicles(vector<Vehicle*> vehicles) {
+
+	vector<Vehicle*> newVehicles;
+
+	// NOTA: nao esquecer que em 1º e ultimo lugar do vetor de vertices dos veiculos
+	// esta sempre a central...
+
+	for(auto v : vehicles)
+		newVehicles.push_back(new Vehicle(v->getID(), v->getType(), v->getVehiclePath().at(0)));
+
+
+	return newVehicles;
+}

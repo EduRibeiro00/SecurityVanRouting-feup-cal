@@ -36,16 +36,34 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor);
 GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv);
 
 
+
+/**
+ * Funcao que calcula as coordenadas de display dos nos que sao acessiveis a partir da central. Retorna tambem um vetor contendo esses mesmos nos.
+ *
+ * @param graph Grafo previamente inicializado, com nos e arestas
+ * @param central Vertice que representa a central
+ * @param width Comprimento da janela do GraphViewer (retornado pela funcao)
+ * @param height Altura da janela do GraphViewer (retornado pela funcao)
+ *
+ * @return Vetor com os nos acessiveis a partir da central dos veiculos
+ */
+vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vertex<Node>* central, int& width, int& height);
+
+
 /**
  * Funcao que calcula e desenha o grafico com os nos que sao acessiveis a partir da central definida anteriormente.
  * Os vertices sao calculados atraves de uma pesquisa em profundidade a partir da central.
  *
  * @param graph Grafo previamente inicializado, com nos e arestas
  * @param central Vertice que representa a central dos veiculos
+ * @param width Comprimento da janela do GraphViewer (retornado pela funcao)
+ * @param height Altura da janela do GraphViewer (retornado pela funcao)
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central);
+GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, int& width, int& height);
+
+
 
 /**
  * Funcao que calcula qual o percurso exato que cada veiculo tera de fazer para fazer as
@@ -55,9 +73,11 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central);
  * @param vehicles Vetor de veiculos, com entregas atribuidas a cada um
  * @param table Tabela contendo as distancias entre nos, e outras informacoes necessarias para o calculo dos trajetos
  * @param edgeColor Cor a dar as arestas
+ * @param width Comprimento a dar a janela do GraphViewer (ja calculado anteriormente)
+ * @param height Comprimento a dar a janela do GraphViewer (ja calculado anteriormente)
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor);
+GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor, int width, int height);
 
 #endif /* GVFUNCTIONS_H_ */

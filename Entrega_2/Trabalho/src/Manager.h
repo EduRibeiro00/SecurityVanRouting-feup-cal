@@ -47,4 +47,14 @@ void assignDeliveries(vector<Vehicle*> vehicles, vector<Delivery>& deliveries, T
 void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table);
 
 
+/**
+ * Funcao que "limpa" o percurso dos veiculos, instanciando novos
+ *
+ * @param Vetor de veiculos, cada um com o seu percurso
+ *
+ * @return Novo vetor de veiculos identicos, mas sem percursos
+ */
+vector<Vehicle*> resetVehicles(vector<Vehicle*> vehicles);
+
+
 #endif /* MANAGER_H_ */
