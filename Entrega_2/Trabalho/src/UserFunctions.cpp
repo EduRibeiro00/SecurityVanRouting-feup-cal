@@ -231,6 +231,9 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
         }
         cout << '\n';
         cout << "And the deliveries are:\n";
+        if(vehicle->getDeliveries().empty())
+        	cout << "-" << endl;
+
         for (auto delivery : vehicle->getDeliveries()) {
             cout << delivery.getID() << ' ';
         }
@@ -239,6 +242,9 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
 
 
     cout << "And the deliveries that couldn't be made were:" << endl;
+    if(deliveries.empty())
+    	cout << "-" << endl;
+
     for(auto d : deliveries) {
  	   cout << d.getID() << " ";
     }
