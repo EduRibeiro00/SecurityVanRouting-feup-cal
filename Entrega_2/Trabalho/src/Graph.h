@@ -36,6 +36,11 @@ class Vertex {
 	Vertex<T> *path = NULL;
 	int queueIndex = 0; 		// required by MutablePriorityQueue
 
+	// for calculating the articulation points
+	int num;
+	int low;
+	Vertex<T>* parent;
+
 	bool processing = false;
 	void addEdge(Vertex<T> *dest, double w);
 	void addEdge(Vertex<T> *dest, double w, bool shouldDisplay);
@@ -147,6 +152,9 @@ class Graph {
 	int **P = nullptr; // path
 	int findVertexIdx(const T &in) const;
 
+	// for calculating articulation points
+	int counter = 1;
+
 public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
@@ -176,6 +184,9 @@ public:
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
 	~Graph();
 
+
+	void resetCounter();
+	vector<Vertex<T>* > calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res);
 
 
 };
@@ -226,6 +237,12 @@ bool Edge<T>::shouldBeDisplayed() {return this->shouldDisplay;}
 template <class T>
 void Edge<T>::setShouldDisplay(bool display) {
 	this->shouldDisplay = display;
+}
+
+
+template <class T>
+void Graph<T>::resetCounter() {
+	this->counter = 1;
 }
 
 
@@ -503,6 +520,34 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 	reverse(res.begin(), res.end());
 	return res;
 }
+
+
+template<class T>
+vector<Vertex<T>* > Graph<T>::calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res) {
+
+	v->visited = true;
+	v->low = v->num = counter++;
+
+	for(auto e : v->adj) {
+
+		Vertex<T>* w = e.dest;
+
+		if(!w->visited) {
+
+			w->parent = v;
+			calcArticulationPoints(w);
+			v->low = min(v->low, w->low);
+
+			if(w->low >= v->num)
+				res.push_back(v);
+
+		}
+		else if(v->parent != w)
+			v->low = min(v->low, w->num);
+	}
+
+}
+
 
 
 #endif /* GRAPH_H_ */
