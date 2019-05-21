@@ -163,25 +163,55 @@ int main() {
 		    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 		    cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
-		    cout << "Displaying calculated paths for the vehicles..." << endl;
+		    int secondOption;
 
-		     // in order to know the position to give each one of the nodes, in the GraphViewer window
-		     // (if the variable is true, that means the nodes already have the positions assigned to them,
-		     // and the function doesn't need to be called again).
-		     if(!displayAccessible) {
-		     	calculateAccessNodesDisplayCoords(graph, central, width, height);
-		     	displayAccessible = true;
-		     }
+		    while ((secondOption = chooseDeliveryMenuOption()) != 3) {
 
-		     if(gvVehicle != NULL) {
-		    	 gvVehicle->closeWindow();
-		    	 gvVehicle = NULL;
-		     }
-		     gvVehicle = displayVehiclePaths(graph, vehicles, table, "black", width, height);
-		     cout << "Done!" << endl << endl;
+                vector<Vehicle*> auxVehicles;
 
+                switch (secondOption) {
+		            case 0:
+		                auxVehicles = vehicles;
+		                break;
+                    case 1:
+                        auxVehicles = getVehiclesFromUserType(vehicles);
+                        break;
+                    case 2:
+                        auxVehicles = userChosenVehicles(vehicles);
+                        break;
+		            default:
+                        break;
+                }
 
-		     vehicles = resetVehicles(vehicles);
+                if (secondOption == 3) break;
+
+                cout << "Vehicles selected: ";
+                for (auto vehicle : auxVehicles) {
+                    cout << vehicle->getID() << " ";
+                }
+                cout << endl;
+
+                cout << "Displaying calculated paths for the vehicles..." << endl;
+
+                // in order to know the position to give each one of the nodes, in the GraphViewer window
+                // (if the variable is true, that means the nodes already have the positions assigned to them,
+                // and the function doesn't need to be called again).
+                if(!displayAccessible) {
+                    calculateAccessNodesDisplayCoords(graph, central, width, height);
+                    displayAccessible = true;
+                }
+
+                if(gvVehicle != NULL) {
+                    gvVehicle->closeWindow();
+                    gvVehicle = NULL;
+                }
+
+                gvVehicle = displayVehiclePaths(graph, auxVehicles, table, "black", width, height);
+                cout << "Done!" << endl << endl;
+
+            }
+
+		    vehicles = resetVehicles(vehicles);
 
 			break;
 

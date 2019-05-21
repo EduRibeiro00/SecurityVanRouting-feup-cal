@@ -140,8 +140,9 @@ vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vert
 	double maxX = 0, maxY = 0, minX = INF, minY = INF;
 	height = 800;
 
-	for(auto v : graph.getVertexSet())
-		v->setVisited(false);
+
+    for (auto v : graph.getVertexSet())
+        v->setVisited(false);
 
 	// faz uma visita em profundidade a partir da central; uma vez que o grafo e bidirecional,
 	// isto faz com que o vetor retorne com todos os vertices acessiveis a partir da central.

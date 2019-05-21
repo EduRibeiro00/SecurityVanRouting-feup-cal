@@ -36,7 +36,103 @@ int chooseMenuOption() {
 	return i;
 }
 
+int chooseDeliveryMenuOption() {
+    cout << "----------------------------------------------" << endl;
+    cout << "             CHOOSE AN OPTION" << endl;
+    cout << "----------------------------------------------" << endl << endl;
 
+    unsigned int i;
+
+    do {
+        cout << "0: View all deliveries" << endl;
+        cout << "1: View deliveries for a type of transport" << endl;
+        cout << "2: View custom group of deliveries" << endl;
+        cout << "3: Exit" << endl;
+        cout << "Option: ";
+        cin >> i;
+        cout << endl << endl;
+
+        if(i > 3)
+            cout << "Invalid option. Please try again." << endl << endl;
+
+    } while (i > 3);
+
+    return i;
+}
+
+vector<Vehicle*> getVehiclesFromUserType(vector<Vehicle*> vehicles) {
+    cout << "----------------------------------------------" << endl;
+    cout << "             CHOOSE AN OPTION" << endl;
+    cout << "----------------------------------------------" << endl << endl;
+
+    unsigned int i;
+
+    do {
+        cout << "0: Bank" << endl;
+        cout << "1: Financial Advice" << endl;
+        cout << "2: ATM" << endl;
+        cout << "3: Tax Advisor" << endl;
+        cout << "4: Audit" << endl;
+        cout << "5: Money Movement" << endl;
+        cout << "Option: ";
+        cin >> i;
+        cout << endl << endl;
+
+        if(i >= OTHER)
+            cout << "Invalid option. Please try again." << endl << endl;
+
+    } while (i >= OTHER);
+
+    vector<Vehicle*> ret;
+
+    for (auto vehicle : vehicles) {
+        if (vehicle->getType() == i) {
+            ret.push_back(vehicle);
+        }
+    }
+
+    return ret;
+
+}
+
+vector<Vehicle*> userChosenVehicles(vector<Vehicle*> vehicles) {
+    cout << "----------------------------------------------" << endl;
+    cout << "            CHOOSE YOUR OPTIONS" << endl;
+    cout << "----------------------------------------------" << endl << endl;
+
+    vector<Vehicle*> ret;
+
+    unsigned int i;
+
+    do {
+        cout << "0: Done!" << endl;
+        for (auto vehicle : vehicles) {
+            cout << vehicle->getID() << ": Vehicle " << vehicle->getID() << endl;
+        }
+        cout << "Option: ";
+        cin >> i;
+        cout << endl << endl;
+
+        bool invalid = true;
+        for (int j = 0; j < vehicles.size(); j++) {
+            auto vehicle = vehicles.at(j);
+            if (vehicle->getID() == i) {
+                ret.push_back(vehicle);
+                cout << "Vehicle with ID " << i << " added!" << endl << endl;
+                vehicles.erase(vehicles.begin() + j);
+                j--;
+                invalid = false;
+                break;
+            }
+        }
+
+        if (i != 0 && invalid)
+            cout << "Invalid option. Please try again." << endl << endl;
+
+    } while (i != 0 && !vehicles.empty());
+
+    return ret;
+}
 
 string chooseMap() {
 
@@ -231,8 +327,9 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
         }
         cout << '\n';
         cout << "And the deliveries are:\n";
-        if(vehicle->getDeliveries().empty())
-        	cout << "-" << endl;
+
+        if (vehicle->getDeliveries().empty())
+            cout << "-" << endl;
 
         for (auto delivery : vehicle->getDeliveries()) {
             cout << delivery.getID() << ' ';
@@ -242,8 +339,9 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
 
 
     cout << "And the deliveries that couldn't be made were:" << endl;
-    if(deliveries.empty())
-    	cout << "-" << endl;
+
+	if (deliveries.empty())
+	    cout << "-" << endl;
 
     for(auto d : deliveries) {
  	   cout << d.getID() << " ";

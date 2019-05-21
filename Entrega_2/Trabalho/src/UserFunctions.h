@@ -25,6 +25,31 @@ using namespace std;
  */
 int chooseMenuOption();
 
+/**
+ * Funcao que pergunta ao utilizador que opcao prefere para a visualizacao das
+ * entregas distribuidas.
+ *
+ * @return O numero da opcao.
+ */
+int chooseDeliveryMenuOption();
+
+/**
+ * Funcao que retorna um vector apenas com os veiculos do tipo elegido pelo
+ * utilizador.
+ *
+ * @param vehicles Vector com todos os veiculos importados no programa
+ * @return Vector apenas com os veiculos relevantes
+ */
+vector<Vehicle*> getVehiclesFromUserType(vector<Vehicle*> vehicles);
+
+/**
+ * Funcao que retorna um vector apenas com os veiculos escolhidos
+ * pelo utilizador.
+ *
+ * @param vehicles Vector com todos os veiculos importados no programa
+ * @return Vector apenas com os veiculos relevantes
+ */
+vector<Vehicle*> userChosenVehicles(vector<Vehicle*> vehicles);
 
 /**
  * Funcao que pergunta ao utilizador qual o mapa que este deseja escolher.
