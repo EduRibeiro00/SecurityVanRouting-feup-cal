@@ -78,13 +78,6 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor) {
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
 
 
-			// TIRAR DPS
-//			stringstream ss;
-//			ss << node.getID();
-//			gv->setVertexLabel(node.getID(), ss.str());
-
-
-
 			if (node.getType() == CENTRAL) {
                 gv->setVertexLabel(node.getID(), "CENTRAL");
                 gv->setVertexSize(node.getID(), 40);
@@ -112,13 +105,6 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor) {
 			for(unsigned j = 0; j < edges.size(); j++){
 				if(edges.at(j).shouldBeDisplayed()) {
 					gv->addEdge(idAresta, init_node.getID(), edges.at(j).getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
-
-/*
-					// TIRAR DPS
-					stringstream ss;
-					ss << idAresta << " - " << fixed << setprecision(5) << edges.at(j).getWeight();
-					gv->setEdgeLabel(idAresta, ss.str());
-*/
 
                     idAresta++;
 				}

@@ -25,6 +25,7 @@ using namespace std;
  */
 int chooseMenuOption();
 
+
 /**
  * Funcao que pergunta ao utilizador que opcao prefere para a visualizacao das
  * entregas distribuidas.
@@ -32,6 +33,7 @@ int chooseMenuOption();
  * @return O numero da opcao.
  */
 int chooseDeliveryMenuOption();
+
 
 /**
  * Funcao que retorna um vector apenas com os veiculos do tipo elegido pelo
@@ -42,6 +44,7 @@ int chooseDeliveryMenuOption();
  */
 vector<Vehicle*> getVehiclesFromUserType(vector<Vehicle*> vehicles);
 
+
 /**
  * Funcao que retorna um vector apenas com os veiculos escolhidos
  * pelo utilizador.
@@ -51,11 +54,13 @@ vector<Vehicle*> getVehiclesFromUserType(vector<Vehicle*> vehicles);
  */
 vector<Vehicle*> userChosenVehicles(vector<Vehicle*> vehicles);
 
+
 /**
  * Funcao que pergunta ao utilizador qual o mapa que este deseja escolher.
  * @return Nome da cidade/pais.
  */
 string chooseMap();
+
 
 /**
  * Funcao que pergunta ao utilizador qual o nome do ficheiro em que a informacao
@@ -68,6 +73,7 @@ string chooseMap();
  * @return Vetor com os veiculos disponiveis.
  */
 vector<Vehicle*> readCentralAndVehicles(Graph<Node> graph, Vertex<Node>* &central);
+
 
 /**
  * Funcao que pergunta ao utilizador qual o nome do ficheiro que contem a informacao
