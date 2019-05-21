@@ -24,6 +24,8 @@ using namespace std;
 
 int main() {
 
+	GraphViewer* gvMain, *gvAccess, *gvVehicle;
+
 	string map = chooseMap();
 
 	cout << "Building graph..." << endl;
@@ -50,16 +52,22 @@ int main() {
     int width, height;
 
     cout << "Displaying graph..." << endl;
-    GraphViewer* gv = displayGraph(graph, "black", width, height);
-    labelAccessibleVertices(graph, central, table, gv);
+    gvMain = displayGraph(graph, "black", width, height);
     cout << "Done!" << endl << endl;
 
+    bool displayAccessible = false;
+
+    if(askForAccessGraph()) {
+    	displayAccessible = true;
+    	cout << endl << endl << "Calculating and displaying access graph..." << endl;
+    	displayAccessibleGraph(graph, central);
+    	cout << "Done!" << endl;
+    }
 
     vector<Delivery> deliveries = readDeliveries(graph, central);
     cout << endl;
-    clearLabels(graph, gv);
-    displayDeliveryNodes(deliveries, gv);
-
+    displayDeliveryNodes(deliveries, gvMain);
+    cout << endl << "The delivery nodes can be seen in the main graph." << endl;
 
     cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
     pathExists(central, deliveries, table);
@@ -78,13 +86,12 @@ int main() {
     displayResults(vehicles, deliveries);
 
 
-
     cout << "To display the path of the vehicles, please press ENTER." << endl;
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
     cout << "Displaying calculated paths for the vehicles..." << endl;
-    displayVehiclePaths(graph, vehicles, table, width, height, "black");
+    gvVehicle = displayVehiclePaths(graph, vehicles, table, width, height, "black");
     cout << "Done!" << endl << endl;
 
 
@@ -215,6 +222,13 @@ int main() {
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
     cin.ignore(std::numeric_limits<streamsize>::max(),'\n');
 
+    gvMain->closeWindow();
+    gvVehicle->closeWindow();
+
+    if(displayAccessible)
+    	gvVehicle->closeWindow();
+
+    cout << "Thank you!" << endl;
 
     return 0;
 }

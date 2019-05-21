@@ -19,33 +19,11 @@
  *
  * @param graph Grafo a ser desenhado
  * @param edgeColor Cor a dar as arestas
- * @param width Comprimento da janela do grafo (sera calculado e retornado)
- * @param height Altura da janela do grafo (sera calculado e retornado)
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor,int& width, int& height);
+GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor);
 
-/**
- * TEST ONLY!!
- * Funcao que identifica, no GraphViewer, os vertices acessiveis a partir da central
- * definida, para facilitar a construçao das entregas para testar o programa.
- *
- * @param graph Grafo, com nos e arestas
- * @param central Central definida para o grafo
- * @param table Tabela contendo as distancias entre nos, e outras informacoes necessarias para o calculo dos trajetos
- * @param gv Pointer para o objeto GraphViewer.
- */
-void labelAccessibleVertices(Graph<Node>& graph, Vertex<Node>* central, Table table, GraphViewer* gv);
-
-/**
- * TEST ONLY!!
- * Funcao que elimina todos os labels auxiliares dos vertices do objeto GraphViewer.
- *
- * @param graph Grafo, com nos e arestas
- * @param gv Pointer para o objeto GraphViewer.
- */
-void clearLabels(Graph<Node>& graph, GraphViewer* gv);
 
 /**
  * Funcao que indica, no grafo desenhado, as origens e destinos de cada entrega.
@@ -57,6 +35,18 @@ void clearLabels(Graph<Node>& graph, GraphViewer* gv);
  */
 GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv);
 
+
+/**
+ * Funcao que calcula e desenha o grafico com os nos que sao acessiveis a partir da central definida anteriormente.
+ * Os vertices sao calculados atraves de uma pesquisa em profundidade a partir da central.
+ *
+ * @param graph Grafo previamente inicializado, com nos e arestas
+ * @param central Vertice que representa a central dos veiculos
+ *
+ * @return Pointer para o objeto GraphViewer.
+ */
+GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central);
+
 /**
  * Funcao que calcula qual o percurso exato que cada veiculo tera de fazer para fazer as
  * entregas que lhe foram atribuidas, desenhando esses trajetos com o GraphViewer.
@@ -64,12 +54,10 @@ GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv);
  * @param graph Grafo, com nos e arestas
  * @param vehicles Vetor de veiculos, com entregas atribuidas a cada um
  * @param table Tabela contendo as distancias entre nos, e outras informacoes necessarias para o calculo dos trajetos
- * @param width Comprimento da janela do grafo (ja calculado anteriormente)
- * @param height Altura da janela do grafo (ja calculado anteriormente)
  * @param edgeColor Cor a dar as arestas
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor);
+GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor);
 
 #endif /* GVFUNCTIONS_H_ */

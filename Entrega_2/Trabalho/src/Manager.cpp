@@ -9,7 +9,7 @@
 #include "Manager.h"
 
 
-bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table table) {
+bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Table table) {
 
 	int bestPositionOrigin = -1, bestPositionDestination = -1;
 	double bestDelta = INF;
@@ -44,6 +44,7 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
 
 	bestVehicle->addDelivery(delivery);
 
+
 	// para entregas seguintes, no caso de haver igualdade no termo de
 	// comparação, o veiculo ao qual acaba de ser associada uma entrega
 	// tera menor prioridade, o que no contexto do problema, na vida
@@ -54,6 +55,7 @@ bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table
             swap(vehicles[i], vehicles[i+1]);
         }
     }
+
 
 	return true;
 }
@@ -111,4 +113,6 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 
 	if(impDelivery)
 		cout << "The impossible deliveries were removed." << endl;
+	else
+		cout << "Every delivery is valid!" << endl;
 }

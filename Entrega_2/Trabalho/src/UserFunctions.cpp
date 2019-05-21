@@ -216,3 +216,26 @@ void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries) {
 
     cout << endl << endl;
 }
+
+
+
+bool askForAccessGraph() {
+
+	int answer;
+
+	do {
+
+		cout << "Do you wish to see a graph containing the acessible nodes from the central?" << endl;
+		cout << "0 -> no" << endl;
+		cout << "1 -> yes" << endl;
+		cout << "Answer: ";
+		cin >> answer;
+
+		if((answer != 0) && (answer != 1))
+			cout << endl << "Invalid option! Try again." << endl << endl;
+
+	} while((answer != 0) && (answer != 1));
+
+
+	return answer;
+}

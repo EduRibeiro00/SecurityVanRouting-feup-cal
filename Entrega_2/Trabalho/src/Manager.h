@@ -22,7 +22,7 @@
  *
  * @return True se a entrega foi atribuida, false caso contrario.
  */
-bool assignDeliveryToVehicle(vector<Vehicle*> vehicles, Delivery delivery, Table table);
+bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Table table);
 
 
 /**

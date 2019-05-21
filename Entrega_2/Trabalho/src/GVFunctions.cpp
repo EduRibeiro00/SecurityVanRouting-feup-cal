@@ -17,7 +17,7 @@ using namespace std;
 string colors[8] = {"BLUE", "RED", "GREEN", "WHITE", "ORANGE", "YELLOW", "LIGHT_GRAY", "BLACK" };
 
 
-GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int& height) {
+GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor) {
 
 		double maxX = 0, maxY = 0, minX = 9999999999, minY = 9999999999;
 
@@ -45,12 +45,12 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int&
 		// CALCULO DE DIMENSOES
 		// --------
 
-		height = 800;
+		int height = 800;
 		double gravWidth = maxX - minX;
 		double gravHeight = maxY - minY;
 
 		// uso de uma regra de tres simples para calcular o comprimento ideal para a janela
-		width = max(height, (int) (height * gravHeight / gravWidth));
+		int width = max(height, (int) (height * gravHeight / gravWidth));
 
 
 		GraphViewer *gv = new GraphViewer(width, height, false);
@@ -77,16 +77,12 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int&
 
 			gv->addNode(node.getID(), (int) displayX, (int) displayY);
 
-			node.setDisplayX((int) displayX);
-			node.setDisplayY((int) displayY);
-
 
 			// TIRAR DPS
-/*
-			stringstream ss;
-			ss << node.getID();
-			gv->setVertexLabel(node.getID(), ss.str());
-*/
+//			stringstream ss;
+//			ss << node.getID();
+//			gv->setVertexLabel(node.getID(), ss.str());
+
 
 
 			if (node.getType() == CENTRAL) {
@@ -136,46 +132,106 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor, int& width, int&
 		return gv;
 }
 
-void labelAccessibleVertices(Graph<Node>& graph, Vertex<Node>* central, Table table, GraphViewer* gv) {
 
-    for (auto v : graph.getVertexSet()) {
+GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central) {
 
-        if (v->getInfo().getType() != CENTRAL) {
-            if (getDistFromTable(v, central, table) != -1) {
-                stringstream ss;
-                ss << v->getInfo().getID();
-                gv->setVertexLabel(v->getInfo().getID(), ss.str());
-            }
-        }
-    }
+	vector<Node> vertexesToDraw;
+	double maxX = 0, maxY = 0, minX = 999999999, minY = 999999999;
+	int width, height = 800;
 
-    gv->rearrange();
 
+	// faz uma visita em profundidade a partir da central; uma vez que o grafo e bidirecional,
+	// isto faz com que o vetor retorne com todos os vertices acessiveis a partir da central.
+	graph.dfsVisit(central, vertexesToDraw);
+
+
+	for(auto n : vertexesToDraw) {
+
+		double currentX = n.getX();
+		double currentY = n.getY();
+
+		if(currentX > maxX)
+			maxX = currentX;
+
+		if(currentX < minX)
+			minX = currentX;
+
+		if(currentY > maxY)
+			maxY = currentY;
+
+		if(currentY < minY)
+			minY = currentY;
+
+	}
+
+
+	double gravWidth = maxX - minX;
+	double gravHeight = maxY - minY;
+
+	// uso de uma regra de tres simples para calcular o comprimento ideal para a janela
+	width = max(height, (int) (height * gravHeight / gravWidth));
+
+	GraphViewer *gv = new GraphViewer(width, height, false);
+	gv->createWindow(width, height);
+	gv->defineEdgeColor("black");
+	gv->defineEdgeCurved(true);
+
+
+	for(auto node : vertexesToDraw) {
+
+		double displayX = (node.getX() - minX ) * width / gravWidth * 0.95;
+		double displayY = (node.getY() - minY ) * height / gravHeight * 0.95;
+
+		displayX += (0.025 * width);
+		displayY += (0.025 * height);
+
+		displayY = height - displayY;
+
+		gv->addNode(node.getID(), (int) displayX, (int) displayY);
+
+		if (node.getType() == CENTRAL) {
+		     gv->setVertexLabel(node.getID(), "CENTRAL");
+		     gv->setVertexSize(node.getID(), 40);
+	    }
+		else {
+			gv->setVertexSize(node.getID(), 15);
+			gv->setVertexLabel(node.getID(), to_string(node.getID()));
+		}
+
+		gv->setVertexColor(node.getID(), colors[node.getType()]);
+	}
+
+
+	int idAresta = 1;
+
+	for(auto n : vertexesToDraw){
+
+		Vertex<Node>* v = graph.findVertex(n);
+
+		vector<Edge<Node> > edges = v->getAdj();
+
+		for(auto e : edges){
+			if(e.shouldBeDisplayed()) {
+				gv->addEdge(idAresta, n.getID(), e.getDest()->getInfo().getID(), EdgeType::UNDIRECTED);
+                idAresta++;
+			}
+		}
+
+	}
+
+
+	gv->rearrange();
+	return gv;
 }
 
-void clearLabels(Graph<Node>& graph, GraphViewer* gv) {
 
-    for (auto v : graph.getVertexSet()) {
 
-        if (v->getInfo().getType() != CENTRAL) {
-            gv->clearVertexLabel(v->getInfo().getID());
-        }
-
-    }
-
-    gv->rearrange();
-
-}
 
 GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv) {
 
 	for(auto d : deliveries) {
-
-		stringstream ssOrigem, ssDestino;
-		ssOrigem << d.getID() << " - origem";
-		ssDestino << d.getID() << " - destino";
-		gv->setVertexLabel(d.getOrigem()->getInfo().getID(), ssOrigem.str());
-		gv->setVertexLabel(d.getDestino()->getInfo().getID(), ssDestino.str());
+		gv->setVertexLabel(d.getOrigem()->getInfo().getID(), to_string(d.getID()) + " - origem");
+		gv->setVertexLabel(d.getDestino()->getInfo().getID(), to_string(d.getID()) + " - destino");
 	}
 
 	gv->rearrange();
@@ -185,7 +241,7 @@ GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv) 
 
 
 
-GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, int width, int height, string edgeColor) {
+GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, Table table, string edgeColor) {
 
 	GraphViewer* gv = new GraphViewer(width, height, false);
 	gv->createWindow(width, height);
@@ -209,13 +265,11 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 				while(s != v) {
 					Vertex<Node>* t = getPathFromTable(s, v, table);
 
-//					cout << "t: " << t->getInfo().getID() << " v: " << v->getInfo().getID();
 
 					Edge<Node>* e = graph.getEdge(t->getInfo(), v->getInfo());
 
 					if(e != NULL && e->shouldBeDisplayed()) {
 
-//						cout << " - deu display";
 
 						gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
 						gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
@@ -259,7 +313,6 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 
 						if(e != NULL && e->shouldBeDisplayed()) {
 
-//							cout << " - deu display";
 
 							gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
 							gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
@@ -299,7 +352,6 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 						}
 					}
 
-//					cout << endl;
 
 					v = t;
 				}

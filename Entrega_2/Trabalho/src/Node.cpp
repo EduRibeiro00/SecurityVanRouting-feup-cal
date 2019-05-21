@@ -33,26 +33,6 @@ void Node::setType(TYPE type) {
 }
 
 
-int Node::getDisplayX() {
-	return displayX;
-}
-
-
-void Node::setDisplayX(int displayX) {
-	this->displayX = displayX;
-}
-
-
-int Node::getDisplayY() {
-	return displayY;
-}
-
-
-void Node::setDisplayY(int displayY) {
-	this->displayY = displayY;
-}
-
-
 bool Node::operator==(const Node& n) const {
 	return id == n.getID();
 }

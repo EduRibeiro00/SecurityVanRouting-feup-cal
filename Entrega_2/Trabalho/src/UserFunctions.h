@@ -57,4 +57,13 @@ vector<Delivery> readDeliveries(Graph<Node> graph, Vertex<Node>* central);
 void displayResults(vector<Vehicle*> vehicles, vector<Delivery> deliveries);
 
 
+
+/**
+ * Funcao que pergunta ao utilizador se este deseja ver um grafo com todos os nos acessiveis a partir da central, cada um com o seu id
+ *
+ * @return True se o utilizador quer, false se nao
+ */
+bool askForAccessGraph();
+
+
 #endif /* USERFUNCTIONS_H_ */

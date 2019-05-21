@@ -41,15 +41,6 @@ private:
 	 */
 	TYPE type;
 
-	/**
-	 * Coordenada X a ser utilizada para fazer display do nó no GraphViewer.
-	 */
-	int displayX = 0;
-
-	/**
-	 * Coordenada Y a ser utilizada para fazer display do nó no GraphViewer.
-	 */
-	int displayY = 0;
 
 public:
 
@@ -117,34 +108,6 @@ public:
 	 * @param type Novo tipo do node
 	 */
 	void setType(TYPE type);
-
-
-	/**
-	 * Funcao que retorna a coordenada X a ser utilizada para fazer display do nó no GraphViewer.
-	 * @return Coordenada X do no a ser utilizada para o seu display.
-	 */
-	int getDisplayX();
-
-
-	/**
-	 * Funcao que modifica a coordenada X a ser utilizada para fazer display do nó no GraphViewer.
-	 * @param displayX A nova coordenada X.
-	 */
-	void setDisplayX(int displayX);
-
-
-	/**
-	 * Funcao que retorna a coordenada Y a ser utilizada para fazer display do nó no GraphViewer.
-	 * @return Coordenada Y do no a ser utilizada para o seu display.
-	 */
-	int getDisplayY();
-
-
-	/**
-	 * Funcao que modifica a coordenada Y a ser utilizada para fazer display do nó no GraphViewer.
-	 * @param displayX A nova coordenada Y.
-	 */
-	void setDisplayY(int displayY);
 
 
 	/**

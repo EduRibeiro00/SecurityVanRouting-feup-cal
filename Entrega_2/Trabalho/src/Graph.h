@@ -157,6 +157,10 @@ public:
 	int getNumEdges() const;
 	Edge<T>* getEdge(const T& s, const T& t);
 
+	vector<T> dfs() const;
+	void dfsVisit(Vertex<T>* v, vector<T>& res) const;
+
+
 	// Fp05 - single source
 	void dijkstraShortestPath(const T &s);
     void dijkstraShortestPathTable(Table &table, const T &s);
@@ -275,6 +279,31 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, bool shouldDispl
 	return true;
 }
 
+
+
+template <class T>
+vector<T> Graph<T>::dfs() const {
+	vector<T> res;
+	for (auto v : vertexSet)
+		v->visited = false;
+	for (auto v : vertexSet)
+	    if (! v->visited)
+	    	dfsVisit(v, res);
+	return res;
+}
+
+
+
+template <class T>
+void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res) const {
+	v->visited = true;
+	res.push_back(v->info);
+	for (auto & e : v->adj) {
+		auto w = e.dest;
+	    if ( ! w->visited)
+	    	dfsVisit(w, res);
+	}
+}
 
 
 //--------------------
