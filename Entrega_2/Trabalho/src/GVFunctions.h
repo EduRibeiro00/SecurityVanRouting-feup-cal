@@ -26,6 +26,19 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor);
 
 
 /**
+ * Funcao que desenha no grafo dos nos ligados a central os pontos de articulacao. Estes ficam com uma cor diferente.
+ *
+ * @param gv Pointer para objeto GraphViewer, ja inicializado
+ * @param graph Grafo com nos e arestas
+ * @param central Vertice que representa a central dos veiculos
+ * @param vertexColor Cor a dar aos vertices que sao pontos de articulacao
+ *
+ * @return Pointer para o objeto GraphViewer.
+ */
+GraphViewer* displayArticulatedPoints(GraphViewer* gv, Graph<Node> graph, Vertex<Node>* central, string vertexColor);
+
+
+/**
  * Funcao que indica, no grafo desenhado, as origens e destinos de cada entrega.
  *
  * @param deliveries Vetor com as entregas que irao ser feitas (em principio) pelos veiculos

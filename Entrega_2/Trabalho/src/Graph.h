@@ -186,7 +186,7 @@ public:
 
 
 	void resetCounter();
-	vector<Vertex<T>* > calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res);
+	void calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res);
 
 
 };
@@ -523,7 +523,7 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 
 
 template<class T>
-vector<Vertex<T>* > Graph<T>::calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res) {
+void Graph<T>::calcArticulationPoints(Vertex<T>* v, vector<Vertex<T>* >& res) {
 
 	v->visited = true;
 	v->low = v->num = counter++;
@@ -535,7 +535,7 @@ vector<Vertex<T>* > Graph<T>::calcArticulationPoints(Vertex<T>* v, vector<Vertex
 		if(!w->visited) {
 
 			w->parent = v;
-			calcArticulationPoints(w);
+			calcArticulationPoints(w, res);
 			v->low = min(v->low, w->low);
 
 			if(w->low >= v->num)

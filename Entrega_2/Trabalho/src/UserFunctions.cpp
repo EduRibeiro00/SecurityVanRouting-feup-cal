@@ -22,16 +22,17 @@ int chooseMenuOption() {
 		cout << "1: Read new vehicle file" << endl;
 		cout << "2: Display graph" << endl;
 		cout << "3: Display accesible graph from the central" << endl;
-		cout << "4: Read delivery file and calculate vehicle paths" << endl;
-		cout << "5: Exit program" << endl;
+		cout << "4: Display articulated points" << endl;
+		cout << "5: Read delivery file and calculate vehicle paths" << endl;
+		cout << "6: Exit program" << endl;
 		cout << "Option: ";
 		cin >> i;
 		cout << endl << endl;
 
-		if(i > 5)
+		if(i > 6)
 			cout << "Invalid option. Please try again." << endl << endl;
 
-	} while(i > 5);
+	} while(i > 6);
 
 	return i;
 }

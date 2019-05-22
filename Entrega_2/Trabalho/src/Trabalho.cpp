@@ -39,7 +39,7 @@ int main() {
 
     int option;
 
-	while((option = chooseMenuOption()) != 5) {
+	while((option = chooseMenuOption()) != 6) {
 
 	  switch(option) {
 
@@ -101,7 +101,7 @@ int main() {
 
 		case 3:
 			if(!graphDefined) {
-				cout << "Cannot do operation! Graph is not defined." << endl;
+				cout << "Cannot do operation! Graph is not defined." << endl << endl;
 				break;
 			}
 
@@ -122,6 +122,28 @@ int main() {
 	    	break;
 
 		case 4:
+			if(!graphDefined) {
+				cout << "Cannot do operation! Graph is not defined." << endl << endl;
+				break;
+			}
+
+			if(gvAccess == NULL) {
+				cout << "Accessible graph is not being displayed! Please select option 3 first." << endl << endl;
+				break;
+			}
+
+			if(central == NULL) {
+				cout << "Cannot do operation! Central is not defined." << endl << endl;
+				break;
+			}
+
+			cout << "Calculating and displaying articulated points..." << endl;
+			gvAccess = displayArticulatedPoints(gvAccess, graph, central, "pink");
+			cout << "Done! The art. points are being displayed in pink." << endl << endl;
+			break;
+
+
+		case 5:
 			if(!graphDefined) {
 				cout << "Cannot do operation! Graph is not defined." << endl;
 				break;

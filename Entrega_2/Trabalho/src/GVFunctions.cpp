@@ -119,6 +119,23 @@ GraphViewer* displayGraph(Graph<Node>& graph, string edgeColor) {
 }
 
 
+GraphViewer* displayArticulatedPoints(GraphViewer* gv, Graph<Node> graph, Vertex<Node>* central, string vertexColor) {
+
+	for(auto v : graph.getVertexSet())
+		v->setVisited(false);
+
+	graph.resetCounter();
+
+	vector<Vertex<Node>* > res;
+	graph.calcArticulationPoints(central, res);
+
+
+	for(auto v : res)
+		gv->setVertexColor(v->getInfo().getID(), vertexColor);
+
+	return gv;
+}
+
 
 vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vertex<Node>* central, int& width, int& height) {
 
