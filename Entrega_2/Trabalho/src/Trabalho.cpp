@@ -29,6 +29,7 @@ int main() {
 	Vertex<Node>* central = NULL;
 	vector<Vehicle*> vehicles;
 	vector<Delivery> deliveries;
+	vector<Vertex<Node>* > accessNodes; // nós que podemos aceder a partir da central
 
 	bool graphDefined = false;
 	bool displayAccessible = false;
@@ -48,8 +49,10 @@ int main() {
 				gvMain->closeWindow();
 				gvMain = NULL;
 			}
+			table.clear();
 			vehicles.clear();
 			deliveries.clear();
+			accessNodes.clear();
 			graphDefined = true;
 			displayAccessible = false;
 			central = NULL;
@@ -63,10 +66,6 @@ int main() {
 			removeUselessEdges(graph);
 			cout << "Done!" << endl << endl;
 
-		    cout << "Building table..." << endl;
-		    table = buildDijkstraTable(graph);
-		    cout << "Done!" << endl << endl;
-
 		    break;
 
 		case 1:
@@ -75,10 +74,19 @@ int main() {
 				break;
 			}
 
-			displayAccessible = false;
+			displayAccessible = true;
 			central = NULL;
-		    vehicles = readCentralAndVehicles(graph, central);
+
+			vehicles = readCentralAndVehicles(graph, central);
+
+		    cout << "Calculating accessible nodes..." << endl;
+		    accessNodes = calculateAccessNodesDisplayCoords(graph, central, width, height);
 		    cout << "Done!" << endl << endl;
+
+		    cout << "Building table..." << endl;
+		    table = buildDijkstraTable(graph, accessNodes);
+		    cout << "Done!" << endl << endl;
+
 
 		    break;
 
@@ -114,9 +122,12 @@ int main() {
 				gvAccess->closeWindow();
 				gvAccess = NULL;
 			}
-	    	displayAccessible = true;
 	    	cout << "Calculating and displaying access graph..." << endl;
-	    	gvAccess = displayAccessibleGraph(graph, central, width, height);
+	    	if(!displayAccessible) {
+	    		accessNodes = calculateAccessNodesDisplayCoords(graph, central, width, height);
+	    		displayAccessible = true;
+	    	}
+	    	gvAccess = displayAccessibleGraph(accessNodes, width, height);
 	    	cout << "Done!" << endl << endl;
 
 	    	break;
@@ -166,8 +177,14 @@ int main() {
 		    	cout << endl << "The delivery nodes can be seen in the main graph." << endl;
 		    }
 
+
+		    if(!displayAccessible) {
+	    		accessNodes = calculateAccessNodesDisplayCoords(graph, central, width, height);
+	    		displayAccessible = true;
+		    }
+
 		    cout <<	"Verifying the graph's conectivity and if all deliveries are possible..." << endl;
-		    pathExists(central, deliveries, table);
+		    pathExists(accessNodes, deliveries);
 		    cout << "Done!" << endl << endl;
 
 		    cout << "Assigning deliveries to vehicles..." << endl;
@@ -215,13 +232,6 @@ int main() {
 
                 cout << "Displaying calculated paths for the vehicles..." << endl;
 
-                // in order to know the position to give each one of the nodes, in the GraphViewer window
-                // (if the variable is true, that means the nodes already have the positions assigned to them,
-                // and the function doesn't need to be called again).
-                if(!displayAccessible) {
-                    calculateAccessNodesDisplayCoords(graph, central, width, height);
-                    displayAccessible = true;
-                }
 
                 if(gvVehicle != NULL) {
                     gvVehicle->closeWindow();

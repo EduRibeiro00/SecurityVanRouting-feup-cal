@@ -75,16 +75,11 @@ void assignDeliveries(vector<Vehicle*> vehicles, vector<Delivery>& deliveries, T
 
 
 
-void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table) {
+void pathExists(vector<Vertex<Node>* > accessNodes, vector<Delivery>& deliveries) {
 
 	// como todos os percursos comecam e acabam na central, mesmo que as entregas
 	// acabem por ser feitas por varios veiculos, nao tendo um que passar em todos
 	// os pontos, e necessario na mesma que haja um caminho entre todos os pontos.
-
-	// uma vez que a tabela ja foi gerada pela aplicacao do algoritmo de Dijkstra,
-	// nao e necessario efetuar uma pesquisa em profundidade para verificar a
-	// conectividade; basta aceder aos valores da tabela, o que fica bastante mais
-	// eficiente.
 
 	// central nao pode ser origem nem destino!
 
@@ -95,8 +90,8 @@ void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table
 
 		Delivery d = deliveries.at(i);
 
-		if((getDistFromTable(central, d.getOrigem(), table) == -1) ||
-		   (getDistFromTable(central, d.getDestino(), table) == -1)) {
+		if((find(accessNodes.begin(), accessNodes.end(), d.getOrigem()) == accessNodes.end()) ||
+		   (find(accessNodes.begin(), accessNodes.end(), d.getDestino()) == accessNodes.end())) {
 
 			impDelivery = true;
 			cout << "Delivery " << d.getID();

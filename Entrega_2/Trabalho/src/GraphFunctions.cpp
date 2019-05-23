@@ -263,19 +263,24 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) 
 }
 
 
-Table buildDijkstraTable(Graph<Node> graph) {
+Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) {
 
     // uma vez que os grafos que nos foram dados pelos monitores
     // sao esparsos (nº de arestas e similar ao nº de vertices),
     // compensa mais utilizar o algoritmo de Dijkstra para todos
     // os vertices, do que usar o algoritmo de Floyd-Warshall.
 
+	// NOTA: previamente, o nosso programa gerava uma tabela para todos
+	// os nos do grafo, independementemente de eles serem acessiveis ou nao a partir da central.
+	// A vantagem e que nao era necessario gerar nova tabela ao mudar de central.
+	// Porem, era bastante ineficiente: gerar a tabela para Lisboa demoraria cerca de 3 horas.
+
+	// Decidimos por isso gerar a tabela apenas para os nos acessiveis do grafo.
+
     Table table;
 
-    vector<Vertex<Node> * > vertexSet = graph.getVertexSet();
-
-    for(auto v1 : vertexSet)
-    	graph.dijkstraShortestPathTable(table, v1->getInfo());
+    for(auto v : accessNodes)
+    	graph.dijkstraShortestPathTable(table, v->getInfo());
 
     return table;
 }

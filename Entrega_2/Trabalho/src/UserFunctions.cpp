@@ -18,8 +18,8 @@ int chooseMenuOption() {
 	unsigned int i;
 
 	do {
-		cout << "0: Load new graph and generate new table" << endl;
-		cout << "1: Read new vehicle file" << endl;
+		cout << "0: Load new graph" << endl;
+		cout << "1: Read new vehicle file and generate new table" << endl;
 		cout << "2: Display graph" << endl;
 		cout << "3: Display accesible graph from the central" << endl;
 		cout << "4: Display articulated points" << endl;

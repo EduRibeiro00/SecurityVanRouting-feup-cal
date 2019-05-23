@@ -68,15 +68,17 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
 
 
 /**
- * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros
- * (distancia -1 se nao for possivel o trajeto), bem como o vertice anterior relativamente a esse trajeto.
+ * Funcao que, a partir de um grafo e das suas arestas, constroi uma tabela com as distancias entre um vertice e todos os outros,
+ * bem como o vertice anterior relativamente a esse trajeto (feito apenas para os nós acessiveis a partir da central, que
+ * sao os de interesse).
  *
  * @param graph O grafo, ja construido
+ * @param accessNodes Vetor com os vértices acessiveis a partir da central
  *
  * @return A tabela com as distancias e os vertices anteriores.
  */
 
-Table buildDijkstraTable(Graph<Node> graph);
+Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes);
 
 
 

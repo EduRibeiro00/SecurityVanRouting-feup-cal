@@ -64,17 +64,16 @@ vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vert
 
 
 /**
- * Funcao que calcula e desenha o grafico com os nos que sao acessiveis a partir da central definida anteriormente.
+ * Funcao que desenha o grafico com os nos que sao acessiveis a partir da central definida anteriormente.
  * Os vertices sao calculados atraves de uma pesquisa em profundidade a partir da central.
  *
- * @param graph Grafo previamente inicializado, com nos e arestas
- * @param central Vertice que representa a central dos veiculos
- * @param width Comprimento da janela do GraphViewer (retornado pela funcao)
- * @param height Altura da janela do GraphViewer (retornado pela funcao)
+ * @param accessNodes Vetor com os nos acessiveis a partir da central
+ * @param width Comprimento da janela do GraphViewer
+ * @param height Altura da janela do GraphViewer
  *
  * @return Pointer para o objeto GraphViewer.
  */
-GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, int& width, int& height);
+GraphViewer* displayAccessibleGraph(vector<Vertex<Node>* > accessNodes, int width, int height);
 
 
 

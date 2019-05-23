@@ -199,9 +199,7 @@ vector<Vertex<Node>* > calculateAccessNodesDisplayCoords(Graph<Node> graph, Vert
 
 
 
-GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, int& width, int& height) {
-
-	vector<Vertex<Node>* > vertexesToDraw = calculateAccessNodesDisplayCoords(graph, central, width, height);
+GraphViewer* displayAccessibleGraph(vector<Vertex<Node>* > accessNodes, int width, int height) {
 
 
 	GraphViewer *gv = new GraphViewer(width, height, false);
@@ -210,7 +208,7 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, in
 	gv->defineEdgeCurved(true);
 
 
-	for(auto v : vertexesToDraw) {
+	for(auto v : accessNodes) {
 
 		Node node = v->getInfo();
 
@@ -231,7 +229,7 @@ GraphViewer* displayAccessibleGraph(Graph<Node> graph, Vertex<Node>* central, in
 
 	int idAresta = 1;
 
-	for(auto v : vertexesToDraw){
+	for(auto v : accessNodes){
 
 		vector<Edge<Node> > edges = v->getAdj();
 

@@ -40,11 +40,10 @@ void assignDeliveries(vector<Vehicle*> vehicles, vector<Delivery>& deliveries, T
  * Funcao que, dado os vertices do grafo pelo qual o(s) veiculo(s) terao de passar, verifica se existe alguma entrega
  * que seja impossivel de fazer (avalia a conectividade do grafo). Se existirem, remove-as do vetor de entregas.
  *
- * @param central No do grafo que representa a central dos veiculos, onde todos os percursos comecam e acabam
- * @param deliveries Vetor das entregas a serem feitas; no fim, serao retornadas apenas as entregas possiveis de serem feitas
- * @param table Tabela com as distancias e outras informacoes
+ * @param accessNodes Vetor com os vertices acessiveis a partir da central
+ * @param deliveries Vetor de entregas
  */
-void pathExists(Vertex<Node>* central, vector<Delivery>& deliveries, Table table);
+void pathExists(vector<Vertex<Node>* > accessNodes, vector<Delivery>& deliveries);
 
 
 /**
