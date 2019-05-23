@@ -289,69 +289,29 @@ GraphViewer* displayVehiclePaths(Graph<Node>& graph, vector<Vehicle*> vehicles, 
 					Vertex<Node>* t = getPathFromTable(s, v, table);
 
 
-					Edge<Node>* e = graph.getEdge(t->getInfo(), v->getInfo());
+					gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
+					gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
+					gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
+					gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
 
-					if(e != NULL && e->shouldBeDisplayed()) {
-
-
-						gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
-						gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
-						gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
-						gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
-
-						if (t->getInfo().getType() == CENTRAL) {
-			                gv->setVertexLabel(t->getInfo().getID(), "CENTRAL");
-			                gv->setVertexSize(t->getInfo().getID(), 40);
-			            }
-						else
-							gv->setVertexSize(t->getInfo().getID(), 15);
+					if (t->getInfo().getType() == CENTRAL) {
+			            gv->setVertexLabel(t->getInfo().getID(), "CENTRAL");
+			            gv->setVertexSize(t->getInfo().getID(), 40);
+			          }
+					else
+						gv->setVertexSize(t->getInfo().getID(), 15);
 
 
-						if (v->getInfo().getType() == CENTRAL) {
-			                gv->setVertexLabel(v->getInfo().getID(), "CENTRAL");
-			                gv->setVertexSize(v->getInfo().getID(), 40);
-			            }
-						else
-							gv->setVertexSize(v->getInfo().getID(), 15);
+					if (v->getInfo().getType() == CENTRAL) {
+			           gv->setVertexLabel(v->getInfo().getID(), "CENTRAL");
+			           gv->setVertexSize(v->getInfo().getID(), 40);
+			        }
+					else
+						gv->setVertexSize(v->getInfo().getID(), 15);
 
 
-						gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
-						idAresta++;
-
-					}
-					else {
-
-						e = graph.getEdge(v->getInfo(), t->getInfo());
-
-						if(e != NULL && e->shouldBeDisplayed()) {
-
-
-							gv->addNode(t->getInfo().getID(), t->getInfo().getDisplayX(), t->getInfo().getDisplayY());
-							gv->addNode(v->getInfo().getID(), v->getInfo().getDisplayX(), v->getInfo().getDisplayY());
-							gv->setVertexColor(t->getInfo().getID(), colors[t->getInfo().getType()]);
-							gv->setVertexColor(v->getInfo().getID(), colors[v->getInfo().getType()]);
-
-
-							if (t->getInfo().getType() == CENTRAL) {
-				                gv->setVertexLabel(t->getInfo().getID(), "CENTRAL");
-				                gv->setVertexSize(t->getInfo().getID(), 40);
-				            }
-							else
-								gv->setVertexSize(t->getInfo().getID(), 15);
-
-
-							if (v->getInfo().getType() == CENTRAL) {
-				                gv->setVertexLabel(v->getInfo().getID(), "CENTRAL");
-				                gv->setVertexSize(v->getInfo().getID(), 40);
-				            }
-							else
-								gv->setVertexSize(v->getInfo().getID(), 15);
-
-
-							gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::UNDIRECTED);
-							idAresta++;
-						}
-					}
+					gv->addEdge(idAresta, t->getInfo().getID(), v->getInfo().getID(), EdgeType::DIRECTED);
+					idAresta++;
 
 
 					v = t;

@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <cmath>
 #include <utility>
+#include <stdexcept>
 
 using namespace std;
 
@@ -227,39 +228,21 @@ double getDistFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
     if (v1 == v2)
         return 0;
 
-	// se o par v1-v2 esta na tabela
-	if(table.find(make_pair(v1, v2)) != table.end())
-		return table.at(make_pair(v1, v2)).first;
-
-	// se o par v2-v1 esta na tabela (arestas bidirecionais, logo distancia v1-v2 = distancia v2-v1)
-	if(table.find(make_pair(v2, v1)) != table.end())
-		return table.at(make_pair(v2, v1)).first;
-
-	// nao ha caminho
-	return -1;
+    try {
+    	return table.at(make_pair(v1, v2)).first;
+    } catch (out_of_range &e) {
+    	return -1;
+    }
 }
 
 
 Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
 
-	// se o par v1-v2 esta na tabela
-	if(table.find(make_pair(v1, v2)) != table.end())
+	try {
 		return table.at(make_pair(v1, v2)).second;
-
-	// se o par v2-v1 esta na tabela
-	if(table.find(make_pair(v2, v1)) != table.end()) {
-
-		Vertex<Node>* vAux = table.at(make_pair(v2, v1)).second;
-
-		if (vAux == v2)
-			return v1;
-		else
-			return getPathFromTable(vAux, v2, table);
-
+	} catch (out_of_range &e) {
+		return NULL;
 	}
-
-	// nao ha caminho
-	return NULL;
 }
 
 

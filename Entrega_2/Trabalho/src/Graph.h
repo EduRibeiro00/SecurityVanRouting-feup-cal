@@ -386,7 +386,7 @@ void Graph<T>::dijkstraShortestPathTable(Table &table, const T &origin) {
 
         auto v = q.extractMin();
 
-        if ((v != s) && (table.find(make_pair(v, s)) == table.end())) {
+        if (v != s) {
             table.insert(make_pair(make_pair(s, v), make_pair(v->getDist(), v->getPath())));
         }
 

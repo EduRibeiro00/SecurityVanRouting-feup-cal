@@ -87,7 +87,6 @@ int main() {
 		    table = buildDijkstraTable(graph, accessNodes);
 		    cout << "Done!" << endl << endl;
 
-
 		    break;
 
 		case 2:
@@ -230,7 +229,7 @@ int main() {
                 }
                 cout << endl;
 
-                cout << "Displaying calculated paths for the vehicles..." << endl;
+                cout << "Calculating and displaying the paths for the vehicles..." << endl;
 
 
                 if(gvVehicle != NULL) {
