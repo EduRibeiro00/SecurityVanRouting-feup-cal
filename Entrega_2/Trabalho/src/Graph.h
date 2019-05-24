@@ -26,7 +26,6 @@ struct Key;
 #define INF std::numeric_limits<double>::max()
 
 typedef unordered_map<Key, pair<double, Vertex<Node>*> > Table;
-//typedef map<pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*>  > Table;
 
 /************************* Vertex **************************/
 
@@ -218,7 +217,7 @@ struct Key {
 namespace std {
 
     template<>
-    struct hash<Vertex<Node>> {
+    struct hash<Vertex<Node> > {
 
         size_t operator()(Vertex<Node>*& n) const {
 
