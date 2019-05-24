@@ -248,22 +248,65 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) 
 
 Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) {
 
-    // uma vez que os grafos que nos foram dados pelos monitores
-    // sao esparsos (nº de arestas e similar ao nº de vertices),
-    // compensa mais utilizar o algoritmo de Dijkstra para todos
-    // os vertices, do que usar o algoritmo de Floyd-Warshall.
-
 	// NOTA: previamente, o nosso programa gerava uma tabela para todos
 	// os nos do grafo, independementemente de eles serem acessiveis ou nao a partir da central.
 	// A vantagem e que nao era necessario gerar nova tabela ao mudar de central.
-	// Porem, era bastante ineficiente: gerar a tabela para Lisboa demoraria cerca de 3 horas.
+	// Porem, era bastante ineficiente.
 
 	// Decidimos por isso gerar a tabela apenas para os nos acessiveis do grafo.
 
     Table table;
+    unsigned int i;
+
+    do {
+
+    	cout << "What algorithm should be used to fill the table?" << endl;
+    	cout << "NOTE: If the graph has number of edges roughly equal or lower than the number of nodes," << endl;
+    	cout << "Dijkstra is recommended. Otherwise, Floyd-Warshall might be the better option." << endl;
+    	cout << "0 -> Dijkstra" << endl;
+    	cout << "1 -> Floyd-Warshall" << endl;
+    	cout << "Option: ";
+    	cin >> i;
+
+
+    	if(i > 1)
+    		cout << endl << endl << "Invalid option! Please try again." << endl << endl;
+
+    } while(i > 1);
+
+
+    cout << endl << "Building table..." << endl;
+
+    if(i == 0) {
 
     for(auto v : accessNodes)
     	graph.dijkstraShortestPathTable(table, v->getInfo());
+
+    }
+    else {
+    	vector<vector<Vertex<Node>*> > next = graph.floydWarshallShortestPathTable(accessNodes, table);
+//    	graph.floydWarshallShortestPath();
+//
+//    	vector<Node> v = graph.getfloydWarshallPath(Node(1), Node(7));
+//    	cout << "v: ";
+//    	for(auto n : v)
+//    		cout << n.getID() << " ";
+
+
+//    	for(int i = 0; i < next.size(); i++) {
+//    			for(int j = 0; j < next.size(); j++) {
+//
+//    				if(next[i][j] == NULL)
+//    					cout << "NULL" << " ";
+//    				else {
+//    				cout << next[i][j]->getInfo().getID() << " ";
+//    				}
+//    				if(j == next.size() - 1)
+//    					cout << endl;
+//    			}
+//    		}
+    }
+
 
     return table;
 }

@@ -52,6 +52,7 @@ GraphViewer* displayDeliveryNodes(vector<Delivery> deliveries, GraphViewer* gv);
 
 /**
  * Funcao que calcula as coordenadas de display dos nos que sao acessiveis a partir da central. Retorna tambem um vetor contendo esses mesmos nos.
+ * Os nos sao calculados e identificados atraves de uma pesquisa em profundidade a partir da central.
  *
  * @param graph Grafo previamente inicializado, com nos e arestas
  * @param central Vertice que representa a central

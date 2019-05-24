@@ -49,6 +49,11 @@ int main() {
 				gvMain->closeWindow();
 				gvMain = NULL;
 			}
+			if(gvAccess != NULL) {
+				gvAccess->closeWindow();
+				gvAccess = NULL;
+			}
+
 			table.clear();
 			vehicles.clear();
 			deliveries.clear();
@@ -83,9 +88,19 @@ int main() {
 		    accessNodes = calculateAccessNodesDisplayCoords(graph, central, width, height);
 		    cout << "Done!" << endl << endl;
 
-		    cout << "Building table..." << endl;
 		    table = buildDijkstraTable(graph, accessNodes);
 		    cout << "Done!" << endl << endl;
+
+//		    for(Table::iterator it = table.begin(); it != table.end(); it++) {
+//
+//		    		cout << "v1: " << it->first.first->getInfo().getID();
+//		    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
+//				    cout << "dist: " << it->second.first;
+//				    cout << "; path: " << it->second.second->getInfo().getID() << endl;
+//
+//		    		cout << "----" << endl;
+//		    }
+
 
 		    break;
 

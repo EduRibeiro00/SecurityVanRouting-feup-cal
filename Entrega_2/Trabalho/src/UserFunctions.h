@@ -19,7 +19,7 @@
 using namespace std;
 
 /**
- * Funcao que pergunta ao utilizador que opcao do menu e que este pretende fazer.
+ * Funcao que pergunta ao utilizador que opcao do menu e que este pretende escolher.
  *
  * @return O numero da opcao.
  */

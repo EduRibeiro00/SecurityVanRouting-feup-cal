@@ -7,6 +7,7 @@
 
 
 #include "Manager.h"
+#include <iomanip>
 
 
 bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Table table) {
@@ -24,7 +25,13 @@ bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Tabl
 
 			double curDelta = v->testInsertDelivery(delivery, table, pOrigin, pDestination);
 
+
+			// rounding the value to two decimal places, in order to avoid residual errors
+			curDelta = (int) (curDelta * 100 + 0.5);
+			curDelta = (double) curDelta / 100;
+
 			if(curDelta < bestDelta) {
+
 				bestPositionOrigin = pOrigin;
 				bestPositionDestination = pDestination;
 				bestDelta = curDelta;
@@ -49,7 +56,7 @@ bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Tabl
 	// comparação, o veiculo ao qual acaba de ser associada uma entrega
 	// tera menor prioridade, o que no contexto do problema, na vida
 	// real, se traduziria numa reducao do tempo total das entregas, sem
-	// haver um aumento na distancia total percorrida
+	// haver um aumento na distancia total percorrida.
     for (size_t i = 0; i < vehicles.size() - 1; i++) {
         if (bestVehicle == vehicles[i]) {
             swap(vehicles[i], vehicles[i+1]);
