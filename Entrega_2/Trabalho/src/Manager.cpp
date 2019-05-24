@@ -9,6 +9,8 @@
 #include "Manager.h"
 #include <iomanip>
 
+#define RESIDUAL_THRESHOLD 0.001
+
 
 bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Table table) {
 
@@ -19,25 +21,24 @@ bool assignDeliveryToVehicle(vector<Vehicle*>& vehicles, Delivery delivery, Tabl
 
 	// percorre todos os veiculos, e calcula qual o mais apropriado
 	for(auto v : vehicles) {
+
 		if(v->getType() == delivery.getType()) {
 
 			int pOrigin, pDestination;
 
 			double curDelta = v->testInsertDelivery(delivery, table, pOrigin, pDestination);
 
-
-			// rounding the value to two decimal places, in order to avoid residual errors
-			curDelta = (int) (curDelta * 100 + 0.5);
-			curDelta = (double) curDelta / 100;
-
-			if(curDelta < bestDelta) {
+			if(bestDelta - curDelta > RESIDUAL_THRESHOLD) {
 
 				bestPositionOrigin = pOrigin;
 				bestPositionDestination = pDestination;
 				bestDelta = curDelta;
 				bestVehicle = v;
+
 			}
+
 		}
+
 	}
 
 	// nao ha nenhum veiculo indicado para a entrega

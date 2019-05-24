@@ -284,7 +284,7 @@ Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) 
 
     }
     else {
-    	vector<vector<Vertex<Node>*> > next = graph.floydWarshallShortestPathTable(accessNodes, table);
+//q    	vector<vector<Vertex<Node>*> > next = graph.floydWarshallShortestPathTable(accessNodes, table);
 //    	graph.floydWarshallShortestPath();
 //
 //    	vector<Node> v = graph.getfloydWarshallPath(Node(1), Node(7));

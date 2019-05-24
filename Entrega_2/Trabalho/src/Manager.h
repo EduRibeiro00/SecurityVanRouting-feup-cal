@@ -9,6 +9,7 @@
 #define MANAGER_H_
 
 #include <vector>
+#include <algorithm>
 
 #include "Graph.h"
 #include "Vehicle.h"
