@@ -88,19 +88,8 @@ int main() {
 		    accessNodes = calculateAccessNodesDisplayCoords(graph, central, width, height);
 		    cout << "Done!" << endl << endl;
 
-		    table = buildDijkstraTable(graph, accessNodes);
+		    table = buildTable(graph, accessNodes);
 		    cout << "Done!" << endl << endl;
-
-//		    for(Table::iterator it = table.begin(); it != table.end(); it++) {
-//
-//		    		cout << "v1: " << it->first.first->getInfo().getID();
-//		    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
-//				    cout << "dist: " << it->second.first;
-//				    cout << "; path: " << it->second.second->getInfo().getID() << endl;
-//
-//		    		cout << "----" << endl;
-//		    }
-
 
 		    break;
 

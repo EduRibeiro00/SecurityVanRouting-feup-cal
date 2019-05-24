@@ -229,7 +229,7 @@ double getDistFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
         return 0;
 
     try {
-    	return table.at(make_pair(v1, v2)).first;
+    	return table.at(Key(v1, v2)).first;
     } catch (out_of_range &e) {
     	return -1;
     }
@@ -239,14 +239,14 @@ double getDistFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
 Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table) {
 
 	try {
-		return table.at(make_pair(v1, v2)).second;
+		return table.at(Key(v1, v2)).second;
 	} catch (out_of_range &e) {
 		return NULL;
 	}
 }
 
 
-Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) {
+Table buildTable(Graph<Node> graph, vector<Vertex<Node> *> accessNodes) {
 
 	// NOTA: previamente, o nosso programa gerava uma tabela para todos
 	// os nos do grafo, independementemente de eles serem acessiveis ou nao a partir da central.
@@ -281,7 +281,6 @@ Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) 
 
     for(auto v : accessNodes)
     	graph.dijkstraShortestPathTable(table, v->getInfo());
-
     }
     else {
     	graph.floydWarshallShortestPathTable(accessNodes, table);

@@ -78,7 +78,7 @@ Vertex<Node>* getPathFromTable(Vertex<Node>* v1, Vertex<Node>* v2, Table table);
  * @return A tabela com as distancias e os vertices anteriores.
  */
 
-Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes);
+Table buildTable(Graph<Node> graph, vector<Vertex<Node> *> accessNodes);
 
 
 

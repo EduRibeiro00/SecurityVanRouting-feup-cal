@@ -21,25 +21,7 @@ using namespace std;
 template <class T> class Edge;
 template <class T> class Graph;
 template <class T> class Vertex;
-
-struct Key {
-
-	pair<Vertex<Node>*, Vertex<Node>*> keyValue;
-
-	Key(pair<Vertex<Node>*, Vertex<Node>*> key) {
-		keyValue = key;
-	}
-
-	bool operator==(const Key &other) const {
-		return ((keyValue.first == other.keyValue.first)
-			 && (keyValue.second == other.keyValue.second));
-	}
-
-	int operator() () const {
-		return 1;
-	}
-};
-
+struct Key;
 
 #define INF std::numeric_limits<double>::max()
 
@@ -214,6 +196,53 @@ public:
 
 };
 
+/***************************  Key  **************************/
+
+struct Key {
+
+    Vertex<Node>* first;
+    Vertex<Node>* second;
+
+    Key(Vertex<Node>* first, Vertex<Node>* second) {
+        this->first = first;
+        this->second = second;
+    }
+
+    bool operator==(const Key &other) const {
+        return ((first == other.first)
+                && (second == other.second));
+    }
+
+};
+
+namespace std {
+
+    template<>
+    struct hash<Vertex<Node>> {
+
+        size_t operator()(Vertex<Node>*& n) const {
+
+            return ((hash<double>()(n->getInfo().getX())
+                    ^ (hash<double>()(n->getInfo().getY()) << 1)) >> 1)
+                    ^ (hash<int>()(n->getInfo().getID()) << 1);
+
+        }
+
+    };
+
+    template<>
+    struct hash<Key> {
+
+        size_t operator()(const Key &k) const {
+
+            return ((hash<Vertex<Node>*>()(k.first))
+                    ^ (hash<Vertex<Node>*>()(k.second)) << 1);
+
+        }
+
+    };
+
+}
 
 // ---------------------------
 
@@ -414,7 +443,7 @@ void Graph<T>::dijkstraShortestPathTable(Table &table, const T &origin) {
         auto v = q.extractMin();
 
         if (v != s) {
-            table.insert(make_pair(make_pair(s, v), make_pair(v->getDist(), v->getPath())));
+            table.insert(make_pair(Key(s, v), make_pair(v->getDist(), v->getPath())));
         }
 
         for(auto e : v->adj){
@@ -570,13 +599,13 @@ void Graph<T>::floydWarshallShortestPathTable(vector<Vertex<T>* > accessNodes, T
 	            value = 0;
 	        else value = INF;
 
-            table.insert(make_pair(make_pair(iVert, jVert), pair<double, Vertex<T>*>(value, NULL)));
+            table.insert(make_pair(Key(iVert, jVert), pair<double, Vertex<T>*>(value, NULL)));
 
 	    }
 
 	    for (auto e : iVert->getAdj()) {
 
-            table[make_pair(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
+            table[Key(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
 
         }
 
@@ -591,14 +620,14 @@ void Graph<T>::floydWarshallShortestPathTable(vector<Vertex<T>* > accessNodes, T
 
                 for (auto iVert : accessNodes) {
 
-                    if (table.at(make_pair(iVert, kVert)).first == INF ||
-                        table.at(make_pair(kVert, jVert)).first == INF)
+                    if (table.at(Key(iVert, kVert)).first == INF ||
+                        table.at(Key(kVert, jVert)).first == INF)
                         continue; //avoid overflow
 
-                    double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
+                    double val = table.at(Key(iVert, kVert)).first + table.at(Key(kVert, jVert)).first;
 
-                    if (val < table.at(make_pair(iVert, jVert)).first)
-                        table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(kVert, jVert)).second);
+                    if (val < table.at(Key(iVert, jVert)).first)
+                        table[Key(iVert, jVert)] = make_pair(val, table.at(Key(kVert, jVert)).second);
 
                 }
 
@@ -607,24 +636,6 @@ void Graph<T>::floydWarshallShortestPathTable(vector<Vertex<T>* > accessNodes, T
         }
 
     }
-
-/*
-    for(Table::iterator it = table.begin(); it != table.end(); it++) {
-
-    	if(it->first.first != it->first.second) {
-
-    		cout << "v1: " << it->first.first->getInfo().getID();
-    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
-		    		cout << "dist: " << it->second.first;
-		    		cout << "; path: " << it->second.second->getInfo().getID() << endl;
-    		if(it->second.second == NULL)
-    			cout << "NULL" << endl;
-
-    		cout << "----" << endl;
-    	}
-
-    }
-*/
 
 }
 
