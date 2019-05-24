@@ -11,6 +11,7 @@
 #include <limits>
 #include <cmath>
 #include <map>
+#include <unordered_map>
 #include "Node.h"
 #include "MutablePriorityQueue.h"
 
@@ -21,9 +22,29 @@ template <class T> class Edge;
 template <class T> class Graph;
 template <class T> class Vertex;
 
+struct Key {
+
+	pair<Vertex<Node>*, Vertex<Node>*> keyValue;
+
+	Key(pair<Vertex<Node>*, Vertex<Node>*> key) {
+		keyValue = key;
+	}
+
+	bool operator==(const Key &other) const {
+		return ((keyValue.first == other.keyValue.first)
+			 && (keyValue.second == other.keyValue.second));
+	}
+
+	int operator() () const {
+		return 1;
+	}
+};
+
+
 #define INF std::numeric_limits<double>::max()
 
-typedef map< pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*> > Table;
+typedef unordered_map<Key, pair<double, Vertex<Node>*> > Table;
+//typedef map<pair<Vertex<Node>*, Vertex<Node>*>, pair<double, Vertex<Node>*>  > Table;
 
 /************************* Vertex  **************************/
 
@@ -544,393 +565,393 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 template <class T>
 vector<vector<Vertex<T>* > > Graph<T>::floydWarshallShortestPathTable(vector<Vertex<T>* > accessNodes, Table& table) {
 
-	unsigned n = accessNodes.size();
-//	deleteMatrix(W, n);
-//	deleteMatrix(P, n);
-//	W = new double *[n];
-//	P = new int *[n];
-	for (unsigned i = 0; i < n; i++) {
-//		W[i] = new double[n];
-//		P[i] = new int[n];
-		Vertex<T>* iVert = accessNodes.at(i);
-
-		for (unsigned j = 0; j < n; j++) {
-//			W[i][j] = i == j? 0 : INF;
-//			P[i][j] = -1;
-
-			Vertex<T>* jVert = accessNodes.at(j);
-
-			double value;
-			if(iVert == jVert)
-				value = 0;
-			else value = INF;
-
-			table.insert(make_pair(make_pair(iVert, jVert), make_pair<double, Vertex<T>* >(value, NULL)));
-		}
-//		for (auto e : vertexSet[i]->adj) {
-//			int j = findVertexIdx(e.dest->info);
-//			W[i][j] = e.weight;
-//			P[i][j] = i;
-//		}
-
-		for (auto e : iVert->getAdj()) {
-//			int j = findVertexIdx(e.dest->info);
-//			W[i][j] = e.weight;
-//			P[i][j] = i;
-
-			table[make_pair(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
-		}
-	}
-
-
-	for(unsigned k = 0; k < n ; k++) {
-
-		Vertex<T>* kVert = accessNodes.at(k);
-
-		for(unsigned j = 0; j < n; j++) {
-
-			Vertex<T>* jVert = accessNodes.at(j);
-
-			for(unsigned i = 0; i < n; i++){
-
-				Vertex<T>* iVert = accessNodes.at(i);
-
-				if(table.at(make_pair(iVert, kVert)).first == INF || table.at(make_pair(kVert, jVert)).first == INF)
-					continue; //avoid overflow
-				int val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
-				if(val < table.at(make_pair(iVert, jVert)).first){
-//					W[i][j] = val;
-//					P[i][j] = P[k][j];
-
-					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(iVert, kVert)).second);
-				}
-			}
-		}
-	}
-
-
-
 //	unsigned n = accessNodes.size();
-//	deleteMatrix(W, n);
-//	deleteMatrix(P, n);
-//	W = new double *[n];
-//	P = new int *[n];
-	for (auto iVert : accessNodes) {
-//		W[i] = new double[n];
-//		P[i] = new int[n];
-
-	for (auto jVert : accessNodes) {
-//			W[i][j] = i == j? 0 : INF;
-//			P[i][j] = -1;
-
-
-			double value1;
-			Vertex<T>* value2;
-			if(iVert == jVert) {
-				value1 = 0;
-				value2 = iVert;
-			}
-			else {
-				value1 = INF;
-				value2 = NULL;
-			}
-			table.insert(make_pair(make_pair(iVert, jVert), make_pair(value1, value2)));
-		}
-//		for (auto e : vertexSet[i]->adj) {
-//			int j = findVertexIdx(e.dest->info);
-//			W[i][j] = e.weight;
-//			P[i][j] = i;
-//		}
-
-		for (auto e : iVert->getAdj()) {
-//			int j = findVertexIdx(e.dest->info);
-//			W[i][j] = e.weight;
-//			P[i][j] = i;
-
-			table[make_pair(iVert, e.dest)] = make_pair(e.weight, e.dest);
-		}
-	}
-
-
-	for(auto kVert : accessNodes) {
-
-		for(auto iVert : accessNodes) {
-
-			for(auto jVert : accessNodes){
-
-				if(table.at(make_pair(iVert, kVert)).first == INF || table.at(make_pair(kVert, jVert)).first == INF)
-					continue; //avoid overflow
-				double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
-				if(val < table.at(make_pair(iVert, jVert)).first){
-//					W[i][j] = val;
-//					P[i][j] = P[k][j];
-
-					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(iVert, kVert)).second);
-				}
-
-			}
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-//	unsigned n = accessNodes.size();
-//	deleteMatrix(W, n);
-//	deleteMatrix(P, n);
-//	W = new double *[n];
-//	P = new int *[n];
+////	deleteMatrix(W, n);
+////	deleteMatrix(P, n);
+////	W = new double *[n];
+////	P = new int *[n];
 //	for (unsigned i = 0; i < n; i++) {
-//		W[i] = new double[n];
-//		P[i] = new int[n];
+////		W[i] = new double[n];
+////		P[i] = new int[n];
+//		Vertex<T>* iVert = accessNodes.at(i);
+//
 //		for (unsigned j = 0; j < n; j++) {
-//			W[i][j] = i == j? 0 : INF;
-//			P[i][j] = -1;
-//		}
-//		for (auto e : accessNodes[i]->adj) {
-//			int j;
-//			for(int w = 0; w < accessNodes.size(); w++)
-//				if(accessNodes.at(w) == e.dest)
-//					j = w;
+////			W[i][j] = i == j? 0 : INF;
+////			P[i][j] = -1;
 //
-//			W[i][j] = e.weight;
-//			P[i][j] = i;
+//			Vertex<T>* jVert = accessNodes.at(j);
+//
+//			double value;
+//			if(iVert == jVert)
+//				value = 0;
+//			else value = INF;
+//
+//			table.insert(make_pair(make_pair(iVert, jVert), make_pair<double, Vertex<T>* >(value, NULL)));
+//		}
+////		for (auto e : vertexSet[i]->adj) {
+////			int j = findVertexIdx(e.dest->info);
+////			W[i][j] = e.weight;
+////			P[i][j] = i;
+////		}
+//
+//		for (auto e : iVert->getAdj()) {
+////			int j = findVertexIdx(e.dest->info);
+////			W[i][j] = e.weight;
+////			P[i][j] = i;
+//
+//			table[make_pair(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
 //		}
 //	}
 //
-//	for(unsigned k = 0; k < n ; k++)
-//		for(unsigned i = 0; i < n; i++)
-//			for(unsigned j = 0; j < n; j++){
-//				if(W[i][k] == INF || W[k][j] == INF)
+//
+//	for(unsigned k = 0; k < n ; k++) {
+//
+//		Vertex<T>* kVert = accessNodes.at(k);
+//
+//		for(unsigned j = 0; j < n; j++) {
+//
+//			Vertex<T>* jVert = accessNodes.at(j);
+//
+//			for(unsigned i = 0; i < n; i++){
+//
+//				Vertex<T>* iVert = accessNodes.at(i);
+//
+//				if(table.at(make_pair(iVert, kVert)).first == INF || table.at(make_pair(kVert, jVert)).first == INF)
 //					continue; //avoid overflow
-//				int val = W[i][k] + W[k][j];
-//				if(val < W[i][j]){
-//					W[i][j] = val;
-//					P[i][j] = P[k][j];
+//				int val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
+//				if(val < table.at(make_pair(iVert, jVert)).first){
+////					W[i][j] = val;
+////					P[i][j] = P[k][j];
 //
-//				}
-//			}
-//
-//	for(unsigned i = 0; i < n; i++)
-//		for(unsigned j = 0; j < n; j++)
-//			cout << P[i][j] << " ";
-//
-//	for(unsigned i = 0; i < n; i++)
-//			for(unsigned j = 0; j < n; j++)
-//				if((i != j) && !(i == -1 || j == -1 || W[i][j] == INF))
-//					if(P[i][j] != -1)
-//						table.insert(make_pair(make_pair(accessNodes.at(i), accessNodes.at(j)), make_pair(W[i][j], accessNodes.at(P[i][j]))));
-
-//
-//    for(Table::iterator it = table.begin(); it != table.end(); it++) {
-//
-////		    	if(it->first.first != it->first.second) {
-//
-//    		cout << "Chega" << endl;
-//
-//    		cout << "v1: " << it->first.first->getInfo().getID();
-//    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
-////		    		cout << "dist: " << it->second.first;
-////		    		cout << "; path: " << it->second.second->getInfo().getID() << endl;
-//    		if(it->second.second == NULL)
-//    			cout << "NULL" << endl;
-//
-//    		cout << "----" << endl;
-//    	// }
-//    }
-//
-//
-//	cout << endl << "passa" << endl;
-
-
-//	unsigned n = vertexSet.size();
-//		deleteMatrix(W, n);
-//		deleteMatrix(P, n);
-//		W = new double *[n];
-//		P = new int *[n];
-//		for (unsigned i = 0; i < n; i++) {
-//			W[i] = new double[n];
-//			P[i] = new int[n];
-//			for (unsigned j = 0; j < n; j++) {
-//				W[i][j] = i == j? 0 : INF;
-//				P[i][j] = -1;
-//			}
-//			for (auto e : vertexSet[i]->adj) {
-//				int j = findVertexIdx(e.dest->info);
-//				W[i][j] = e.weight;
-//				P[i][j] = i;
-//			}
-//		}
-//
-//		for(unsigned k = 0; k < n ; k++)
-//			for(unsigned i = 0; i < n; i++)
-//				for(unsigned j = 0; j < n; j++){
-//					if(W[i][k] == INF || W[k][j] == INF)
-//						continue; //avoid overflow
-//					int val = W[i][k] + W[k][j];
-//					if(val < W[i][j]){
-//						W[i][j] = val;
-//						P[i][j] = P[k][j];
-//
-//					}
-//				}
-//
-//			for(unsigned i = 0; i < n; i++)
-//					for(unsigned j = 0; j < n; j++)
-//						if((i != j) && !(i == -1 || j == -1 || W[i][j] == INF))
-//							if(P[i][j] != -1)
-//								table.insert(make_pair(make_pair(vertexSet.at(i), vertexSet.at(j)), make_pair(W[i][j], vertexSet.at(P[i][j]))));
-//
-//
-
-//			    for(Table::iterator it = table.begin(); it != table.end(); it++) {
-//
-//			//		    	if(it->first.first != it->first.second) {
-//
-//			    	if(it->second.second != NULL) {
-//
-//			    		cout << "v1: " << it->first.first->getInfo().getID();
-//			    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
-//					    		cout << "dist: " << it->second.first;
-//					    		cout << "; path: " << it->second.second->getInfo().getID() << endl;
-////			    		if(it->second.second != NULL)
-////
-//
-//			    		cout << "----" << endl;
-//			    	// }
-//			    }
-//			   }
-////
-////				cout << endl << "passa" << endl;
-
-
-//	vector<vector<double> > minDist;
-//	vector<vector<Vertex<T>* > > next;
-//
-//	int numVert = vertexSet.size();
-//
-//	minDist.resize(numVert);
-//	for (auto & ele : minDist) ele.resize(numVert);
-//
-//	next.resize(numVert);
-//	for (auto & ele : next) ele.resize(numVert);
-//
-//	for (int i = 0; i < numVert; i++) {
-//		for (int j = 0; j < numVert; j++) {
-//			minDist.at(i).at(j) = INF;
-//			next.at(i).at(j) = NULL;
-//		}
-//	}
-//
-//	for (Vertex<T> * vertex : vertexSet) {
-//		for (const Edge<T> & edge: vertex->adj) {
-//			int i1 = -1;
-//			int i2 = -1;
-//			for (int i = 0; i < numVert; i++) {
-//				if (vertexSet.at(i)->info == vertex->info)
-//					i1 = i;
-//			}
-//			for (int i = 0; i < numVert; i++) {
-//				if (vertexSet.at(i)->info == edge.dest->info)
-//					i2 = i;
-//			}
-//
-//			minDist.at(i1).at(i2) = edge.weight;
-//			next.at(i1).at(i2) = edge.dest;
-//		}
-//	}
-//
-//	for (int i = 0; i < numVert; i++) {
-//		minDist.at(i).at(i) = 0;
-//		next.at(i).at(i) = vertexSet.at(i);
-//	}
-//
-//	for (int k = 0; k < numVert; k++) {
-//		for (int i = 0; i < numVert; i++) {
-//			for (int j = 0; j < numVert; j++) {
-//				if (minDist.at(i).at(j) > minDist.at(i).at(k) + minDist.at(k).at(j)) {
-//					minDist.at(i).at(j) = minDist.at(i).at(k) + minDist.at(k).at(j);
-//					next.at(i).at(j) = next.at(i).at(k);
-//				}
-//			}
-//		}
-//	}
-
-
-	vector<vector<Vertex<T>* > > top;
-
-
-
-
-//	int numVert = accessNodes.size();
-//
-//
-//	for (auto iVert : accessNodes) {
-//
-//		for (auto jVert : accessNodes) {
-//
-//			table.insert(make_pair(make_pair(iVert, jVert), make_pair<double, Vertex<T>*>(INF, NULL)));
-//
-////			minDist.at(i).at(j) = INF;
-////			next.at(i).at(j) = NULL;
-//		}
-//	}
-//
-//	for (Vertex<T> * vertex : accessNodes) {
-//		for (const Edge<T> & edge: vertex->adj) {
-//			int i1 = -1;
-//			int i2 = -1;
-//			for (int i = 0; i < numVert; i++) {
-//				if (accessNodes.at(i)->info == vertex->info)
-//					i1 = i;
-//			}
-//			for (int i = 0; i < numVert; i++) {
-//				if (accessNodes.at(i)->info == edge.dest->info)
-//					i2 = i;
-//			}
-//
-//			Vertex<T>* i1Vert = accessNodes.at(i1);
-//			Vertex<T>* i2Vert = accessNodes.at(i2);
-//
-//			table[make_pair(i1Vert, i2Vert)] = make_pair(edge.weight, edge.dest);
-//
-////			minDist.at(i1).at(i2) = edge.weight;
-////			next.at(i1).at(i2) = edge.dest;
-//		}
-//	}
-//
-//	for (auto v : accessNodes) {
-//
-//		table[make_pair(v, v)] = make_pair(0, v);
-//
-////		minDist.at(i).at(i) = 0;
-////		next.at(i).at(i) = vertexSet.at(i);
-//	}
-//
-//	for (auto kVert : accessNodes) {
-//		for (auto iVert : accessNodes) {
-//			for (auto jVert : accessNodes) {
-//
-//				double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
-//
-//				if (table.at(make_pair(iVert, jVert)).first > val) {
 //					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(iVert, kVert)).second);
 //				}
 //			}
 //		}
 //	}
 //
-//	for(auto v : accessNodes)
-//		for(auto e : v->adj)
-//			table[make_pair(v, e.dest)].second = v;
+//
+//
+////	unsigned n = accessNodes.size();
+////	deleteMatrix(W, n);
+////	deleteMatrix(P, n);
+////	W = new double *[n];
+////	P = new int *[n];
+//	for (auto iVert : accessNodes) {
+////		W[i] = new double[n];
+////		P[i] = new int[n];
+//
+//	for (auto jVert : accessNodes) {
+////			W[i][j] = i == j? 0 : INF;
+////			P[i][j] = -1;
+//
+//
+//			double value1;
+//			Vertex<T>* value2;
+//			if(iVert == jVert) {
+//				value1 = 0;
+//				value2 = iVert;
+//			}
+//			else {
+//				value1 = INF;
+//				value2 = NULL;
+//			}
+//			table.insert(make_pair(make_pair(iVert, jVert), make_pair(value1, value2)));
+//		}
+////		for (auto e : vertexSet[i]->adj) {
+////			int j = findVertexIdx(e.dest->info);
+////			W[i][j] = e.weight;
+////			P[i][j] = i;
+////		}
+//
+//		for (auto e : iVert->getAdj()) {
+////			int j = findVertexIdx(e.dest->info);
+////			W[i][j] = e.weight;
+////			P[i][j] = i;
+//
+//			table[make_pair(iVert, e.dest)] = make_pair(e.weight, e.dest);
+//		}
+//	}
+//
+//
+//	for(auto kVert : accessNodes) {
+//
+//		for(auto iVert : accessNodes) {
+//
+//			for(auto jVert : accessNodes){
+//
+//				if(table.at(make_pair(iVert, kVert)).first == INF || table.at(make_pair(kVert, jVert)).first == INF)
+//					continue; //avoid overflow
+//				double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
+//				if(val < table.at(make_pair(iVert, jVert)).first){
+////					W[i][j] = val;
+////					P[i][j] = P[k][j];
+//
+//					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(iVert, kVert)).second);
+//				}
+//
+//			}
+//		}
+//	}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+////	unsigned n = accessNodes.size();
+////	deleteMatrix(W, n);
+////	deleteMatrix(P, n);
+////	W = new double *[n];
+////	P = new int *[n];
+////	for (unsigned i = 0; i < n; i++) {
+////		W[i] = new double[n];
+////		P[i] = new int[n];
+////		for (unsigned j = 0; j < n; j++) {
+////			W[i][j] = i == j? 0 : INF;
+////			P[i][j] = -1;
+////		}
+////		for (auto e : accessNodes[i]->adj) {
+////			int j;
+////			for(int w = 0; w < accessNodes.size(); w++)
+////				if(accessNodes.at(w) == e.dest)
+////					j = w;
+////
+////			W[i][j] = e.weight;
+////			P[i][j] = i;
+////		}
+////	}
+////
+////	for(unsigned k = 0; k < n ; k++)
+////		for(unsigned i = 0; i < n; i++)
+////			for(unsigned j = 0; j < n; j++){
+////				if(W[i][k] == INF || W[k][j] == INF)
+////					continue; //avoid overflow
+////				int val = W[i][k] + W[k][j];
+////				if(val < W[i][j]){
+////					W[i][j] = val;
+////					P[i][j] = P[k][j];
+////
+////				}
+////			}
+////
+////	for(unsigned i = 0; i < n; i++)
+////		for(unsigned j = 0; j < n; j++)
+////			cout << P[i][j] << " ";
+////
+////	for(unsigned i = 0; i < n; i++)
+////			for(unsigned j = 0; j < n; j++)
+////				if((i != j) && !(i == -1 || j == -1 || W[i][j] == INF))
+////					if(P[i][j] != -1)
+////						table.insert(make_pair(make_pair(accessNodes.at(i), accessNodes.at(j)), make_pair(W[i][j], accessNodes.at(P[i][j]))));
+//
+////
+////    for(Table::iterator it = table.begin(); it != table.end(); it++) {
+////
+//////		    	if(it->first.first != it->first.second) {
+////
+////    		cout << "Chega" << endl;
+////
+////    		cout << "v1: " << it->first.first->getInfo().getID();
+////    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
+//////		    		cout << "dist: " << it->second.first;
+//////		    		cout << "; path: " << it->second.second->getInfo().getID() << endl;
+////    		if(it->second.second == NULL)
+////    			cout << "NULL" << endl;
+////
+////    		cout << "----" << endl;
+////    	// }
+////    }
+////
+////
+////	cout << endl << "passa" << endl;
+//
+//
+////	unsigned n = vertexSet.size();
+////		deleteMatrix(W, n);
+////		deleteMatrix(P, n);
+////		W = new double *[n];
+////		P = new int *[n];
+////		for (unsigned i = 0; i < n; i++) {
+////			W[i] = new double[n];
+////			P[i] = new int[n];
+////			for (unsigned j = 0; j < n; j++) {
+////				W[i][j] = i == j? 0 : INF;
+////				P[i][j] = -1;
+////			}
+////			for (auto e : vertexSet[i]->adj) {
+////				int j = findVertexIdx(e.dest->info);
+////				W[i][j] = e.weight;
+////				P[i][j] = i;
+////			}
+////		}
+////
+////		for(unsigned k = 0; k < n ; k++)
+////			for(unsigned i = 0; i < n; i++)
+////				for(unsigned j = 0; j < n; j++){
+////					if(W[i][k] == INF || W[k][j] == INF)
+////						continue; //avoid overflow
+////					int val = W[i][k] + W[k][j];
+////					if(val < W[i][j]){
+////						W[i][j] = val;
+////						P[i][j] = P[k][j];
+////
+////					}
+////				}
+////
+////			for(unsigned i = 0; i < n; i++)
+////					for(unsigned j = 0; j < n; j++)
+////						if((i != j) && !(i == -1 || j == -1 || W[i][j] == INF))
+////							if(P[i][j] != -1)
+////								table.insert(make_pair(make_pair(vertexSet.at(i), vertexSet.at(j)), make_pair(W[i][j], vertexSet.at(P[i][j]))));
+////
+////
+//
+////			    for(Table::iterator it = table.begin(); it != table.end(); it++) {
+////
+////			//		    	if(it->first.first != it->first.second) {
+////
+////			    	if(it->second.second != NULL) {
+////
+////			    		cout << "v1: " << it->first.first->getInfo().getID();
+////			    		cout << "; v2: " << it->first.second->getInfo().getID() << endl;
+////					    		cout << "dist: " << it->second.first;
+////					    		cout << "; path: " << it->second.second->getInfo().getID() << endl;
+//////			    		if(it->second.second != NULL)
+//////
+////
+////			    		cout << "----" << endl;
+////			    	// }
+////			    }
+////			   }
+//////
+//////				cout << endl << "passa" << endl;
+//
+//
+////	vector<vector<double> > minDist;
+////	vector<vector<Vertex<T>* > > next;
+////
+////	int numVert = vertexSet.size();
+////
+////	minDist.resize(numVert);
+////	for (auto & ele : minDist) ele.resize(numVert);
+////
+////	next.resize(numVert);
+////	for (auto & ele : next) ele.resize(numVert);
+////
+////	for (int i = 0; i < numVert; i++) {
+////		for (int j = 0; j < numVert; j++) {
+////			minDist.at(i).at(j) = INF;
+////			next.at(i).at(j) = NULL;
+////		}
+////	}
+////
+////	for (Vertex<T> * vertex : vertexSet) {
+////		for (const Edge<T> & edge: vertex->adj) {
+////			int i1 = -1;
+////			int i2 = -1;
+////			for (int i = 0; i < numVert; i++) {
+////				if (vertexSet.at(i)->info == vertex->info)
+////					i1 = i;
+////			}
+////			for (int i = 0; i < numVert; i++) {
+////				if (vertexSet.at(i)->info == edge.dest->info)
+////					i2 = i;
+////			}
+////
+////			minDist.at(i1).at(i2) = edge.weight;
+////			next.at(i1).at(i2) = edge.dest;
+////		}
+////	}
+////
+////	for (int i = 0; i < numVert; i++) {
+////		minDist.at(i).at(i) = 0;
+////		next.at(i).at(i) = vertexSet.at(i);
+////	}
+////
+////	for (int k = 0; k < numVert; k++) {
+////		for (int i = 0; i < numVert; i++) {
+////			for (int j = 0; j < numVert; j++) {
+////				if (minDist.at(i).at(j) > minDist.at(i).at(k) + minDist.at(k).at(j)) {
+////					minDist.at(i).at(j) = minDist.at(i).at(k) + minDist.at(k).at(j);
+////					next.at(i).at(j) = next.at(i).at(k);
+////				}
+////			}
+////		}
+////	}
+//
+//
+	vector<vector<Vertex<T>* > > top;
+//
+//
+//
+//
+////	int numVert = accessNodes.size();
+////
+////
+////	for (auto iVert : accessNodes) {
+////
+////		for (auto jVert : accessNodes) {
+////
+////			table.insert(make_pair(make_pair(iVert, jVert), make_pair<double, Vertex<T>*>(INF, NULL)));
+////
+//////			minDist.at(i).at(j) = INF;
+//////			next.at(i).at(j) = NULL;
+////		}
+////	}
+////
+////	for (Vertex<T> * vertex : accessNodes) {
+////		for (const Edge<T> & edge: vertex->adj) {
+////			int i1 = -1;
+////			int i2 = -1;
+////			for (int i = 0; i < numVert; i++) {
+////				if (accessNodes.at(i)->info == vertex->info)
+////					i1 = i;
+////			}
+////			for (int i = 0; i < numVert; i++) {
+////				if (accessNodes.at(i)->info == edge.dest->info)
+////					i2 = i;
+////			}
+////
+////			Vertex<T>* i1Vert = accessNodes.at(i1);
+////			Vertex<T>* i2Vert = accessNodes.at(i2);
+////
+////			table[make_pair(i1Vert, i2Vert)] = make_pair(edge.weight, edge.dest);
+////
+//////			minDist.at(i1).at(i2) = edge.weight;
+//////			next.at(i1).at(i2) = edge.dest;
+////		}
+////	}
+////
+////	for (auto v : accessNodes) {
+////
+////		table[make_pair(v, v)] = make_pair(0, v);
+////
+//////		minDist.at(i).at(i) = 0;
+//////		next.at(i).at(i) = vertexSet.at(i);
+////	}
+////
+////	for (auto kVert : accessNodes) {
+////		for (auto iVert : accessNodes) {
+////			for (auto jVert : accessNodes) {
+////
+////				double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
+////
+////				if (table.at(make_pair(iVert, jVert)).first > val) {
+////					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(iVert, kVert)).second);
+////				}
+////			}
+////		}
+////	}
+////
+////	for(auto v : accessNodes)
+////		for(auto e : v->adj)
+////			table[make_pair(v, e.dest)].second = v;
 
 
 	return top;
