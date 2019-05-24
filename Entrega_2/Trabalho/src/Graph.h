@@ -544,62 +544,52 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 template <class T>
 void Graph<T>::floydWarshallShortestPathTable(vector<Vertex<T>* > accessNodes, Table& table) {
 
-	unsigned n = accessNodes.size();
+	for (auto iVert : accessNodes) {
 
-	for (unsigned i = 0; i < n; i++) {
+	    for (auto jVert : accessNodes) {
 
-		Vertex<T>* iVert = accessNodes.at(i);
-
-		for (unsigned j = 0; j < n; j++) {
-
-			Vertex<T>* jVert = accessNodes.at(j);
-
-			double value;
-			if(iVert == jVert)
-				value = 0;
-			else value = INF;
+	        double value;
+	        if (iVert == jVert)
+	            value = 0;
+	        else value = INF;
 
             table.insert(make_pair(make_pair(iVert, jVert), pair<double, Vertex<T>*>(value, NULL)));
 
-		}
+	    }
 
-		for (auto e : iVert->getAdj()) {
+	    for (auto e : iVert->getAdj()) {
 
-			table[make_pair(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
+            table[make_pair(iVert, e.getDest())] = make_pair(e.getWeight(), iVert);
 
-		}
-	}
-
-
-	for(unsigned k = 0; k < n ; k++) {
-
-		Vertex<T>* kVert = accessNodes.at(k);
-
-		for(unsigned j = 0; j < n; j++) {
-
-			Vertex<T>* jVert = accessNodes.at(j);
-
-			for(unsigned i = 0; i < n; i++){
-
-				Vertex<T>* iVert = accessNodes.at(i);
-
-				if(table.at(make_pair(iVert, kVert)).first == INF || table.at(make_pair(kVert, jVert)).first == INF)
-					continue; //avoid overflow
-
-				double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
-
-				if(val < table.at(make_pair(iVert, jVert)).first){
-
-				    if (kVert != jVert)
-    					table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(kVert, jVert)).second);
-
-				}
-
-			}
-
-		}
+        }
 
 	}
+
+
+    for (auto kVert : accessNodes) {
+
+        for (auto jVert : accessNodes) {
+
+            if (kVert != jVert) {
+
+                for (auto iVert : accessNodes) {
+
+                    if (table.at(make_pair(iVert, kVert)).first == INF ||
+                        table.at(make_pair(kVert, jVert)).first == INF)
+                        continue; //avoid overflow
+
+                    double val = table.at(make_pair(iVert, kVert)).first + table.at(make_pair(kVert, jVert)).first;
+
+                    if (val < table.at(make_pair(iVert, jVert)).first)
+                        table[make_pair(iVert, jVert)] = make_pair(val, table.at(make_pair(kVert, jVert)).second);
+
+                }
+
+            }
+
+        }
+
+    }
 
 /*
     for(Table::iterator it = table.begin(); it != table.end(); it++) {
