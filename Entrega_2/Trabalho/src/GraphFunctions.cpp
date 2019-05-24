@@ -284,27 +284,7 @@ Table buildDijkstraTable(Graph<Node> graph, vector<Vertex<Node>* > accessNodes) 
 
     }
     else {
-//q    	vector<vector<Vertex<Node>*> > next = graph.floydWarshallShortestPathTable(accessNodes, table);
-//    	graph.floydWarshallShortestPath();
-//
-//    	vector<Node> v = graph.getfloydWarshallPath(Node(1), Node(7));
-//    	cout << "v: ";
-//    	for(auto n : v)
-//    		cout << n.getID() << " ";
-
-
-//    	for(int i = 0; i < next.size(); i++) {
-//    			for(int j = 0; j < next.size(); j++) {
-//
-//    				if(next[i][j] == NULL)
-//    					cout << "NULL" << " ";
-//    				else {
-//    				cout << next[i][j]->getInfo().getID() << " ";
-//    				}
-//    				if(j == next.size() - 1)
-//    					cout << endl;
-//    			}
-//    		}
+    	graph.floydWarshallShortestPathTable(accessNodes, table);
     }
 
 
