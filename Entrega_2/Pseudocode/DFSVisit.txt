@@ -1,4 +1,4 @@
-DFSVisit(v, R):                 // - v is a vertex
+DFSVisit(v, R):                 // - v is a vertex (1st one is the central)
                                 // - R is the return vector, and
     visited(v) ⟵ true          // it is passed by reference
     insert(R, v)

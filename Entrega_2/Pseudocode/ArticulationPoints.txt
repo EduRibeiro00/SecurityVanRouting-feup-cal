@@ -1,9 +1,9 @@
-calcArticulationPoints(v, R):   // - v is a vertex
+calcArticulationPoints(v, R):   // - v is a vertex (1st one is the central)
                                 // - R is the return vector, and
     visited(v) ⟵ true          // it is passed by reference
-    low(v) ⟵ counter(v)
-    num(v) ⟵ counter(v)
-    counter(v) ⟵ counter(v) + 1
+    low(v) ⟵ counter           
+    num(v) ⟵ counter            // before the start, counter is initialized
+    counter(v) ⟵ counter + 1    // with 1
 
     for each e ∈ adj(v) do
     
