@@ -1,0 +1,24 @@
+DijkstraInsertIntoTable(T, s):                              // - G=(V,E), s ∈ V
+                                                            // - T is a table where
+    for each v ∈ V do                                       // the values of distance 
+        dist(v) ⟵ INF                                      // and path are stored
+        path(v) ⟵ NULL                                     // - s is the starting point        
+    dist(s) ⟵ 0                                            // for the algorithm
+    Q ⟵ ∅
+    insert(Q, s)
+
+    while Q ≠ ∅ do
+        v ⟵ extractMin(Q)
+        
+        if v ≠ s do
+            insert( T, ( (s, v), (dist(v), path(v)) ) )     // inserts the values of distance
+                                                            // and path into the table, using
+        for each e ∈ adj(v) do                              // the vertices as a key
+            oldDist ⟵ dist(dest(e))
+            
+            if dist(v) + weight(e) < dist(w) do
+                dist(w) ⟵ dist(v) + weight(e)
+                path(w) ⟵ v
+                
+                if oldDist == INF
+                    insert(Q, dest(e))

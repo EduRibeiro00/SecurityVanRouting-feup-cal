@@ -1,0 +1,80 @@
+Heuristic to calculate the optimal distribution of deliveries between the vehicles:
+
+
+
+TestInsertDelivery(v, d, T, pOrig, pDest):          // - v is the vehicle for which the distance will be calculated
+                                                    // - d is the delivery to be tested
+    orig ⟵ orig(d)                                 // - T is the table with the values  used to compute the output
+    dest ⟵ dest(d)                                 // - pOrig and pDest are the indexes of the path where the
+    if empty( deliveries(v) ) do                    // delivery could be inserted to best fulfill the goal of the
+        pOrig ⟵ 1                                  // program (passed by reference)
+        pDest ⟵ 2                                   
+        central ⟵ path(v)[0]
+        deltaOrig ⟵ getDist(central, orig, T) + getDist(orig, central, T)
+        deltaDest ⟵ getDist(orig, dest, T) + getDist(dest, central, T) - getDist(orig, central, T)
+
+        // calculates the "delta" of the total path distance by inserting the delivery into the
+        // vehicle's path, in search of a minimum value (this is the particular case in which 
+        // the vehicle has no other deliveries, making it so there is only one possibility for
+        // how to insert the origin and destination into its path)
+
+        return deltaOrig + deltaDest                
+
+
+    minDistance ⟵ INF
+
+    for each i from 1 to size( path(v) ) do
+        prev ⟵ path(v)[i-1]
+        next ⟵ path(v)[i]
+        curDeltaOrig ⟵ getDist(prev, orig, T) + getDist(orig, next, T) - getDist(prev, next, T)
+
+        for each j from i to size( path(v) ) do
+            prev ⟵ path(v)[j-1]
+            next ⟵ path(v)[j]
+            if i == j do
+                curDeltaDest ⟵ getDist(orig, dest, T) + getDist(dest, next, T) - getDist(orig, next, T)
+            else do
+                curDeltaDest ⟵ getDist(prev, dest, T) + getDist(dest, next, T) - getDist(prev, next, T)
+
+            if curDeltaOrig + curDeltaDest < minDistance do
+                minDistance = curDeltaOrig + curDeltaDest
+                pOrig = i
+                pDest = j + 1
+
+    return minDistance
+
+
+
+AssignDeliveryToVehicle(V, d, T):       // - V is a vector, containing all the
+                                        // vehicles (passed by reference)
+    bestPosOrig ⟵ -1                   // - d is the delivery to be assigned
+    bestPosDest ⟵ -1                   // - T is the table with the values
+    bestDelta ⟵ INF                    // used to perform this task
+    bestVehicle ⟵ NULL
+
+    for each v ∈ V do
+
+        if type(v) == type(d) do
+            int pOrig, pDest
+            curDelta ⟵ TestInsertDelivery(v, d, T, pOrig, pDest)
+            
+            if curDelta < bestDelta do
+                bestPosOrig ⟵ pOrig
+                bestPosDest ⟵ pDest
+                bestDelta ⟵ curDelta
+                bestVehicle ⟵ v
+
+
+    if bestVehicle == NULL do   
+        return false                    // no suitable vehicle was found
+
+    insert( path(bestVehicle), (orig(d), bestPosOrig) )
+    insert( path(bestVehicle), (dest(d), bestPosDest) )
+    insert( deliveries(bestVehicle), d )
+
+    for each i from 1 to size(V)        // makes it so that, if the result
+        if V[i] == bestVehicle          // in terms of total distance would
+            swap( V[i], V[i+1] )        // be the same between an already used
+                                        // vehicle and an empty one, priority 
+                                        // is given to new, emptier vehicles,
+                                        // for the sake of time saving

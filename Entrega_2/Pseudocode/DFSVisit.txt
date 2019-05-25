@@ -1,0 +1,8 @@
+DFSVisit(v, R):                 // - v is a vertex
+                                // - R is the return vector, and
+    visited(v) ⟵ true          // it is passed by reference
+    insert(R, v)
+    for each e ∈ adj(v) do
+        w ⟵ dest(e)
+        if not visited(w) do
+            DFSVisit(w, R)

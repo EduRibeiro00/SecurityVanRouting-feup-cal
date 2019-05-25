@@ -1,0 +1,22 @@
+calcArticulationPoints(v, R):   // - v is a vertex
+                                // - R is the return vector, and
+    visited(v) ⟵ true          // it is passed by reference
+    low(v) ⟵ counter(v)
+    num(v) ⟵ counter(v)
+    counter(v) ⟵ counter(v) + 1
+
+    for each e ∈ adj(v) do
+    
+        w ⟵ dest(e)
+
+        if not visited(w) then
+            parent(w) ⟵ v
+            calcArticulationPoints(w, r)
+            low(v) ⟵ min( low(v), low(w) )
+
+            if (low(w) >= num(v))
+                insert(r, v)
+
+        else if parent(v) ≠ w
+            low(v) ⟵ min( low(v), num(w) )
+
