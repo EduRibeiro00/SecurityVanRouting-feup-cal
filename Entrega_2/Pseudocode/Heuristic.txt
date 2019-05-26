@@ -58,9 +58,9 @@ AssignDeliveryToVehicle(V, d, T):       // - V is a vector, containing all the
             int pOrig, pDest
             curDelta ⟵ TestInsertDelivery(v, d, T, pOrig, pDest)
             
-            if curDelta < bestDelta do
-                bestPosOrig ⟵ pOrig
-                bestPosDest ⟵ pDest
+            if bestDelta - curDelta > RESIDUAL do    // RESIDUAL is a macro that was defined
+                bestPosOrig ⟵ pOrig                // in order to avoid residual errors when  
+                bestPosDest ⟵ pDest                // comparing bestDelta and curDelta
                 bestDelta ⟵ curDelta
                 bestVehicle ⟵ v
 
@@ -78,3 +78,63 @@ AssignDeliveryToVehicle(V, d, T):       // - V is a vector, containing all the
                                         // vehicle and an empty one, priority 
                                         // is given to new, emptier vehicles,
                                         // for the sake of time saving
+    return true
+
+
+
+AssignDeliveries(V, D, T):              // - V is a vector, containing all the
+                                        // vehicles (passed by reference)
+                                        // - D is the vector of all deliveries
+                                        // - T is the table with the values
+    
+    for each d ∈ D do
+        if AssignDeliveryToVehicle(V, d, T)   // if it returns true, it means the delivery
+            remove d from D                   // was assigned to a vehicle successfully;
+                                              // we can remove the delivery from the vector
+
+
+
+
+displayVehiclePaths(G, V, T, width, height)::              // - V is a vector, containing all the
+                                                           // vehicles (passed by reference)
+    GV ⟵ initGraphViewer()                               // - G is the graph
+    idAresta ⟵ 1                                         // - T is the table with the values
+    numArestasAnterior ⟵ 1                               // - width is the GraphViewer window width
+                                                           // - height is the GraphViewer window height
+    
+    
+    for each v ∈ V do                                      
+        if hasDeliveries(v)                                
+            path ⟵ getPath(v)
+
+            for each i from path.size - 1 to 1
+
+                v ⟵ path.at(i)          // gets consecutive vertexes from the path
+                s ⟵ path.at(i - 1)
+
+                while s != v
+                    t ⟵ getPath(s, v, T)   // t is the last vertex in the shortest path from s to v
+
+                    displayNode(GV, t)       // display in GraphViewer
+                    displayNode(GV, v)
+                    displayEdgeBetween(GV, t, s)
+                    v = t
+                    idAresta++
+            
+
+            // from here on now, its just displaying the results in GraphViewer
+
+            for each i from 1 to idAresta - numArestasAnterior
+                setEdgeLabel(GV, idAresta - i, 'Vehicle' + getID(v) + ' - ' + i)
+
+            numArestasAnterior ⟵ idAresta
+
+            for each d ∈ getDeliveries(d)
+                setVertexLabel(GV, getOrigin(d), getID(getOrigin(d)) + ' - origin')
+                setVertexLabel(GV, getDest(d), getID(getDest(d)) + ' - dest')
+
+
+    rearrange(GV)
+
+
+            
